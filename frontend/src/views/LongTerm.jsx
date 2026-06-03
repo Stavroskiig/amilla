@@ -341,7 +341,7 @@ export default function LongTerm({ user }) {
         <p style={{ color: 'var(--text-muted)' }}>Ποια ομάδα θα σηκώσει το Παγκόσμιο Κύπελλο;</p>
       </div>
 
-      <div className="glass-card" style={{ padding: '32px', overflow: 'visible' }}>
+      <div className="glass-card responsive-card-padding" style={{ padding: '32px', overflow: 'visible' }}>
 
         {/* Rules info */}
         <div className="glass" style={{
@@ -598,7 +598,7 @@ export default function LongTerm({ user }) {
                 </div>
                 {submittedAt && (
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                    Υποβλήθηκε στις: {new Date(submittedAt).toLocaleString('el-GR', { timeZone: 'Europe/Athens' })}
+                    Υποβλήθηκε στις: {new Date(submittedAt).toLocaleString('el-GR', { timeZone: 'Europe/Athens', hour12: false })}
                   </div>
                 )}
               </div>

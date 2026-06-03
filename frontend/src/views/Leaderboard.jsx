@@ -49,7 +49,7 @@ export default function Leaderboard({ currentUser }) {
         </div>
 
         {/* Search box */}
-        <div style={{ position: 'relative', width: '100%', maxWidth: '280px' }}>
+        <div className="leaderboard-search-container" style={{ position: 'relative', width: '100%', maxWidth: '280px' }}>
           <Search size={18} style={{
             position: 'absolute',
             left: '16px',
@@ -74,7 +74,7 @@ export default function Leaderboard({ currentUser }) {
         </div>
       ) : (
         <div className="glass-card" style={{ padding: '0px', overflowX: 'auto' }}>
-          <table style={{
+          <table className="leaderboard-table" style={{
             width: '100%',
             borderCollapse: 'collapse',
             textAlign: 'left'
@@ -86,7 +86,7 @@ export default function Leaderboard({ currentUser }) {
               }}>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
-                <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΡΟΛΟΣ</th>
+                <th className="hide-on-mobile" style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΡΟΛΟΣ</th>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'right' }}>ΣΥΝΟΛΙΚΟΙ ΠΟΝΤΟΙ</th>
               </tr>
             </thead>
@@ -209,7 +209,7 @@ export default function Leaderboard({ currentUser }) {
                       </td>
 
                       {/* Role */}
-                      <td style={{ padding: '18px 24px' }}>
+                      <td className="hide-on-mobile" style={{ padding: '18px 24px' }}>
                         <span style={{
                           fontSize: '0.8rem',
                           color: user.role === 'ROLE_ADMIN' ? 'var(--secondary)' : 'var(--text-muted)',

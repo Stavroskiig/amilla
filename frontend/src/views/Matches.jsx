@@ -387,45 +387,48 @@ export default function Matches({ user }) {
             <div key={match.id} className="glass-card" style={{ padding: '0px' }}>
 
               {/* Match Card Header Banner */}
-              <div style={{
-                background: 'rgba(255,255,255,0.02)',
-                padding: '12px 24px',
-                borderBottom: '1px solid var(--border-color)',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
-                <span className="badge badge-scheduled" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  {getStageLabel(match.matchStage)}
-                </span>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                  <Clock size={14} />
-                  <span>{new Date(match.kickoffTime).toLocaleString('el-GR', {
-                    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Athens'
-                  })}</span>
-                  <span style={{ color: 'rgba(255,255,255,0.1)' }}>|</span>
-                  <span style={{
-                    color: finished ? 'var(--success)' : locked ? 'var(--danger)' : '#a5b4fc',
-                    fontWeight: 600
-                  }}>
-                    {finished ? 'ΟΛΟΚΛΗΡΩΘΗΚΕ' : getCountdown(match)}
+              <div className="match-card-header">
+                <div className="match-stage-wrapper">
+                  <span className="badge badge-scheduled match-stage-badge" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    {getStageLabel(match.matchStage)}
                   </span>
+                </div>
+
+                <div className="match-datetime-wrapper">
+                  <Clock size={16} style={{ flexShrink: 0, color: 'var(--text-muted)' }} />
+                  <div className="match-datetime-text">
+                    <span className="match-date">
+                      {new Date(match.kickoffTime).toLocaleDateString('el-GR', {
+                        day: '2-digit', month: '2-digit', timeZone: 'Europe/Athens'
+                      })}
+                    </span>
+                    <span className="match-time">
+                      {new Date(match.kickoffTime).toLocaleTimeString('el-GR', {
+                        hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Athens', hour12: false
+                      })}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="match-status-wrapper" style={{
+                  color: finished ? 'var(--success)' : locked ? 'var(--danger)' : '#a5b4fc'
+                }}>
+                  <span>{finished ? 'ΟΛΟΚΛΗΡΩΘΗΚΕ' : getCountdown(match)}</span>
                 </div>
               </div>
 
               {/* Match Card Body */}
-              <div style={{ padding: '24px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
+              <div className="match-card-body" style={{ padding: '24px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
 
                 {/* Team Details */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flex: '1', minWidth: '280px', justifyContent: 'center' }}>
+                <div className="team-details-container" style={{ display: 'flex', alignItems: 'center', gap: '20px', flex: '1', minWidth: '280px', justifyContent: 'center' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'flex-end', flex: '1', textAlign: 'right' }}>
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>{match.homeTeam}</h3>
+                    <h3 className="team-name" style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>{match.homeTeam}</h3>
                     {renderFlag(match.homeTeam)}
                   </div>
 
                   {/* Score Display (Actual vs Predicted) */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
                     {finished ? (
                       <div className="glass" style={{
                         padding: '8px 16px',
@@ -433,24 +436,26 @@ export default function Matches({ user }) {
                         fontSize: '1.5rem',
                         fontWeight: 800,
                         background: 'rgba(0, 0, 0, 0.4)',
-                        border: '1px solid rgba(255,255,255,0.1)'
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        whiteSpace: 'nowrap',
+                        flexShrink: 0
                       }}>
                         {match.homeScore90} - {match.awayScore90}
                       </div>
                     ) : (
-                      <div style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-muted)' }}>VS</div>
+                      <div style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-muted)', whiteSpace: 'nowrap', flexShrink: 0 }}>VS</div>
                     )}
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'flex-start', flex: '1', textAlign: 'left' }}>
                     {renderFlag(match.awayTeam)}
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>{match.awayTeam}</h3>
+                    <h3 className="team-name" style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>{match.awayTeam}</h3>
                   </div>
                 </div>
 
                 {/* Score Input Box / Prediction Status */}
                 {!finished && (
-                  <div style={{
+                  <div className="score-inputs-container" style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '16px',
@@ -512,8 +517,18 @@ export default function Matches({ user }) {
                 )}
 
                 {/* Match Action Buttons */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: '150px', justifyContent: 'flex-end' }}>
-                  {isPredictionTooFar(match) ? (
+                <div className="match-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: '150px', justifyContent: 'flex-end' }}>
+                  {finished ? (
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => toggleExpandMatchOthers(match.id)}
+                      style={{ padding: '8px 12px', fontSize: '0.85rem' }}
+                      title="Δείτε τι έπαιξαν οι άλλοι"
+                    >
+                      <Eye size={16} />
+                      <span style={{ fontSize: '0.8rem', marginLeft: '4px' }}>Προβλέψεις</span>
+                    </button>
+                  ) : isPredictionTooFar(match) ? (
                     <div style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -588,7 +603,7 @@ export default function Matches({ user }) {
               {/* Points banner for finished matches */}
               {finished && (
                 matchPred.savedHome !== null && matchPred.savedHome !== undefined ? (
-                  <div style={{
+                  <div className="match-card-header" style={{
                     background: matchPred.pointsEarned > 0 ? 'rgba(16,185,129,0.05)' : 'rgba(239, 68, 68, 0.04)',
                     borderTop: matchPred.pointsEarned > 0 ? '1px solid rgba(16,185,129,0.15)' : '1px solid rgba(239, 68, 68, 0.12)',
                     padding: '10px 24px',
@@ -604,11 +619,11 @@ export default function Matches({ user }) {
                       </strong>
                     </div>
 
-                    <div 
-                      className="badge" 
-                      style={{ 
-                        fontSize: '0.8rem', 
-                        padding: '4px 10px', 
+                    <div
+                      className="badge"
+                      style={{
+                        fontSize: '0.8rem',
+                        padding: '4px 10px',
                         gap: '6px',
                         background: matchPred.pointsEarned > 0 ? 'var(--success-glow)' : 'rgba(239, 68, 68, 0.08)',
                         color: matchPred.pointsEarned > 0 ? 'var(--success)' : 'var(--danger)',
@@ -620,7 +635,7 @@ export default function Matches({ user }) {
                     </div>
                   </div>
                 ) : (
-                  <div style={{
+                  <div className="match-card-header" style={{
                     background: 'rgba(255, 255, 255, 0.02)',
                     borderTop: '1px solid var(--border-color)',
                     padding: '10px 24px',
@@ -633,7 +648,7 @@ export default function Matches({ user }) {
                     </div>
 
                     <div className="badge badge-scheduled" style={{ fontSize: '0.8rem', padding: '4px 10px' }}>
-                      <span>+0 Πόντοι</span>
+                      <span>+0 ΠΟΝΤΟΙ</span>
                     </div>
                   </div>
                 )

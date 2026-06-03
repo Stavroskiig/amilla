@@ -84,7 +84,7 @@ export default function Auth({ onLoginSuccess }) {
       minHeight: '80vh',
       padding: '20px'
     }}>
-      <div className="glass-card animate-fade-in" style={{
+      <div className="glass-card animate-fade-in responsive-card-padding" style={{
         width: '100%',
         maxWidth: '420px',
         padding: '40px 32px',

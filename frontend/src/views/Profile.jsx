@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Award, 
-  Trophy, 
-  TrendingUp, 
-  Percent, 
-  Star, 
+import {
+  Award,
+  Trophy,
+  TrendingUp,
+  Percent,
+  Star,
   Flame,
-  Check, 
-  Lock, 
+  Check,
+  Lock,
   Activity,
   Calendar,
   Sparkles,
@@ -119,7 +119,7 @@ export default function Profile({ user, setUser }) {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      
+
       // 1. Fetch user predictions
       const predRes = await fetch('/api/predictions/my', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -166,7 +166,7 @@ export default function Profile({ user, setUser }) {
         body: JSON.stringify({ avatar: avatarId })
       });
       const updatedUser = await res.json();
-      
+
       if (!res.ok) throw new Error(updatedUser.error || 'Σφάλμα ενημέρωσης avatar');
 
       // Update parent user state
@@ -183,12 +183,12 @@ export default function Profile({ user, setUser }) {
 
   // Stats Calculations
   const totalPredicted = predictions.length;
-  
+
   // Find predictions that correspond to finished matches
   const finishedMatchIds = new Set(
     matches.filter(m => m.status === 'FINISHED').map(m => m.id)
   );
-  
+
   const finishedPredictions = predictions.filter(p => finishedMatchIds.has(p.matchId));
   const completedPredictedCount = finishedPredictions.length;
 
@@ -207,7 +207,7 @@ export default function Profile({ user, setUser }) {
   finishedPredictions.forEach(pred => {
     const points = pred.pointsEarned;
     matchPointsEarned += points;
-    
+
     // Check points logic from PointCalculatorService
     if (points === 5 || points === 6) {
       exactScoresCount++;
@@ -236,12 +236,12 @@ export default function Profile({ user, setUser }) {
   });
 
   const successCount = exactScoresCount + correctOutcomesCount + qualifierOnlyCount;
-  const accuracyRate = completedPredictedCount > 0 
-    ? Math.round((successCount / completedPredictedCount) * 100) 
+  const accuracyRate = completedPredictedCount > 0
+    ? Math.round((successCount / completedPredictedCount) * 100)
     : 0;
 
-  const avgPoints = completedPredictedCount > 0 
-    ? (matchPointsEarned / completedPredictedCount).toFixed(1) 
+  const avgPoints = completedPredictedCount > 0
+    ? (matchPointsEarned / completedPredictedCount).toFixed(1)
     : '0.0';
 
   // Percentages for breakdown bar
@@ -252,10 +252,10 @@ export default function Profile({ user, setUser }) {
 
   return (
     <div className="animate-fade-in" style={{ maxWidth: '1000px', margin: '0 auto', paddingBottom: '40px' }}>
-      
+
       {/* Upper Profile Section */}
-      <div className="glass-card" style={{ padding: '32px', marginBottom: '32px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-        
+      <div className="glass-card responsive-card-padding" style={{ padding: '32px', marginBottom: '32px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+
         {successMessage && (
           <div className="glass" style={{
             position: 'absolute',
@@ -293,7 +293,7 @@ export default function Profile({ user, setUser }) {
         )}
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-          <div 
+          <div
             onClick={() => setShowAvatarGrid(!showAvatarGrid)}
             style={{ position: 'relative', cursor: 'pointer', group: 'true' }}
             title="Αλλαγή Avatar"
@@ -350,7 +350,7 @@ export default function Profile({ user, setUser }) {
             <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '14px', textAlign: 'center' }}>
               Επιλέξτε το Avatar σας
             </h3>
-            
+
             <div className="avatar-grid">
               {AVATARS.map((avatar) => {
                 const isSelected = user.avatar === avatar.id;
@@ -384,9 +384,9 @@ export default function Profile({ user, setUser }) {
             gap: '20px',
             marginBottom: '32px'
           }}>
-            
+
             {/* Points Card */}
-            <div className="glass-card" style={{
+            <div className="glass-card responsive-card-padding" style={{
               padding: '24px',
               background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(28, 30, 46, 0.6) 100%)',
               border: '1px solid rgba(99, 102, 241, 0.25)',
@@ -394,7 +394,7 @@ export default function Profile({ user, setUser }) {
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                 <span style={{ color: '#a5b4fc', fontWeight: 600, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Συνολικοί Πόντοι
+                  ΣΥΝΟΛΙΚΟΙ ΠΟΝΤΟΙ
                 </span>
                 <Trophy size={20} style={{ color: '#fbbf24' }} />
               </div>
@@ -408,10 +408,10 @@ export default function Profile({ user, setUser }) {
             </div>
 
             {/* Accuracy Card */}
-            <div className="glass-card" style={{ padding: '24px' }}>
+            <div className="glass-card responsive-card-padding" style={{ padding: '24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                 <span style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Ποσοστό Επιτυχίας
+                  ΠΟΣΟΣΤΟ ΕΠΙΤΥΧΙΑΣ
                 </span>
                 <Percent size={20} style={{ color: 'var(--secondary)' }} />
               </div>
@@ -424,10 +424,10 @@ export default function Profile({ user, setUser }) {
             </div>
 
             {/* Avg Score Card */}
-            <div className="glass-card" style={{ padding: '24px' }}>
+            <div className="glass-card responsive-card-padding" style={{ padding: '24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                 <span style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Μέσος Όρος
+                  ΜΕΣΟΣ ΟΡΟΣ
                 </span>
                 <TrendingUp size={20} style={{ color: 'var(--success)' }} />
               </div>
@@ -440,10 +440,10 @@ export default function Profile({ user, setUser }) {
             </div>
 
             {/* Predictions Made Card */}
-            <div className="glass-card" style={{ padding: '24px' }}>
+            <div className="glass-card responsive-card-padding" style={{ padding: '24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                 <span style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Προβλέψεις
+                  ΠΡΟΒΛΕΨΕΙΣ
                 </span>
                 <Activity size={20} style={{ color: '#a855f7' }} />
               </div>
@@ -458,7 +458,7 @@ export default function Profile({ user, setUser }) {
           </div>
 
           {/* Detailed Success Breakdown Visualization */}
-          <div className="glass-card" style={{ padding: '28px', marginBottom: '32px' }}>
+          <div className="glass-card responsive-card-padding" style={{ padding: '28px', marginBottom: '32px' }}>
             <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Star size={18} className="text-indigo-400" />
               <span>Ανάλυση Αποτελεσμάτων</span>
@@ -481,26 +481,26 @@ export default function Profile({ user, setUser }) {
                   border: '1px solid var(--border-color)'
                 }}>
                   {exactScoresCount > 0 && (
-                    <div 
-                      style={{ width: `${pctExact}%`, background: 'var(--success)', transition: 'width 0.5s' }} 
+                    <div
+                      style={{ width: `${pctExact}%`, background: 'var(--success)', transition: 'width 0.5s' }}
                       title={`Ακριβές Σκορ: ${exactScoresCount}`}
                     />
                   )}
                   {correctOutcomesCount > 0 && (
-                    <div 
-                      style={{ width: `${pctOutcome}%`, background: 'var(--warning)', transition: 'width 0.5s' }} 
+                    <div
+                      style={{ width: `${pctOutcome}%`, background: 'var(--warning)', transition: 'width 0.5s' }}
                       title={`Σημείο Αγώνα (1Χ2): ${correctOutcomesCount}`}
                     />
                   )}
                   {qualifierOnlyCount > 0 && (
-                    <div 
-                      style={{ width: `${pctQualifier}%`, background: 'var(--secondary)', transition: 'width 0.5s' }} 
+                    <div
+                      style={{ width: `${pctQualifier}%`, background: 'var(--secondary)', transition: 'width 0.5s' }}
                       title={`Μόνο Πρόκριση: ${qualifierOnlyCount}`}
                     />
                   )}
                   {missesCount > 0 && (
-                    <div 
-                      style={{ width: `${pctMiss}%`, background: 'var(--danger)', transition: 'width 0.5s' }} 
+                    <div
+                      style={{ width: `${pctMiss}%`, background: 'var(--danger)', transition: 'width 0.5s' }}
                       title={`Αστοχία: ${missesCount}`}
                     />
                   )}
@@ -568,12 +568,12 @@ export default function Profile({ user, setUser }) {
           {/* Phase statistics and Long-term prediction grid */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: '24px'
           }}>
-            
+
             {/* Phase stats */}
-            <div className="glass-card" style={{ padding: '28px' }}>
+            <div className="glass-card responsive-card-padding" style={{ padding: '28px' }}>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Calendar size={18} className="text-indigo-400" />
                 <span>Ανάλυση ανά Φάση</span>
@@ -589,9 +589,9 @@ export default function Profile({ user, setUser }) {
                     </span>
                   </div>
                   <div style={{ height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
-                    <div style={{ 
-                      height: '100%', 
-                      background: 'var(--primary)', 
+                    <div style={{
+                      height: '100%',
+                      background: 'var(--primary)',
                       width: `${groupPredictedFinished > 0 ? (groupCorrect / groupPredictedFinished) * 100 : 0}%`,
                       borderRadius: '4px'
                     }} />
@@ -607,9 +607,9 @@ export default function Profile({ user, setUser }) {
                     </span>
                   </div>
                   <div style={{ height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
-                    <div style={{ 
-                      height: '100%', 
-                      background: 'var(--secondary)', 
+                    <div style={{
+                      height: '100%',
+                      background: 'var(--secondary)',
                       width: `${koPredictedFinished > 0 ? (koCorrect / koPredictedFinished) * 100 : 0}%`,
                       borderRadius: '4px'
                     }} />
@@ -619,7 +619,7 @@ export default function Profile({ user, setUser }) {
             </div>
 
             {/* Long-term predictions overview */}
-            <div className="glass-card" style={{ padding: '28px' }}>
+            <div className="glass-card responsive-card-padding" style={{ padding: '28px' }}>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Award size={18} className="text-indigo-400" />
                 <span>Μακροχρόνιες Προβλέψεις</span>
@@ -639,7 +639,7 @@ export default function Profile({ user, setUser }) {
                     <Trophy size={20} style={{ color: '#fbbf24', flexShrink: 0 }} />
                     <span style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>Πρόβλεψη Πρωταθλητή:</span>
                   </div>
-                  
+
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingLeft: '30px' }}>
                     {renderFlag(longTermPred.predictedChampionTeam)}
                     <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff' }}>
@@ -648,7 +648,7 @@ export default function Profile({ user, setUser }) {
                   </div>
 
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '10px', marginTop: '6px' }}>
-                    Υποβλήθηκε: {new Date(longTermPred.submittedAt).toLocaleString('el-GR', { timeZone: 'Europe/Athens' })}
+                    Υποβλήθηκε: {new Date(longTermPred.submittedAt).toLocaleString('el-GR', { timeZone: 'Europe/Athens', hour12: false })}
                   </div>
                 </div>
               ) : (

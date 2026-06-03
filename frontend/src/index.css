@@ -467,3 +467,205 @@ input[type=number] {
   color: var(--text-muted);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
+
+/* Match Header Layout */
+.match-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.match-stage-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+.match-datetime-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+.match-datetime-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.3;
+}
+.match-date {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+.match-time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.match-status-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* Mobile Bottom Navigation Styles */
+.mobile-bottom-nav {
+  display: none;
+}
+
+/* Base Responsive Utilities */
+@media (max-width: 767px) {
+  /* Hide desktop links */
+  .navbar .nav-links {
+    display: none !important;
+  }
+
+  /* Padding adjustments */
+  .main-content {
+    padding: 16px 12px 90px !important; /* Ensure content is clear of bottom navigation */
+  }
+
+  /* Typography Adjustments */
+  h1 {
+    font-size: 1.75rem !important;
+  }
+  h2 {
+    font-size: 1.4rem !important;
+  }
+  h3 {
+    font-size: 1.1rem !important;
+  }
+  p {
+    font-size: 0.85rem !important;
+  }
+
+  /* Fixed Mobile Bottom Bar */
+  .mobile-bottom-nav {
+    display: flex !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: rgba(15, 17, 26, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border-color);
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: env(safe-area-inset-bottom); /* iOS notch safety */
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .mobile-bottom-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.7rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    gap: 4px;
+    flex: 1;
+    height: 100%;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-bottom-link.active {
+    color: var(--primary);
+  }
+
+  .mobile-bottom-link:hover {
+    color: #ffffff;
+  }
+
+  /* Matches page responsiveness */
+  .match-card-header {
+    padding: 10px 12px !important;
+  }
+
+  .match-card-body {
+    padding: 16px 12px !important;
+    gap: 16px !important;
+  }
+
+  .team-details-container {
+    min-width: 100% !important;
+    gap: 12px !important;
+  }
+
+  .team-name {
+    font-size: 0.95rem !important;
+  }
+
+  .score-inputs-container {
+    width: 100% !important;
+    padding: 10px 14px !important;
+    gap: 12px !important;
+  }
+
+  .match-actions {
+    width: 100% !important;
+    justify-content: center !important;
+    margin-top: 4px;
+  }
+
+  /* Leaderboard Page adjustments */
+  .leaderboard-search-container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .leaderboard-table th, 
+  .leaderboard-table td {
+    padding: 12px 8px !important;
+  }
+
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  /* Responsive generic Card padding */
+  .responsive-card-padding {
+    padding: 16px !important;
+  }
+
+  /* Avatar grid items on mobile */
+  .avatar-grid {
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)) !important;
+    gap: 12px !important;
+    margin-top: 12px !important;
+  }
+
+  .avatar-item {
+    width: 64px !important;
+    height: 64px !important;
+  }
+
+  .avatar-preview-lg {
+    width: 90px !important;
+    height: 90px !important;
+  }
+
+  .avatar-preview-lg .avatar-badge-wrapper,
+  .avatar-preview-lg .avatar-fallback {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .avatar-preview-lg svg {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
