@@ -4,6 +4,7 @@ import com.amilla.adapters.security.JwtTokenProvider;
 import com.amilla.domain.model.User;
 import com.amilla.ports.inbound.AuthenticationUseCase;
 import com.amilla.ports.outbound.UserRepositoryPort;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,9 @@ import java.util.UUID;
 
 @Service
 public class AuthService implements AuthenticationUseCase {
+
+    @Value("${amilla.registration.group-code}")
+    private String configuredGroupCode;
 
     private final UserRepositoryPort userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -26,12 +30,15 @@ public class AuthService implements AuthenticationUseCase {
     }
 
     @Override
-    public User register(String username, String email, String password) {
+    public User register(String username, String email, String password, String groupCode) {
+        if (configuredGroupCode == null || groupCode == null || !groupCode.trim().equalsIgnoreCase(configuredGroupCode.trim())) {
+            throw new IllegalArgumentException("Λάθος κωδικός ομάδας!");
+        }
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new IllegalArgumentException("Email already in use!");
+            throw new IllegalArgumentException("Το email είναι ήδη σε χρήση!");
         }
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new IllegalArgumentException("Username already in use!");
+            throw new IllegalArgumentException("Το όνομα χρήστη είναι ήδη σε χρήση!");
         }
 
         // The first registered user can be ADMIN for easier setup/testing,

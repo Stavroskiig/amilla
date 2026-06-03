@@ -581,8 +581,8 @@ export default function Matches({ user }) {
               {finished && (
                 matchPred.savedHome !== null && matchPred.savedHome !== undefined ? (
                   <div style={{
-                    background: 'rgba(16,185,129,0.05)',
-                    borderTop: '1px solid rgba(16,185,129,0.15)',
+                    background: matchPred.pointsEarned > 0 ? 'rgba(16,185,129,0.05)' : 'rgba(239, 68, 68, 0.04)',
+                    borderTop: matchPred.pointsEarned > 0 ? '1px solid rgba(16,185,129,0.15)' : '1px solid rgba(239, 68, 68, 0.12)',
                     padding: '10px 24px',
                     display: 'flex',
                     alignItems: 'center',
@@ -596,7 +596,17 @@ export default function Matches({ user }) {
                       </strong>
                     </div>
 
-                    <div className="badge badge-finished" style={{ fontSize: '0.8rem', padding: '4px 10px', gap: '6px' }}>
+                    <div 
+                      className="badge" 
+                      style={{ 
+                        fontSize: '0.8rem', 
+                        padding: '4px 10px', 
+                        gap: '6px',
+                        background: matchPred.pointsEarned > 0 ? 'var(--success-glow)' : 'rgba(239, 68, 68, 0.08)',
+                        color: matchPred.pointsEarned > 0 ? 'var(--success)' : 'var(--danger)',
+                        border: matchPred.pointsEarned > 0 ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(239, 68, 68, 0.2)'
+                      }}
+                    >
                       <Award size={14} />
                       <span>+{matchPred.pointsEarned} ΠΟΝΤΟΙ</span>
                     </div>

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Compass, LogIn, UserPlus, Mail, Lock, User as UserIcon } from 'lucide-react';
+import { Compass, LogIn, UserPlus, Mail, Lock, User as UserIcon, Key } from 'lucide-react';
+
 
 export default function Auth({ onLoginSuccess }) {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
+  const [groupCode, setGroupCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -14,6 +16,20 @@ export default function Auth({ onLoginSuccess }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Client-side empty field validation
+    if (isLogin) {
+      if (!email.trim() || !password.trim()) {
+        setError('Παρακαλώ συμπληρώστε όλα τα πεδία.');
+        return;
+      }
+    } else {
+      if (!username.trim() || !email.trim() || !password.trim() || !groupCode.trim()) {
+        setError('Παρακαλώ συμπληρώστε όλα τα πεδία.');
+        return;
+      }
+    }
+
     setLoading(true);
 
     try {
@@ -35,7 +51,7 @@ export default function Auth({ onLoginSuccess }) {
         const res = await fetch('/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, email, password }),
+          body: JSON.stringify({ username, email, password, groupCode }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Σφάλμα εγγραφής');
@@ -103,7 +119,7 @@ export default function Auth({ onLoginSuccess }) {
           </div>
           <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '6px' }}>Amilla</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-            {isLogin ? 'Σύνδεση στην οικογενειακή εφαρμογή προβλέψεων' : 'Δημιουργία λογαριασμού μέλους'}
+            {isLogin ? 'Σύνδεση στο παιχνίδι προβλέψεων' : 'Δημιουργία λογαριασμού παίκτη'}
           </p>
         </div>
 
@@ -165,29 +181,53 @@ export default function Auth({ onLoginSuccess }) {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {!isLogin && (
-            <div className="form-group">
-              <label className="form-label">Όνομα Χρήστη</label>
-              <div style={{ position: 'relative' }}>
-                <UserIcon size={18} style={{
-                  position: 'absolute',
-                  left: '16px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: 'var(--text-muted)'
-                }} />
-                <input
-                  type="text"
-                  required
-                  placeholder="π.χ. Stavros"
-                  className="form-input"
-                  style={{ width: '100%', paddingLeft: '48px' }}
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
+            <>
+              <div className="form-group">
+                <label className="form-label">Όνομα Χρήστη</label>
+                <div style={{ position: 'relative' }}>
+                  <UserIcon size={18} style={{
+                    position: 'absolute',
+                    left: '16px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    color: 'var(--text-muted)'
+                  }} />
+                  <input
+                    type="text"
+                    required
+                    placeholder="π.χ. Σταύρος"
+                    className="form-input"
+                    style={{ width: '100%', paddingLeft: '48px' }}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
               </div>
-            </div>
+
+              <div className="form-group">
+                <label className="form-label">Κωδικός Ομάδας</label>
+                <div style={{ position: 'relative' }}>
+                  <Key size={18} style={{
+                    position: 'absolute',
+                    left: '16px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    color: 'var(--text-muted)'
+                  }} />
+                  <input
+                    type="text"
+                    required
+                    placeholder="π.χ. EURO2024"
+                    className="form-input"
+                    style={{ width: '100%', paddingLeft: '48px' }}
+                    value={groupCode}
+                    onChange={(e) => setGroupCode(e.target.value)}
+                  />
+                </div>
+              </div>
+            </>
           )}
 
           <div className="form-group">

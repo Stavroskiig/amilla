@@ -22,7 +22,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@Validated @RequestBody RegisterRequest request) {
-        User user = authenticationUseCase.register(request.getUsername(), request.getEmail(), request.getPassword());
+        User user = authenticationUseCase.register(request.getUsername(), request.getEmail(), request.getPassword(), request.getGroupCode());
         return ResponseEntity.ok(user);
     }
 
@@ -36,7 +36,8 @@ public class AuthController {
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getRole()
+                user.getRole(),
+                user.getTotalPoints()
         );
         return ResponseEntity.ok(response);
     }

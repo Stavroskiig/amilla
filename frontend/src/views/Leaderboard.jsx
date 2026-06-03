@@ -43,7 +43,7 @@ export default function Leaderboard({ currentUser }) {
         <div>
           <h1 style={{ fontSize: '2.2rem', fontWeight: 800 }}>Πίνακας Κατάταξης</h1>
           <p style={{ color: 'var(--text-muted)' }}>
-            Δείτε τη συνολική βαθμολογία και την εξέλιξη της οικογένειας σε πραγματικό χρόνο!
+            Δείτε τη συνολική βαθμολογία και την εξέλιξη του τουρνουά σε πραγματικό χρόνο!
           </p>
         </div>
 

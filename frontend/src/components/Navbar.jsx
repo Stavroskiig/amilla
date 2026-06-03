@@ -22,33 +22,33 @@ export default function Navbar({ user, onLogout }) {
       </div>
 
       <div className="nav-links">
-        <NavLink 
-          to="/matches" 
+        <NavLink
+          to="/matches"
           className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
         >
           <Calendar size={18} />
           <span>Αγώνες</span>
         </NavLink>
 
-        <NavLink 
-          to="/leaderboard" 
+        <NavLink
+          to="/leaderboard"
           className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
         >
           <Trophy size={18} />
           <span>Κατάταξη</span>
         </NavLink>
 
-        <NavLink 
-          to="/longterm" 
+        <NavLink
+          to="/longterm"
           className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
         >
           <Award size={18} />
-          <span>Champion</span>
+          <span>Πρωταθλητής</span>
         </NavLink>
 
         {isAdmin && (
-          <NavLink 
-            to="/admin" 
+          <NavLink
+            to="/admin"
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
             <ShieldAlert size={18} />
@@ -61,12 +61,12 @@ export default function Navbar({ user, onLogout }) {
         <div className="user-badge">
           <Award size={16} />
           <span>{user.username}</span>
-          <span style={{ fontWeight: 'bold', color: '#6366f1' }}>{user.totalPoints} pts</span>
+          <span style={{ fontWeight: 'bold', color: '#6366f1' }}>{user.totalPoints ?? 0} pts</span>
         </div>
 
-        <button 
-          onClick={handleLogoutClick} 
-          className="btn btn-secondary" 
+        <button
+          onClick={handleLogoutClick}
+          className="btn btn-secondary"
           style={{ padding: '8px 12px', fontSize: '0.85rem' }}
           title="Αποσύνδεση"
         >
