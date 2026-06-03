@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, Award, Search, Sparkles } from 'lucide-react';
+import { Trophy, Award, Search, Sparkles, TrendingUp, TrendingDown } from 'lucide-react';
 import { Avatar } from '../components/Avatars';
 
 export default function Leaderboard({ currentUser }) {
@@ -122,9 +122,46 @@ export default function Leaderboard({ currentUser }) {
                         }}>
                           {idx + 1}
                         </span>
-                        <span style={{ color: rank.color }}>
+                        <span style={{ color: rank.color, display: 'flex', alignItems: 'center' }}>
                           {rank.icon}
                         </span>
+
+                        {/* Trend Indicator */}
+                        {(() => {
+                          const currentRank = idx + 1;
+                          const prevRank = user.previousRank;
+                          const change = prevRank > 0 ? prevRank - currentRank : 0;
+
+                          if (prevRank === 0) {
+                            return (
+                              <span className="trend-badge trend-neutral" title="Σταθερή θέση">
+                                <span style={{ fontSize: '10px' }}>—</span>
+                              </span>
+                            );
+                          }
+
+                          if (change > 0) {
+                            return (
+                              <span className="trend-badge trend-up" title={`Ανέβηκε ${change} ${change === 1 ? 'θέση' : 'θέσεις'}`}>
+                                <TrendingUp size={12} style={{ marginRight: '2px' }} />
+                                {change}
+                              </span>
+                            );
+                          } else if (change < 0) {
+                            return (
+                              <span className="trend-badge trend-down" title={`Έπεσε ${Math.abs(change)} ${Math.abs(change) === 1 ? 'θέση' : 'θέσεις'}`}>
+                                <TrendingDown size={12} style={{ marginRight: '2px' }} />
+                                {Math.abs(change)}
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <span className="trend-badge trend-neutral" title="Σταθερή θέση">
+                                <span style={{ fontSize: '10px' }}>—</span>
+                              </span>
+                            );
+                          }
+                        })()}
                       </td>
 
                       {/* Username */}

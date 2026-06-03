@@ -137,38 +137,53 @@ public class MatchService implements ManageMatchUseCase {
         List<User> users = userRepository.findAll();
         for (User user : users) {
             user.setTotalPoints(0);
+            user.setPreviousRank(null);
         }
 
         List<Match> finishedMatches = matchRepository.findAll().stream()
                 .filter(m -> "FINISHED".equalsIgnoreCase(m.getStatus()))
+                .sorted(Comparator.comparing(Match::getKickoffTime))
                 .collect(Collectors.toList());
 
         List<Prediction> predictions = predictionRepository.findAll();
 
-        // 1. Calculate match points
+        int totalFinished = finishedMatches.size();
+
+        if (totalFinished > 1) {
+            // 1. Process matches 1 to N-1
+            List<Match> firstNMinus1Matches = finishedMatches.subList(0, totalFinished - 1);
+            for (Match match : firstNMinus1Matches) {
+                applyMatchPointsToUsers(match, predictions, users);
+            }
+
+            // 2. Sort users by points at this intermediate stage to get their previous rank
+            users.sort(Comparator.comparingInt(User::getTotalPoints).reversed());
+            for (int i = 0; i < users.size(); i++) {
+                users.get(i).setPreviousRank(i + 1);
+            }
+
+            // 3. Process the last match
+            Match lastMatch = finishedMatches.get(totalFinished - 1);
+            applyMatchPointsToUsers(lastMatch, predictions, users);
+
+        } else {
+            // If there's 0 or 1 finished matches, previous rank is 0 for everyone
+            for (Match match : finishedMatches) {
+                applyMatchPointsToUsers(match, predictions, users);
+            }
+        }
+
+        // 4. Update predictions that do NOT belong to any finished matches (e.g. set to 0)
         for (Prediction pred : predictions) {
-            Optional<Match> matchOpt = finishedMatches.stream()
-                    .filter(m -> m.getId().equals(pred.getMatchId()))
-                    .findFirst();
-
-            if (matchOpt.isPresent()) {
-                Match match = matchOpt.get();
-                int pts = pointCalculatorService.calculateMatchPoints(match, pred);
-                pred.setPointsEarned(pts);
-                predictionRepository.save(pred);
-
-                // Add to user
-                users.stream()
-                        .filter(u -> u.getId().equals(pred.getUserId()))
-                        .findFirst()
-                        .ifPresent(u -> u.setTotalPoints(u.getTotalPoints() + pts));
-            } else {
+            boolean belongsToFinished = finishedMatches.stream()
+                    .anyMatch(m -> m.getId().equals(pred.getMatchId()));
+            if (!belongsToFinished) {
                 pred.setPointsEarned(0);
                 predictionRepository.save(pred);
             }
         }
 
-        // 2. Calculate long term prediction points if tournament is finished
+        // 5. Calculate long term prediction points if tournament is finished
         Optional<Match> finalMatch = matchRepository.findAll().stream()
                 .filter(m -> "FINAL".equalsIgnoreCase(m.getMatchStage()))
                 .findFirst();
@@ -220,6 +235,24 @@ public class MatchService implements ManageMatchUseCase {
         log.info("Recalculation complete.");
     }
 
+    private void applyMatchPointsToUsers(Match match, List<Prediction> predictions, List<User> users) {
+        List<Prediction> matchPreds = predictions.stream()
+                .filter(p -> p.getMatchId().equals(match.getId()))
+                .collect(Collectors.toList());
+
+        for (Prediction pred : matchPreds) {
+            int pts = pointCalculatorService.calculateMatchPoints(match, pred);
+            pred.setPointsEarned(pts);
+            predictionRepository.save(pred);
+
+            // Add points to User in memory
+            users.stream()
+                    .filter(u -> u.getId().equals(pred.getUserId()))
+                    .findFirst()
+                    .ifPresent(u -> u.setTotalPoints(u.getTotalPoints() + pts));
+        }
+    }
+
     @Override
     public Prediction adminOverridePrediction(UUID userId, String matchId, int homeScore, int awayScore, String qualifier) {
         log.info("Admin override prediction for user {} match {}", userId, matchId);
@@ -253,6 +286,14 @@ public class MatchService implements ManageMatchUseCase {
                 match.getHomeTeam(), match.getAwayTeam(), match.getHomeScore90(), match.getAwayScore90()));
 
         boolean exactFinderExists = false;
+
+        // Save current rank before settling this match as previousRank
+        List<User> usersBefore = userRepository.findAllOrderByPointsDesc();
+        for (int i = 0; i < usersBefore.size(); i++) {
+            User u = usersBefore.get(i);
+            u.setPreviousRank(i + 1);
+            userRepository.save(u);
+        }
 
         for (Prediction pred : predictions) {
             int pts = pointCalculatorService.calculateMatchPoints(match, pred);

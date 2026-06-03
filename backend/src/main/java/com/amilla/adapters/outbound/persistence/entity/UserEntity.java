@@ -37,4 +37,7 @@ public class UserEntity {
 
     @Column(name = "avatar")
     private String avatar;
+
+    @Column(name = "previous_rank")
+    private Integer previousRank;
 }

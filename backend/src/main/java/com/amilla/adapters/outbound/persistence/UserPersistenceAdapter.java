@@ -66,6 +66,7 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
                 .role(entity.getRole())
                 .totalPoints(entity.getTotalPoints())
                 .avatar(entity.getAvatar())
+                .previousRank(entity.getPreviousRank())
                 .build();
     }
 
@@ -79,6 +80,7 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
                 .role(domain.getRole())
                 .totalPoints(domain.getTotalPoints())
                 .avatar(domain.getAvatar())
+                .previousRank(domain.getPreviousRank())
                 .build();
     }
 }
