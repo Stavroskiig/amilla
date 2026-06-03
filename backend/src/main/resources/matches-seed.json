@@ -223,203 +223,203 @@
     "matchStage": "GROUP",
     "kickoffTime": "2026-06-20T06:00:00+03:00"
   },
-  // 
   {
     "id": "wc26-33",
-    "homeTeam": "Γερμανία",
-    "awayTeam": "Ακτή Ελεφαντοστού",
+    "homeTeam": "Ολλανδία",
+    "awayTeam": "Σουηδία",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-20T19:00:00+03:00"
+    "kickoffTime": "2026-06-20T20:00:00+03:00"
   },
   {
     "id": "wc26-34",
-    "homeTeam": "Ισημερινός",
-    "awayTeam": "Κουρασάο",
+    "homeTeam": "Γερμανία",
+    "awayTeam": "Ακτή Ελεφαντοστού",
     "matchStage": "GROUP",
     "kickoffTime": "2026-06-20T23:00:00+03:00"
   },
   {
     "id": "wc26-35",
-    "homeTeam": "Ολλανδία",
-    "awayTeam": "Σουηδία",
+    "homeTeam": "Ισημερινός",
+    "awayTeam": "Κουρασάο",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-20T16:00:00+03:00"
+    "kickoffTime": "2026-06-21T03:00:00+03:00"
   },
   {
     "id": "wc26-36",
     "homeTeam": "Τυνησία",
     "awayTeam": "Ιαπωνία",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-21T03:00:00+03:00"
+    "kickoffTime": "2026-06-21T07:00:00+03:00"
   },
   {
     "id": "wc26-37",
-    "homeTeam": "Ουρουγουάη",
-    "awayTeam": "Πράσινο Ακρωτήριο",
-    "matchStage": "GROUP",
-    "kickoffTime": "2026-06-21T21:00:00+03:00"
-  },
-  {
-    "id": "wc26-38",
     "homeTeam": "Ισπανία",
     "awayTeam": "Σαουδική Αραβία",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-21T15:00:00+03:00"
+    "kickoffTime": "2026-06-21T19:00:00+03:00"
   },
   {
-    "id": "wc26-39",
+    "id": "wc26-38",
     "homeTeam": "Βέλγιο",
     "awayTeam": "Ιράν",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-21T18:00:00+03:00"
+    "kickoffTime": "2026-06-21T22:00:00+03:00"
+  },
+  {
+    "id": "wc26-39",
+    "homeTeam": "Ουρουγουάη",
+    "awayTeam": "Πράσινο Ακρωτήριο",
+    "matchStage": "GROUP",
+    "kickoffTime": "2026-06-22T01:00:00+03:00"
   },
   {
     "id": "wc26-40",
     "homeTeam": "Νέα Ζηλανδία",
     "awayTeam": "Αίγυπτος",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-22T00:00:00+03:00"
+    "kickoffTime": "2026-06-22T04:00:00+03:00"
   },
   {
     "id": "wc26-41",
-    "homeTeam": "Νορβηγία",
-    "awayTeam": "Σενεγάλη",
+    "homeTeam": "Αργεντινή",
+    "awayTeam": "Αυστρία",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-22T23:00:00+03:00"
+    "kickoffTime": "2026-06-22T20:00:00+03:00"
   },
   {
     "id": "wc26-42",
     "homeTeam": "Γαλλία",
     "awayTeam": "Ιράκ",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-22T20:00:00+03:00"
+    "kickoffTime": "2026-06-23T00:00:00+03:00"
   },
   {
     "id": "wc26-43",
-    "homeTeam": "Αργεντινή",
-    "awayTeam": "Αυστρία",
+    "homeTeam": "Νορβηγία",
+    "awayTeam": "Σενεγάλη",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-22T16:00:00+03:00"
+    "kickoffTime": "2026-06-23T03:00:00+03:00"
   },
   {
     "id": "wc26-44",
     "homeTeam": "Ιορδανία",
     "awayTeam": "Αλγερία",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-23T02:00:00+03:00"
+    "kickoffTime": "2026-06-23T06:00:00+03:00"
   },
   {
     "id": "wc26-45",
-    "homeTeam": "Αγγλία",
-    "awayTeam": "Γκάνα",
-    "matchStage": "GROUP",
-    "kickoffTime": "2026-06-23T19:00:00+03:00"
-  },
-  {
-    "id": "wc26-46",
-    "homeTeam": "Παναμάς",
-    "awayTeam": "Κροατία",
-    "matchStage": "GROUP",
-    "kickoffTime": "2026-06-23T22:00:00+03:00"
-  },
-  {
-    "id": "wc26-47",
     "homeTeam": "Πορτογαλία",
     "awayTeam": "Ουζμπεκιστάν",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-23T16:00:00+03:00"
+    "kickoffTime": "2026-06-23T20:00:00+03:00"
+  },
+  {
+    "id": "wc26-46",
+    "homeTeam": "Αγγλία",
+    "awayTeam": "Γκάνα",
+    "matchStage": "GROUP",
+    "kickoffTime": "2026-06-23T23:00:00+03:00"
+  },
+  {
+    "id": "wc26-47",
+    "homeTeam": "Παναμάς",
+    "awayTeam": "Κροατία",
+    "matchStage": "GROUP",
+    "kickoffTime": "2026-06-24T02:00:00+03:00"
   },
   {
     "id": "wc26-48",
     "homeTeam": "Κολομβία",
     "awayTeam": "Λαϊκή Δημοκρατία του Κονγκό",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-24T01:00:00+03:00"
+    "kickoffTime": "2026-06-24T05:00:00+03:00"
   },
   {
     "id": "wc26-49",
-    "homeTeam": "Σκωτία",
-    "awayTeam": "Βραζιλία",
-    "matchStage": "GROUP",
-    "kickoffTime": "2026-06-24T18:00:00+03:00"
-  },
-  {
-    "id": "wc26-50",
-    "homeTeam": "Μαρόκο",
-    "awayTeam": "Αϊτή",
-    "matchStage": "GROUP",
-    "kickoffTime": "2026-06-24T18:00:00+03:00"
-  },
-  {
-    "id": "wc26-51",
     "homeTeam": "Ελβετία",
     "awayTeam": "Καναδάς",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-24T21:00:00+03:00"
+    "kickoffTime": "2026-06-24T22:00:00+03:00"
   },
   {
-    "id": "wc26-52",
+    "id": "wc26-50",
     "homeTeam": "Βοσνία και Ερζεγοβίνη",
     "awayTeam": "Κατάρ",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-24T21:00:00+03:00"
+    "kickoffTime": "2026-06-24T22:00:00+03:00"
+  },
+  {
+    "id": "wc26-51",
+    "homeTeam": "Σκωτία",
+    "awayTeam": "Βραζιλία",
+    "matchStage": "GROUP",
+    "kickoffTime": "2026-06-25T01:00:00+03:00"
+  },
+  {
+    "id": "wc26-52",
+    "homeTeam": "Μαρόκο",
+    "awayTeam": "Αϊτή",
+    "matchStage": "GROUP",
+    "kickoffTime": "2026-06-25T01:00:00+03:00"
   },
   {
     "id": "wc26-53",
     "homeTeam": "Τσεχία",
     "awayTeam": "Μεξικό",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-25T00:00:00+03:00"
+    "kickoffTime": "2026-06-25T04:00:00+03:00"
   },
   {
     "id": "wc26-54",
     "homeTeam": "Νότια Αφρική",
     "awayTeam": "Νότια Κορέα",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-25T00:00:00+03:00"
+    "kickoffTime": "2026-06-25T04:00:00+03:00"
   },
   {
     "id": "wc26-55",
-    "homeTeam": "Κουρασάο",
-    "awayTeam": "Ακτή Ελεφαντοστού",
-    "matchStage": "GROUP",
-    "kickoffTime": "2026-06-25T16:00:00+03:00"
-  },
-  {
-    "id": "wc26-56",
     "homeTeam": "Ισημερινός",
     "awayTeam": "Γερμανία",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-25T16:00:00+03:00"
+    "kickoffTime": "2026-06-25T23:00:00+03:00"
+  },
+  {
+    "id": "wc26-56",
+    "homeTeam": "Κουρασάο",
+    "awayTeam": "Ακτή Ελεφαντοστού",
+    "matchStage": "GROUP",
+    "kickoffTime": "2026-06-25T23:00:00+03:00"
   },
   {
     "id": "wc26-57",
-    "homeTeam": "Ιαπωνία",
-    "awayTeam": "Σουηδία",
-    "matchStage": "GROUP",
-    "kickoffTime": "2026-06-25T19:00:00+03:00"
-  },
-  {
-    "id": "wc26-58",
     "homeTeam": "Τυνησία",
     "awayTeam": "Ολλανδία",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-25T19:00:00+03:00"
+    "kickoffTime": "2026-06-26T02:00:00+03:00"
+  },
+  {
+    "id": "wc26-58",
+    "homeTeam": "Ιαπωνία",
+    "awayTeam": "Σουηδία",
+    "matchStage": "GROUP",
+    "kickoffTime": "2026-06-26T02:00:00+03:00"
   },
   {
     "id": "wc26-59",
     "homeTeam": "Τουρκία",
     "awayTeam": "Ηνωμένες Πολιτείες Αμερικής",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-25T22:00:00+03:00"
+    "kickoffTime": "2026-06-26T05:00:00+03:00"
   },
   {
     "id": "wc26-60",
     "homeTeam": "Παραγουάη",
     "awayTeam": "Αυστραλία",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-25T22:00:00+03:00"
+    "kickoffTime": "2026-06-26T05:00:00+03:00"
   },
+  ////
   {
     "id": "wc26-61",
     "homeTeam": "Τουρκία",
