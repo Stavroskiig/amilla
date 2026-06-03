@@ -259,6 +259,12 @@ export default function Matches({ user }) {
     return now > lockTime;
   };
 
+  const isPredictionTooFar = (match) => {
+    const kickoff = new Date(match.kickoffTime);
+    const openTime = new Date(kickoff.getTime() - 24 * 60 * 60 * 1000);
+    return now < openTime;
+  };
+
   // Format countdown string
   const getCountdown = (match) => {
     const kickoff = new Date(match.kickoffTime);
@@ -386,7 +392,7 @@ export default function Matches({ user }) {
                         className="score-box"
                         value={matchPred.home}
                         onChange={(e) => handleScoreChange(match.id, 'home', e.target.value)}
-                        disabled={locked}
+                        disabled={locked || isPredictionTooFar(match)}
                         placeholder="-"
                       />
                       <span style={{ color: 'var(--text-muted)' }}>-</span>
@@ -395,7 +401,7 @@ export default function Matches({ user }) {
                         className="score-box"
                         value={matchPred.away}
                         onChange={(e) => handleScoreChange(match.id, 'away', e.target.value)}
-                        disabled={locked}
+                        disabled={locked || isPredictionTooFar(match)}
                         placeholder="-"
                       />
                     </div>
@@ -408,7 +414,7 @@ export default function Matches({ user }) {
                       <select
                         value={matchPred.qualifier}
                         onChange={(e) => handleQualifierChange(match.id, e.target.value)}
-                        disabled={locked}
+                        disabled={locked || isPredictionTooFar(match)}
                         style={{
                           background: 'rgba(10, 11, 16, 0.7)',
                           border: '1px solid var(--border-color)',
@@ -417,7 +423,7 @@ export default function Matches({ user }) {
                           borderRadius: 'var(--radius-sm)',
                           fontSize: '0.85rem',
                           fontWeight: 600,
-                          cursor: locked ? 'not-allowed' : 'pointer'
+                          cursor: (locked || isPredictionTooFar(match)) ? 'not-allowed' : 'pointer'
                         }}
                       >
                         <option value="">Επιλογή...</option>
@@ -430,7 +436,22 @@ export default function Matches({ user }) {
 
                 {/* Match Action Buttons */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: '150px', justifyContent: 'flex-end' }}>
-                  {!locked ? (
+                  {isPredictionTooFar(match) ? (
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      color: 'var(--text-muted)',
+                      fontSize: '0.85rem',
+                      background: 'rgba(255, 255, 255, 0.02)',
+                      padding: '8px 12px',
+                      borderRadius: 'var(--radius-sm)',
+                      border: '1px solid rgba(255, 255, 255, 0.05)'
+                    }}>
+                      <Clock size={15} style={{ color: 'var(--text-muted)' }} />
+                      <span>Κλειδωμένο (24ω)</span>
+                    </div>
+                  ) : !locked ? (
                     <button
                       className="btn btn-primary"
                       disabled={!hasChanges || submittingId === match.id}

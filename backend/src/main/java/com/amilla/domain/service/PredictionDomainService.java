@@ -27,7 +27,11 @@ public class PredictionDomainService {
      * @param now The current timestamp.
      */
     public void validatePredictionSubmissionAllowed(Match match, Instant now) {
+        Instant openTime = match.getKickoffTime().minus(24, ChronoUnit.HOURS);
         Instant lockTime = match.getKickoffTime().minus(LOCK_MINUTES_BEFORE_KICKOFF, ChronoUnit.MINUTES);
+        if (now.isBefore(openTime)) {
+            throw new PredictionsLockedException("Predictions for this match will unlock 24 hours before kickoff!");
+        }
         if (now.isAfter(lockTime)) {
             throw new PredictionsLockedException("Predictions for this match locked 5 minutes before kickoff!");
         }

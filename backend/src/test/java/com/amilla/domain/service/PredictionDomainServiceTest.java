@@ -16,13 +16,24 @@ public class PredictionDomainServiceTest {
     private final PredictionDomainService service = new PredictionDomainService();
 
     @Test
-    public void testSubmissionAllowedWhenKickoffIsFarInFuture() {
+    public void testSubmissionAllowedWithinPredictionWindow() {
         Match match = Match.builder()
                 .kickoffTime(Instant.now().plus(10, ChronoUnit.MINUTES))
                 .build();
 
-        // 10 minutes in the future is > 5 minutes, so it should be allowed
+        // 10 minutes in the future is between 5 minutes and 24 hours, so it should be allowed
         assertDoesNotThrow(() -> service.validatePredictionSubmissionAllowed(match, Instant.now()));
+    }
+
+    @Test
+    public void testSubmissionBlockedWhenKickoffIsTooFarInFuture() {
+        Match match = Match.builder()
+                .kickoffTime(Instant.now().plus(25, ChronoUnit.HOURS))
+                .build();
+
+        // 25 hours in the future is > 24 hours, so it should throw lock exception
+        assertThrows(PredictionsLockedException.class,
+                () -> service.validatePredictionSubmissionAllowed(match, Instant.now()));
     }
 
     @Test
