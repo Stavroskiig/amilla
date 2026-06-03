@@ -99,11 +99,23 @@ export default function Matches({ user }) {
   const [successId, setSuccessId] = useState(null);
   const [errorId, setErrorId] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [filterTab, setFilterTab] = useState('upcoming');
   const [now, setNow] = useState(InstantNow());
+  const [visibleCount, setVisibleCount] = useState(15);
 
   function InstantNow() {
     return new Date();
   }
+
+  // Set initial visible count based on number of finished matches to ensure we display active matches on load
+  useEffect(() => {
+    if (matches.length > 0) {
+      const firstUnfinishedIdx = matches.findIndex(m => m.status !== 'FINISHED');
+      if (firstUnfinishedIdx !== -1) {
+        setVisibleCount(Math.max(15, firstUnfinishedIdx + 15));
+      }
+    }
+  }, [matches]);
 
   useEffect(() => {
     fetchMatches();
@@ -124,32 +136,26 @@ export default function Matches({ user }) {
       if (!res.ok) throw new Error('Σφάλμα φόρτωσης αγώνων');
       setMatches(matchesData);
 
-      // 2. Fetch current user's predictions for all matches
-      const predsData = {};
-      for (const m of matchesData) {
-        try {
-          const predRes = await fetch(`/api/predictions/match/${m.id}`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          if (predRes.ok) {
-            const pred = await predRes.json();
-            if (pred) {
-              predsData[m.id] = {
-                home: pred.predictedHomeScore,
-                away: pred.predictedAwayScore,
-                qualifier: pred.predictedQualifier || '',
-                savedHome: pred.predictedHomeScore,
-                savedAway: pred.predictedAwayScore,
-                savedQualifier: pred.predictedQualifier || '',
-                pointsEarned: pred.pointsEarned
-              };
-            }
-          }
-        } catch (e) {
-          console.error(e);
-        }
+      // 2. Fetch all predictions of current user in one call
+      const predsRes = await fetch('/api/predictions/my', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (predsRes.ok) {
+        const predsList = await predsRes.json();
+        const predsData = {};
+        predsList.forEach(pred => {
+          predsData[pred.matchId] = {
+            home: pred.predictedHomeScore,
+            away: pred.predictedAwayScore,
+            qualifier: pred.predictedQualifier || '',
+            savedHome: pred.predictedHomeScore,
+            savedAway: pred.predictedAwayScore,
+            savedQualifier: pred.predictedQualifier || '',
+            pointsEarned: pred.pointsEarned
+          };
+        });
+        setPredictions(predsData);
       }
-      setPredictions(predsData);
     } catch (err) {
       console.error(err);
     }
@@ -177,6 +183,9 @@ export default function Matches({ user }) {
   };
 
   const submitPrediction = async (matchId) => {
+    const match = matches.find(m => m.id === matchId);
+    if (match && match.status === 'FINISHED') return;
+
     setSubmittingId(matchId);
     setErrorId(null);
     setSuccessId(null);
@@ -284,25 +293,80 @@ export default function Matches({ user }) {
     return `Σε ${hours} ώρες ${mins} λεπτά`;
   };
 
+  const filteredMatches = matches.filter(match => {
+    if (filterTab === 'upcoming') {
+      return match.status !== 'FINISHED';
+    }
+    if (filterTab === 'past') {
+      return match.status === 'FINISHED';
+    }
+    return true; // 'all'
+  });
+
   return (
     <div className="animate-fade-in">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '32px',
+        flexWrap: 'wrap',
+        gap: '20px'
+      }}>
         <div>
           <h1 style={{ fontSize: '2.2rem', fontWeight: 800 }}>Αγώνες & Προβλέψεις</h1>
           <p style={{ color: 'var(--text-muted)' }}>
-            Υποβάλετε τις προβλέψεις σας έως και 5 λεπτά (T-5) πριν από κάθε σέντρα.
+            Υποβάλετε τις προβλέψεις σας έως και 5 λεπτά πριν από κάθε σέντρα.
           </p>
+        </div>
+
+        {/* Tab Filter Control */}
+        <div style={{
+          display: 'flex',
+          background: 'rgba(255, 255, 255, 0.02)',
+          padding: '4px',
+          borderRadius: 'var(--radius-md)',
+          border: '1px solid var(--border-color)',
+          gap: '4px'
+        }}>
+          {[
+            { id: 'upcoming', label: 'Προσεχείς' },
+            { id: 'past', label: 'Ολοκληρωμένοι' },
+            { id: 'all', label: 'Όλοι' }
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => {
+                setFilterTab(tab.id);
+                setVisibleCount(15); // Reset visible count on tab change
+              }}
+              style={{
+                background: filterTab === tab.id ? 'var(--primary)' : 'transparent',
+                color: filterTab === tab.id ? '#ffffff' : 'var(--text-muted)',
+                border: 'none',
+                padding: '8px 16px',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: filterTab === tab.id ? '0 2px 8px var(--primary-glow)' : 'none'
+              }}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {matches.map(match => {
+        {filteredMatches.slice(0, visibleCount).map(match => {
           const locked = isMatchLocked(match);
           const finished = match.status === 'FINISHED';
           const matchPred = predictions[match.id] || { home: '', away: '', qualifier: '', savedHome: null, savedAway: null, savedQualifier: null, pointsEarned: 0 };
-          
-          const hasChanges = 
-            matchPred.home !== matchPred.savedHome || 
+
+          const hasChanges =
+            matchPred.home !== matchPred.savedHome ||
             matchPred.away !== matchPred.savedAway ||
             matchPred.qualifier !== matchPred.savedQualifier;
 
@@ -310,7 +374,7 @@ export default function Matches({ user }) {
 
           return (
             <div key={match.id} className="glass-card" style={{ padding: '0px' }}>
-              
+
               {/* Match Card Header Banner */}
               <div style={{
                 background: 'rgba(255,255,255,0.02)',
@@ -330,7 +394,7 @@ export default function Matches({ user }) {
                     day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Athens'
                   })}</span>
                   <span style={{ color: 'rgba(255,255,255,0.1)' }}>|</span>
-                  <span style={{ 
+                  <span style={{
                     color: finished ? 'var(--success)' : locked ? 'var(--danger)' : '#a5b4fc',
                     fontWeight: 600
                   }}>
@@ -341,7 +405,7 @@ export default function Matches({ user }) {
 
               {/* Match Card Body */}
               <div style={{ padding: '24px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
-                
+
                 {/* Team Details */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flex: '1', minWidth: '280px', justifyContent: 'center' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'flex-end', flex: '1', textAlign: 'right' }}>
@@ -374,65 +438,67 @@ export default function Matches({ user }) {
                 </div>
 
                 {/* Score Input Box / Prediction Status */}
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px',
-                  justifyContent: 'center',
-                  background: 'rgba(0,0,0,0.2)',
-                  padding: '12px 20px',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid rgba(255,255,255,0.03)'
-                }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: 600 }}>ΠΡΟΒΛΕΨΗ</span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <input
-                        type="number"
-                        className="score-box"
-                        value={matchPred.home}
-                        onChange={(e) => handleScoreChange(match.id, 'home', e.target.value)}
-                        disabled={locked || isPredictionTooFar(match)}
-                        placeholder="-"
-                      />
-                      <span style={{ color: 'var(--text-muted)' }}>-</span>
-                      <input
-                        type="number"
-                        className="score-box"
-                        value={matchPred.away}
-                        onChange={(e) => handleScoreChange(match.id, 'away', e.target.value)}
-                        disabled={locked || isPredictionTooFar(match)}
-                        placeholder="-"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Knockout Qualifier Picker */}
-                  {isKnockout && (
+                {!finished && (
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '16px',
+                    justifyContent: 'center',
+                    background: 'rgba(0,0,0,0.2)',
+                    padding: '12px 20px',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid rgba(255,255,255,0.03)'
+                  }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: 600 }}>ΠΡΟΚΡΙΣΗ</span>
-                      <select
-                        value={matchPred.qualifier}
-                        onChange={(e) => handleQualifierChange(match.id, e.target.value)}
-                        disabled={locked || isPredictionTooFar(match)}
-                        style={{
-                          background: 'rgba(10, 11, 16, 0.7)',
-                          border: '1px solid var(--border-color)',
-                          color: '#ffffff',
-                          padding: '10px 12px',
-                          borderRadius: 'var(--radius-sm)',
-                          fontSize: '0.85rem',
-                          fontWeight: 600,
-                          cursor: (locked || isPredictionTooFar(match)) ? 'not-allowed' : 'pointer'
-                        }}
-                      >
-                        <option value="">Επιλογή...</option>
-                        <option value={match.homeTeam}>{match.homeTeam}</option>
-                        <option value={match.awayTeam}>{match.awayTeam}</option>
-                      </select>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: 600 }}>ΠΡΟΒΛΕΨΗ</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <input
+                          type="number"
+                          className="score-box"
+                          value={matchPred.home}
+                          onChange={(e) => handleScoreChange(match.id, 'home', e.target.value)}
+                          disabled={locked || isPredictionTooFar(match)}
+                          placeholder="-"
+                        />
+                        <span style={{ color: 'var(--text-muted)' }}>-</span>
+                        <input
+                          type="number"
+                          className="score-box"
+                          value={matchPred.away}
+                          onChange={(e) => handleScoreChange(match.id, 'away', e.target.value)}
+                          disabled={locked || isPredictionTooFar(match)}
+                          placeholder="-"
+                        />
+                      </div>
                     </div>
-                  )}
-                </div>
+
+                    {/* Knockout Qualifier Picker */}
+                    {isKnockout && (
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: 600 }}>ΠΡΟΚΡΙΣΗ</span>
+                        <select
+                          value={matchPred.qualifier}
+                          onChange={(e) => handleQualifierChange(match.id, e.target.value)}
+                          disabled={locked || isPredictionTooFar(match)}
+                          style={{
+                            background: 'rgba(10, 11, 16, 0.7)',
+                            border: '1px solid var(--border-color)',
+                            color: '#ffffff',
+                            padding: '10px 12px',
+                            borderRadius: 'var(--radius-sm)',
+                            fontSize: '0.85rem',
+                            fontWeight: 600,
+                            cursor: (locked || isPredictionTooFar(match)) ? 'not-allowed' : 'pointer'
+                          }}
+                        >
+                          <option value="">Επιλογή...</option>
+                          <option value={match.homeTeam}>{match.homeTeam}</option>
+                          <option value={match.awayTeam}>{match.awayTeam}</option>
+                        </select>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Match Action Buttons */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: '150px', justifyContent: 'flex-end' }}>
@@ -458,8 +524,8 @@ export default function Matches({ user }) {
                       onClick={() => submitPrediction(match.id)}
                       style={{ padding: '10px 16px', fontSize: '0.85rem' }}
                     >
-                      {submittingId === match.id ? '...' : 
-                       successId === match.id ? <Check size={16} /> : 'Υποβολή'}
+                      {submittingId === match.id ? '...' :
+                        successId === match.id ? <Check size={16} /> : 'Υποβολή'}
                     </button>
                   ) : (
                     <div style={{ display: 'flex', gap: '8px' }}>
@@ -509,28 +575,47 @@ export default function Matches({ user }) {
               )}
 
               {/* Points banner for finished matches */}
-              {finished && matchPred.savedHome !== null && (
-                <div style={{
-                  background: 'rgba(16,185,129,0.05)',
-                  borderTop: '1px solid rgba(16,185,129,0.15)',
-                  padding: '10px 24px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                    <span>Η πρόβλεψή σας: </span>
-                    <strong style={{ color: '#ffffff' }}>
-                      {matchPred.savedHome} - {matchPred.savedAway}
-                      {isKnockout && matchPred.savedQualifier && ` (Πρόκριση: ${matchPred.savedQualifier})`}
-                    </strong>
-                  </div>
+              {finished && (
+                matchPred.savedHome !== null && matchPred.savedHome !== undefined ? (
+                  <div style={{
+                    background: 'rgba(16,185,129,0.05)',
+                    borderTop: '1px solid rgba(16,185,129,0.15)',
+                    padding: '10px 24px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                      <span>Η πρόβλεψή σας: </span>
+                      <strong style={{ color: '#ffffff' }}>
+                        {matchPred.savedHome} - {matchPred.savedAway}
+                        {isKnockout && matchPred.savedQualifier && ` (Πρόκριση: ${matchPred.savedQualifier})`}
+                      </strong>
+                    </div>
 
-                  <div className="badge badge-finished" style={{ fontSize: '0.8rem', padding: '4px 10px', gap: '6px' }}>
-                    <Award size={14} />
-                    <span>+{matchPred.pointsEarned} Πόντοι</span>
+                    <div className="badge badge-finished" style={{ fontSize: '0.8rem', padding: '4px 10px', gap: '6px' }}>
+                      <Award size={14} />
+                      <span>+{matchPred.pointsEarned} ΠΟΝΤΟΙ</span>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div style={{
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    borderTop: '1px solid var(--border-color)',
+                    padding: '10px 24px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                      <span>Δεν υποβλήθηκε πρόβλεψη</span>
+                    </div>
+
+                    <div className="badge badge-scheduled" style={{ fontSize: '0.8rem', padding: '4px 10px' }}>
+                      <span>+0 Πόντοι</span>
+                    </div>
+                  </div>
+                )
               )}
 
               {/* Expanded Area: What others predicted */}
@@ -587,6 +672,26 @@ export default function Matches({ user }) {
           );
         })}
       </div>
+
+      {visibleCount < filteredMatches.length && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '28px', marginBottom: '16px' }}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => setVisibleCount(prev => prev + 15)}
+            style={{
+              padding: '12px 32px',
+              fontSize: '0.95rem',
+              background: 'rgba(255, 255, 255, 0.02)',
+              borderColor: 'rgba(255, 255, 255, 0.08)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
+          >
+            Φόρτωση Περισσότερων Αγώνων
+          </button>
+        </div>
+      )}
     </div>
   );
 }

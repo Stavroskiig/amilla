@@ -41,6 +41,13 @@ public class PredictionController {
         return ResponseEntity.ok(prediction);
     }
 
+    @GetMapping("/my")
+    public ResponseEntity<List<Prediction>> getMyPredictions() {
+        User user = getCurrentUser();
+        List<Prediction> predictions = submitPredictionUseCase.getPredictionsByUser(user.getId());
+        return ResponseEntity.ok(predictions);
+    }
+
     @GetMapping("/match/{matchId}")
     public ResponseEntity<Prediction> getMyPrediction(@PathVariable String matchId) {
         User user = getCurrentUser();
