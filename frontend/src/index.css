@@ -294,7 +294,76 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid rgba(99, 102, 241, 0.2);
   font-size: 0.85rem;
   color: #a5b4fc;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
 }
+
+.user-badge:hover {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Avatar Styles */
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.avatar-item {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-item:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--primary-glow);
+}
+
+.avatar-item.selected {
+  border-color: var(--primary);
+  background: rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 15px var(--primary-glow);
+  transform: scale(1.05);
+}
+
+.avatar-preview-lg {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(6,182,212,0.15) 100%);
+  border: 3px solid var(--primary);
+  box-shadow: var(--shadow-glow);
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+}
+
 
 /* Badge styles */
 .badge {

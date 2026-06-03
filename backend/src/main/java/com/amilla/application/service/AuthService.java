@@ -75,4 +75,11 @@ public class AuthService implements AuthenticationUseCase {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found!"));
     }
+
+    @Override
+    public User updateAvatar(String email, String avatar) {
+        User user = getUserByEmail(email);
+        user.setAvatar(avatar);
+        return userRepository.save(user);
+    }
 }

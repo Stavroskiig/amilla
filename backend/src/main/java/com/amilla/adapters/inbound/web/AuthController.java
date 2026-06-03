@@ -3,6 +3,7 @@ package com.amilla.adapters.inbound.web;
 import com.amilla.adapters.inbound.web.dto.AuthResponse;
 import com.amilla.adapters.inbound.web.dto.LoginRequest;
 import com.amilla.adapters.inbound.web.dto.RegisterRequest;
+import com.amilla.adapters.inbound.web.dto.AvatarUpdateRequest;
 import com.amilla.domain.model.User;
 import com.amilla.ports.inbound.AuthenticationUseCase;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,8 @@ public class AuthController {
                 user.getUsername(),
                 user.getEmail(),
                 user.getRole(),
-                user.getTotalPoints()
+                user.getTotalPoints(),
+                user.getAvatar()
         );
         return ResponseEntity.ok(response);
     }
@@ -47,5 +49,12 @@ public class AuthController {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = authenticationUseCase.getUserByEmail(email);
         return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/avatar")
+    public ResponseEntity<User> updateAvatar(@Validated @RequestBody AvatarUpdateRequest request) {
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User updatedUser = authenticationUseCase.updateAvatar(email, request.getAvatar());
+        return ResponseEntity.ok(updatedUser);
     }
 }

@@ -2,6 +2,7 @@ C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\AdminController.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\AuthController.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\AuthResponse.java
+C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\AvatarUpdateRequest.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\LoginRequest.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\LongTermRequest.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\MatchCreateRequest.java

@@ -22,4 +22,5 @@ public class User {
     private String passwordHash;
     private String role; // e.g., "ROLE_USER", "ROLE_ADMIN"
     private int totalPoints;
+    private String avatar;
 }

@@ -6,6 +6,7 @@ import Matches from './views/Matches';
 import Leaderboard from './views/Leaderboard';
 import LongTerm from './views/LongTerm';
 import Admin from './views/Admin';
+import Profile from './views/Profile';
 
 function AppContent({ user, setUser, onLogout }) {
   const location = useLocation();
@@ -31,6 +32,10 @@ function AppContent({ user, setUser, onLogout }) {
           <Route 
             path="/longterm" 
             element={user ? <LongTerm user={user} /> : <Navigate to="/auth" />} 
+          />
+          <Route 
+            path="/profile" 
+            element={user ? <Profile user={user} setUser={setUser} /> : <Navigate to="/auth" />} 
           />
           <Route 
             path="/admin" 

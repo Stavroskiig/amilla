@@ -2,6 +2,8 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Trophy, LogOut, Calendar, ShieldAlert, Award, Compass } from 'lucide-react';
 
+import { Avatar } from './Avatars';
+
 export default function Navbar({ user, onLogout }) {
   const navigate = useNavigate();
 
@@ -58,11 +60,11 @@ export default function Navbar({ user, onLogout }) {
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <div className="user-badge">
-          <Award size={16} />
+        <NavLink to="/profile" className="user-badge">
+          <Avatar id={user.avatar} size={20} />
           <span>{user.username}</span>
           <span style={{ fontWeight: 'bold', color: '#6366f1' }}>{user.totalPoints ?? 0} pts</span>
-        </div>
+        </NavLink>
 
         <button
           onClick={handleLogoutClick}

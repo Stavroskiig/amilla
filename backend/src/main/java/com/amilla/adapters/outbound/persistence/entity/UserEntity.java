@@ -34,4 +34,7 @@ public class UserEntity {
 
     @Column(name = "total_points", nullable = false)
     private int totalPoints;
+
+    @Column(name = "avatar")
+    private String avatar;
 }

@@ -10,6 +10,7 @@ com\amilla\application\service\AuthService.class
 com\amilla\adapters\outbound\persistence\entity\PredictionEntity$PredictionEntityBuilder.class
 com\amilla\adapters\outbound\persistence\UserPersistenceAdapter.class
 com\amilla\adapters\config\DomainConfig.class
+com\amilla\adapters\inbound\web\dto\AvatarUpdateRequest.class
 com\amilla\adapters\outbound\persistence\repository\UserJpaRepository.class
 com\amilla\adapters\outbound\persistence\LongTermPredictionPersistenceAdapter.class
 com\amilla\domain\model\Match$MatchBuilder.class

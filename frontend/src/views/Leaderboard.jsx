@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Trophy, Award, Search, Sparkles } from 'lucide-react';
+import { Avatar } from '../components/Avatars';
 
 export default function Leaderboard({ currentUser }) {
   const [users, setUsers] = useState([]);
@@ -128,7 +129,8 @@ export default function Leaderboard({ currentUser }) {
 
                       {/* Username */}
                       <td style={{ padding: '18px 24px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <Avatar id={user.avatar} size={28} />
                           <span style={{ fontSize: '1rem', color: isSelf ? '#ffffff' : 'var(--text-main)' }}>
                             {user.username}
                           </span>
