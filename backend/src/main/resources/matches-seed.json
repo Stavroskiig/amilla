@@ -25,7 +25,7 @@
     "homeTeam": "Ηνωμένες Πολιτείες Αμερικής",
     "awayTeam": "Παραγουάη",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-13T004:00:00+03:00"
+    "kickoffTime": "2026-06-13T04:00:00+03:00"
   },
   {
     "id": "wc26-05",
@@ -419,317 +419,309 @@
     "matchStage": "GROUP",
     "kickoffTime": "2026-06-26T05:00:00+03:00"
   },
-  ////
   {
     "id": "wc26-61",
-    "homeTeam": "Τουρκία",
-    "awayTeam": "Ηνωμένες Πολιτείες Αμερικής",
-    "matchStage": "GROUP",
-    "kickoffTime": "2026-06-26T15:00:00+03:00"
-  },
-  {
-    "id": "wc26-62",
     "homeTeam": "Νορβηγία",
     "awayTeam": "Γαλλία",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-26T15:00:00+03:00"
+    "kickoffTime": "2026-06-26T22:00:00+03:00"
   },
   {
-    "id": "wc26-63",
+    "id": "wc26-62",
     "homeTeam": "Σενεγάλη",
     "awayTeam": "Ιράκ",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-26T20:00:00+03:00"
+    "kickoffTime": "2026-06-26T22:00:00+03:00"
+  },
+  {
+    "id": "wc26-63",
+    "homeTeam": "Ουρουγουάη",
+    "awayTeam": "Ισπανία",
+    "matchStage": "GROUP",
+    "kickoffTime": "2026-06-27T03:00:00+03:00"
   },
   {
     "id": "wc26-64",
     "homeTeam": "Πράσινο Ακρωτήριο",
     "awayTeam": "Σαουδική Αραβία",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-26T20:00:00+03:00"
+    "kickoffTime": "2026-06-27T03:00:00+03:00"
   },
   {
     "id": "wc26-65",
-    "homeTeam": "Ουρουγουάη",
-    "awayTeam": "Ισπανία",
-    "matchStage": "GROUP",
-    "kickoffTime": "2026-06-26T23:00:00+03:00"
-  },
-  {
-    "id": "wc26-66",
     "homeTeam": "Αίγυπτος",
     "awayTeam": "Ιράν",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-26T23:00:00+03:00"
+    "kickoffTime": "2026-06-27T06:00:00+03:00"
   },
   {
-    "id": "wc26-67",
+    "id": "wc26-66",
     "homeTeam": "Νέα Ζηλανδία",
     "awayTeam": "Βέλγιο",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-27T17:00:00+03:00"
+    "kickoffTime": "2026-06-27T06:00:00+03:00"
   },
   {
-    "id": "wc26-68",
+    "id": "wc26-67",
     "homeTeam": "Κροατία",
     "awayTeam": "Γκάνα",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-27T17:00:00+03:00"
+    "kickoffTime": "2026-06-28T00:00:00+03:00"
   },
   {
-    "id": "wc26-69",
+    "id": "wc26-68",
     "homeTeam": "Παναμάς",
     "awayTeam": "Αγγλία",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-27T19:30:00+03:00"
+    "kickoffTime": "2026-06-28T02:00:00+03:00"
   },
   {
-    "id": "wc26-70",
+    "id": "wc26-69",
     "homeTeam": "Κολομβία",
     "awayTeam": "Πορτογαλία",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-27T19:30:00+03:00"
+    "kickoffTime": "2026-06-28T02:30:00+03:00"
   },
   {
-    "id": "wc26-71",
+    "id": "wc26-70",
     "homeTeam": "Λαϊκή Δημοκρατία του Κονγκό",
     "awayTeam": "Ουζμπεκιστάν",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-27T22:00:00+03:00"
+    "kickoffTime": "2026-06-28T02:30:00+03:00"
+  },
+  {
+    "id": "wc26-71",
+    "homeTeam": "Ιορδανία",
+    "awayTeam": "Αργεντινή",
+    "matchStage": "GROUP",
+    "kickoffTime": "2026-06-28T05:00:00+03:00"
   },
   {
     "id": "wc26-72",
     "homeTeam": "Αλγερία",
     "awayTeam": "Αυστρία",
     "matchStage": "GROUP",
-    "kickoffTime": "2026-06-27T22:00:00+03:00"
+    "kickoffTime": "2026-06-28T05:00:00+03:00"
   },
   {
     "id": "wc26-73",
-    "homeTeam": "Ιορδανία",
-    "awayTeam": "Αργεντινή",
-    "matchStage": "GROUP",
-    "kickoffTime": "2026-06-28T19:00:00+03:00"
-  },
-  {
-    "id": "wc26-74",
     "homeTeam": "Νικητής 2A",
     "awayTeam": "Νικητής 2B",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-06-28T15:00:00+03:00"
   },
   {
-    "id": "wc26-75",
+    "id": "wc26-74",
     "homeTeam": "Νικητής 1C",
     "awayTeam": "Νικητής 2F",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-06-29T15:00:00+03:00"
   },
   {
-    "id": "wc26-76",
+    "id": "wc26-75",
     "homeTeam": "Νικητής 1E",
     "awayTeam": "Νικητής 3ABCDF",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-06-29T18:00:00+03:00"
   },
   {
-    "id": "wc26-77",
+    "id": "wc26-76",
     "homeTeam": "Νικητής 1F",
     "awayTeam": "Νικητής 2C",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-06-29T21:00:00+03:00"
   },
   {
-    "id": "wc26-78",
+    "id": "wc26-77",
     "homeTeam": "Νικητής 1A",
     "awayTeam": "Νικητής 3CEFHI",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-06-30T17:00:00+03:00"
   },
   {
-    "id": "wc26-79",
+    "id": "wc26-78",
     "homeTeam": "Νικητής 1I",
     "awayTeam": "Νικητής 3CDFGH",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-06-30T20:00:00+03:00"
   },
   {
-    "id": "wc26-80",
+    "id": "wc26-79",
     "homeTeam": "Νικητής 1D",
     "awayTeam": "Νικητής 3BEFIJ",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-07-01T15:00:00+03:00"
   },
   {
-    "id": "wc26-81",
+    "id": "wc26-80",
     "homeTeam": "Νικητής 1G",
     "awayTeam": "Νικητής 3AEHIJ",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-07-01T16:00:00+03:00"
   },
   {
-    "id": "wc26-82",
+    "id": "wc26-81",
     "homeTeam": "Νικητής 1L",
     "awayTeam": "Νικητής 3EHIJK",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-07-01T19:00:00+03:00"
   },
   {
-    "id": "wc26-83",
+    "id": "wc26-82",
     "homeTeam": "Νικητής 1B",
     "awayTeam": "Νικητής 3EFGIJ",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-07-02T15:00:00+03:00"
   },
   {
-    "id": "wc26-84",
+    "id": "wc26-83",
     "homeTeam": "Νικητής 2K",
     "awayTeam": "Νικητής 2L",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-07-02T18:00:00+03:00"
   },
   {
-    "id": "wc26-85",
+    "id": "wc26-84",
     "homeTeam": "Νικητής 1H",
     "awayTeam": "Νικητής 2J",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-07-02T21:00:00+03:00"
   },
   {
-    "id": "wc26-86",
+    "id": "wc26-85",
     "homeTeam": "Νικητής 1J",
     "awayTeam": "Νικητής 2H",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-07-03T16:00:00+03:00"
   },
   {
-    "id": "wc26-87",
+    "id": "wc26-86",
     "homeTeam": "Νικητής 1K",
     "awayTeam": "Νικητής 3DEIJL",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-07-03T15:00:00+03:00"
   },
   {
-    "id": "wc26-88",
+    "id": "wc26-87",
     "homeTeam": "Νικητής 2D",
     "awayTeam": "Νικητής 2G",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-07-03T19:30:00+03:00"
   },
   {
-    "id": "wc26-89",
+    "id": "wc26-88",
     "homeTeam": "Νικητής 2C",
     "awayTeam": "Νικητής 2I",
     "matchStage": "ROUND_OF_32",
     "kickoffTime": "2026-07-03T23:00:00+03:00"
   },
   {
-    "id": "wc26-90",
+    "id": "wc26-89",
     "homeTeam": "Νικητής 74",
     "awayTeam": "Νικητής 77",
     "matchStage": "ROUND_OF_16",
     "kickoffTime": "2026-07-04T13:00:00+03:00"
   },
   {
-    "id": "wc26-91",
+    "id": "wc26-90",
     "homeTeam": "Νικητής 76",
     "awayTeam": "Νικητής 73",
     "matchStage": "ROUND_OF_16",
     "kickoffTime": "2026-07-04T17:00:00+03:00"
   },
   {
-    "id": "wc26-92",
+    "id": "wc26-91",
     "homeTeam": "Νικητής 78",
     "awayTeam": "Νικητής 88",
     "matchStage": "ROUND_OF_16",
     "kickoffTime": "2026-07-05T16:00:00+03:00"
   },
   {
-    "id": "wc26-93",
+    "id": "wc26-92",
     "homeTeam": "Νικητής 79",
     "awayTeam": "Νικητής 84",
     "matchStage": "ROUND_OF_16",
     "kickoffTime": "2026-07-05T20:00:00+03:00"
   },
   {
-    "id": "wc26-94",
+    "id": "wc26-93",
     "homeTeam": "Νικητής 81",
     "awayTeam": "Νικητής 82",
     "matchStage": "ROUND_OF_16",
     "kickoffTime": "2026-07-06T15:00:00+03:00"
   },
   {
-    "id": "wc26-95",
+    "id": "wc26-94",
     "homeTeam": "Νικητής 80",
     "awayTeam": "Νικητής 86",
     "matchStage": "ROUND_OF_16",
     "kickoffTime": "2026-07-06T20:00:00+03:00"
   },
   {
-    "id": "wc26-96",
+    "id": "wc26-95",
     "homeTeam": "Νικητής 85",
     "awayTeam": "Νικητής 87",
     "matchStage": "ROUND_OF_16",
     "kickoffTime": "2026-07-07T12:00:00+03:00"
   },
   {
-    "id": "wc26-97",
+    "id": "wc26-96",
     "homeTeam": "Νικητής 83",
     "awayTeam": "Νικητής 89",
     "matchStage": "ROUND_OF_16",
     "kickoffTime": "2026-07-07T16:00:00+03:00"
   },
   {
-    "id": "wc26-98",
+    "id": "wc26-97",
     "homeTeam": "Νικητής 90",
     "awayTeam": "Νικητής 91",
     "matchStage": "QUARTER_FINAL",
     "kickoffTime": "2026-07-09T19:00:00+03:00"
   },
   {
-    "id": "wc26-99",
+    "id": "wc26-98",
     "homeTeam": "Νικητής 92",
     "awayTeam": "Νικητής 93",
     "matchStage": "QUARTER_FINAL",
     "kickoffTime": "2026-07-10T15:00:00+03:00"
   },
   {
-    "id": "wc26-100",
+    "id": "wc26-99",
     "homeTeam": "Νικητής 94",
     "awayTeam": "Νικητής 95",
     "matchStage": "QUARTER_FINAL",
     "kickoffTime": "2026-07-11T17:00:00+03:00"
   },
   {
-    "id": "wc26-101",
+    "id": "wc26-100",
     "homeTeam": "Νικητής 96",
     "awayTeam": "Νικητής 97",
     "matchStage": "QUARTER_FINAL",
     "kickoffTime": "2026-07-11T21:00:00+03:00"
   },
   {
-    "id": "wc26-102",
+    "id": "wc26-101",
     "homeTeam": "Νικητής 98",
     "awayTeam": "Νικητής 99",
     "matchStage": "SEMI_FINAL",
     "kickoffTime": "2026-07-14T15:00:00+03:00"
   },
   {
-    "id": "wc26-103",
+    "id": "wc26-102",
     "homeTeam": "Νικητής 100",
     "awayTeam": "Νικητής 101",
     "matchStage": "SEMI_FINAL",
     "kickoffTime": "2026-07-15T15:00:00+03:00"
   },
   {
-    "id": "wc26-104",
+    "id": "wc26-103",
     "homeTeam": "Ηττημένος 102",
     "awayTeam": "Ηττημένος 103",
     "matchStage": "THIRD_PLACE",
     "kickoffTime": "2026-07-18T17:00:00+03:00"
   },
   {
-    "id": "wc26-105",
+    "id": "wc26-104",
     "homeTeam": "Νικητής 102",
     "awayTeam": "Νικητής 103",
     "matchStage": "FINAL",
