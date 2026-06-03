@@ -33,7 +33,7 @@ export default function Leaderboard({ currentUser }) {
     return { color: 'var(--text-muted)', icon: <Award size={18} /> };
   };
 
-  const filteredUsers = users.filter(user => 
+  const filteredUsers = users.filter(user =>
     user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -96,7 +96,7 @@ export default function Leaderboard({ currentUser }) {
                   const isSelf = currentUser && user.id === currentUser.id;
 
                   return (
-                    <tr 
+                    <tr
                       key={user.id}
                       style={{
                         borderBottom: '1px solid var(--border-color)',
@@ -157,7 +157,7 @@ export default function Leaderboard({ currentUser }) {
                           textTransform: 'uppercase',
                           letterSpacing: '0.05em'
                         }}>
-                          {user.role === 'ROLE_ADMIN' ? 'Admin' : 'Παίκτης'}
+                          {user.role === 'ROLE_ADMIN' ? 'Admin' : 'ΠΑΙΚΤΗΣ'}
                         </span>
                       </td>
 

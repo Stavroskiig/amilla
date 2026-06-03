@@ -9,6 +9,7 @@ import com.amilla.ports.inbound.SubmitPredictionUseCase;
 import com.amilla.ports.outbound.LongTermPredictionRepositoryPort;
 import com.amilla.ports.outbound.MatchRepositoryPort;
 import com.amilla.ports.outbound.PredictionRepositoryPort;
+import com.amilla.ports.outbound.UserRepositoryPort;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -25,16 +26,19 @@ public class PredictionService implements SubmitPredictionUseCase {
     private final PredictionRepositoryPort predictionRepository;
     private final LongTermPredictionRepositoryPort longTermPredictionRepository;
     private final PredictionDomainService predictionDomainService;
+    private final UserRepositoryPort userRepository;
 
     public PredictionService(
             MatchRepositoryPort matchRepository,
             PredictionRepositoryPort predictionRepository,
             LongTermPredictionRepositoryPort longTermPredictionRepository,
-            PredictionDomainService predictionDomainService) {
+            PredictionDomainService predictionDomainService,
+            UserRepositoryPort userRepository) {
         this.matchRepository = matchRepository;
         this.predictionRepository = predictionRepository;
         this.longTermPredictionRepository = longTermPredictionRepository;
         this.predictionDomainService = predictionDomainService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -101,7 +105,11 @@ public class PredictionService implements SubmitPredictionUseCase {
 
         predictionDomainService.validateOtherPredictionsVisibility(match, Instant.now());
 
-        return predictionRepository.findByMatchId(matchId);
+        List<Prediction> predictions = predictionRepository.findByMatchId(matchId);
+        for (Prediction p : predictions) {
+            userRepository.findById(p.getUserId()).ifPresent(user -> p.setUsername(user.getUsername()));
+        }
+        return predictions;
     }
 
     @Override

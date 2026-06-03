@@ -25,4 +25,5 @@ public class Prediction {
     private String predictedQualifier; // Only for Knockout stages
     private int pointsEarned;
     private Instant updatedAt;
+    private String username;
 }

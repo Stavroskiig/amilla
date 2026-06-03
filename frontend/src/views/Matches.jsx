@@ -142,6 +142,7 @@ export default function Matches({ user }) {
       });
       if (predsRes.ok) {
         const predsList = await predsRes.json();
+        console.log("Bulk predictions loaded successfully:", predsList);
         const predsData = {};
         predsList.forEach(pred => {
           predsData[pred.matchId] = {
@@ -155,6 +156,8 @@ export default function Matches({ user }) {
           };
         });
         setPredictions(predsData);
+      } else {
+        console.error("Bulk predictions request failed with status:", predsRes.status);
       }
     } catch (err) {
       console.error(err);
@@ -281,7 +284,7 @@ export default function Matches({ user }) {
     if (diffMs < 0) return 'Σε εξέλιξη / Live';
 
     const diffMins = Math.floor(diffMs / 60000);
-    if (diffMins < 5) return 'Κλειδώνει σε λιγότερο από 5 λεπτά!';
+    if (diffMins < 5) return 'Σέντρα σε λιγότερο από 5 λεπτά!';
 
     const hours = Math.floor(diffMins / 60);
     const mins = diffMins % 60;
@@ -626,7 +629,7 @@ export default function Matches({ user }) {
                   padding: '20px 24px'
                 }}>
                   <h4 style={{ fontSize: '0.9rem', marginBottom: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>
-                    ΠΡΟΒΛΕΨΕΙΣ ΑΛΛΩΝ ΧΡΗΣΤΩΝ (T-5 LOCK)
+                    ΠΡΟΒΛΕΨΕΙΣ ΑΛΛΩΝ ΧΡΗΣΤΩΝ
                   </h4>
                   {othersPredictions[match.id] && othersPredictions[match.id].length > 0 ? (
                     <div style={{
