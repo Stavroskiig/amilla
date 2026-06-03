@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Award, Check, AlertTriangle, Lock, HelpCircle } from 'lucide-react';
+import { Award, Check, AlertTriangle, Lock, HelpCircle, ChevronDown, Search, Zap } from 'lucide-react';
 
 const countryToFlagCode = {
   'Αίγυπτος': 'eg',
@@ -137,6 +137,61 @@ export default function LongTerm({ user }) {
   const [openingMatchTime, setOpeningMatchTime] = useState(null);
   const [groupStageEndTime, setGroupStageEndTime] = useState(null);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const dropdownRef = React.useRef(null);
+  const searchInputRef = React.useRef(null);
+
+  // Greek normalization utility for accent-insensitive search
+  const normalizeGreek = (text) => {
+    return text
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+  };
+
+  // Greek uppercase without accents utility
+  const uppercaseNoAccents = (text) => {
+    if (!text) return '';
+    return text
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toUpperCase();
+  };
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Focus search input when dropdown opens
+  useEffect(() => {
+    if (isOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isOpen]);
+
+  const handleSelectCountry = (country) => {
+    if (locked) return;
+    setChampionTeam(country);
+    setIsOpen(false);
+    setSearchQuery('');
+  };
+
+  const filteredCountries = COUNTRIES.filter((country) => {
+    const normalizedCountry = normalizeGreek(country);
+    const normalizedQuery = normalizeGreek(searchQuery);
+    return normalizedCountry.includes(normalizedQuery);
+  });
+
   useEffect(() => {
     fetchLongTermInfo();
   }, []);
@@ -144,7 +199,7 @@ export default function LongTerm({ user }) {
   const fetchLongTermInfo = async () => {
     try {
       const token = localStorage.getItem('token');
-      
+
       // 1. Fetch current user's long term prediction
       const predRes = await fetch('/api/predictions/longterm', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -173,7 +228,7 @@ export default function LongTerm({ user }) {
         if (knockouts.length > 0) {
           const groupEnd = new Date(Math.min(...knockouts.map(m => new Date(m.kickoffTime))));
           setGroupStageEndTime(groupEnd);
-          
+
           // Lock if current time is past groupEnd
           if (new Date() > groupEnd) {
             setLocked(true);
@@ -224,15 +279,45 @@ export default function LongTerm({ user }) {
 
   // Determine current bonus level info
   const getBonusText = () => {
-    if (!openingMatchTime) return '10 πόντοι (Early Bird) / 5 πόντοι (Κατά τη διάρκεια των ομίλων)';
+    // The list of matches is still loading or could not be retrieved from the server.
+    if (!openingMatchTime) {
+      return (
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
+          <HelpCircle size={16} style={{ color: '#ffffff' }} />
+          <span>10 πόντοι (Πρώιμη πρόβλεψη) / 5 πόντοι (Κατά τη διάρκεια των ομίλων)</span>
+        </span>
+      );
+    }
+
     const now = new Date();
+
+    // The current time is before the kickoff of the very first match of the tournament.
     if (now < openingMatchTime) {
-      return '🔥 Early Bird: Αν βρείτε τον πρωταθλητή τώρα, κερδίζετε 10 πόντους bonus!';
+      return (
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
+          <Zap size={16} style={{ color: '#ffffff' }} />
+          <span>Αν βρείτε τον πρωταθλητή τώρα, κερδίζετε και τους 10 πόντους!</span>
+        </span>
+      );
     }
+
+    // The current time is after the kickoff of the first match but before the kickoff of the first knockout match.
     if (groupStageEndTime && now < groupStageEndTime) {
-      return '⚠️ Group Stage Mode: Επιτρέπεται αλλαγή, αλλά με bonus 5 πόντους.';
+      return (
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
+          <AlertTriangle size={16} style={{ color: '#ffffff' }} />
+          <span>Επιτρέπεται αλλαγή, αλλά με κόστος 5 πόντους.</span>
+        </span>
+      );
     }
-    return '🔒 Κλειδωμένο: Οι προβλέψεις έχουν κλείσει.';
+
+    // The current time is after the kickoff of the first knockout match.
+    return (
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
+        <Lock size={16} style={{ color: '#ffffff' }} />
+        <span>Κλειδωμένο: Οι προβλέψεις έχουν κλείσει.</span>
+      </span>
+    );
   };
 
   return (
@@ -256,8 +341,8 @@ export default function LongTerm({ user }) {
         <p style={{ color: 'var(--text-muted)' }}>Ποια ομάδα θα σηκώσει το Παγκόσμιο Κύπελλο;</p>
       </div>
 
-      <div className="glass-card" style={{ padding: '32px' }}>
-        
+      <div className="glass-card" style={{ padding: '32px', overflow: 'visible' }}>
+
         {/* Rules info */}
         <div className="glass" style={{
           padding: '16px 20px',
@@ -314,42 +399,160 @@ export default function LongTerm({ user }) {
           <div style={{ textAlign: 'center', color: 'var(--text-muted)' }}>Φόρτωση στοιχείων...</div>
         ) : (
           <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <div className="form-group">
+            <div className="form-group" style={{ position: 'relative' }} ref={dropdownRef}>
               <label className="form-label">Η Πρόβλεψή σας</label>
-              <div style={{ display: 'flex', gap: '16px', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.1)', padding: '16px', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,255,255,0.03)' }}>
-                {renderFlag(championTeam) ? (
-                  <div style={{ transform: 'scale(1.5)', display: 'inline-block', padding: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    {renderFlag(championTeam)}
-                  </div>
-                ) : (
-                  <div style={{ width: '42px', height: '28px', background: 'rgba(255,255,255,0.03)', borderRadius: '4px', border: '1px dotted rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <HelpCircle size={16} style={{ color: 'var(--text-muted)' }} />
-                  </div>
+
+              <div
+                onClick={() => !locked && setIsOpen(!isOpen)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  background: 'rgba(15, 16, 26, 0.8)',
+                  border: isOpen ? '1px solid var(--primary)' : '1px solid var(--border-color)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '12px 16px',
+                  color: '#ffffff',
+                  cursor: locked ? 'not-allowed' : 'pointer',
+                  boxShadow: isOpen ? '0 0 0 3px rgba(99, 102, 241, 0.2)' : 'none',
+                  transition: 'all 0.2s ease',
+                  opacity: locked ? 0.7 : 1
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  {championTeam ? (
+                    <>
+                      {renderFlag(championTeam)}
+                      <span style={{ fontSize: '1.1rem', fontWeight: 700 }}>
+                        {uppercaseNoAccents(championTeam)}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <div style={{ width: '28px', height: '18px', background: 'rgba(255,255,255,0.03)', borderRadius: '3px', border: '1px dotted rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <HelpCircle size={12} style={{ color: 'var(--text-muted)' }} />
+                      </div>
+                      <span style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>
+                        Επιλέξτε ομάδα...
+                      </span>
+                    </>
+                  )}
+                </div>
+                {!locked && (
+                  <ChevronDown
+                    size={20}
+                    style={{
+                      color: 'var(--text-muted)',
+                      transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.2s ease'
+                    }}
+                  />
                 )}
-                <select
-                  disabled={locked}
-                  className="form-input"
-                  style={{
-                    fontSize: '1.2rem',
-                    fontWeight: 700,
-                    textAlign: 'center',
-                    background: 'rgba(10, 11, 16, 0.7)',
-                    color: '#ffffff',
-                    border: '1px solid var(--border-color)',
-                    padding: '12px',
-                    borderRadius: 'var(--radius-sm)',
-                    cursor: locked ? 'not-allowed' : 'pointer',
-                    flex: '1'
-                  }}
-                  value={championTeam}
-                  onChange={(e) => setChampionTeam(e.target.value)}
-                >
-                  <option value="">Επιλέξτε ομάδα...</option>
-                  {COUNTRIES.map(country => (
-                    <option key={country} value={country}>{country.toUpperCase()}</option>
-                  ))}
-                </select>
               </div>
+
+              {isOpen && !locked && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 'calc(100% + 8px)',
+                    left: 0,
+                    right: 0,
+                    zIndex: 50,
+                    borderRadius: 'var(--radius-md)',
+                    overflow: 'hidden',
+                    boxShadow: 'var(--shadow-lg)',
+                    background: '#161825',
+                    border: '1px solid var(--border-color)'
+                  }}
+                >
+                  {/* Search Input Box */}
+                  <div style={{
+                    padding: '8px',
+                    borderBottom: '1px solid var(--border-color)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    background: 'rgba(10, 11, 16, 0.4)'
+                  }}>
+                    <Search size={16} style={{ color: 'var(--text-muted)', marginLeft: '8px' }} />
+                    <input
+                      ref={searchInputRef}
+                      type="text"
+                      placeholder="Αναζήτηση χώρας..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        outline: 'none',
+                        color: '#ffffff',
+                        fontSize: '0.95rem',
+                        width: '100%',
+                        padding: '6px 4px'
+                      }}
+                    />
+                  </div>
+
+                  {/* Countries Scrollable List */}
+                  <div style={{ maxHeight: '240px', overflowY: 'auto' }}>
+                    {filteredCountries.length > 0 ? (
+                      filteredCountries.map((country) => {
+                        const isSelected = championTeam === country;
+                        return (
+                          <div
+                            key={country}
+                            onClick={() => handleSelectCountry(country)}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              padding: '10px 16px',
+                              cursor: 'pointer',
+                              background: isSelected
+                                ? 'rgba(99, 102, 241, 0.15)'
+                                : 'transparent',
+                              transition: 'background 0.15s ease'
+                            }}
+                            onMouseEnter={(e) => {
+                              if (!isSelected) {
+                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (!isSelected) {
+                                e.currentTarget.style.background = 'transparent';
+                              }
+                            }}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                              {renderFlag(country)}
+                              <span style={{
+                                fontSize: '0.95rem',
+                                fontWeight: isSelected ? 700 : 500,
+                                color: isSelected ? '#ffffff' : 'var(--text-main)'
+                              }}>
+                                {uppercaseNoAccents(country)}
+                              </span>
+                            </div>
+                            {isSelected && (
+                              <Check size={16} style={{ color: 'var(--primary)' }} />
+                            )}
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <div style={{
+                        padding: '20px',
+                        textAlign: 'center',
+                        color: 'var(--text-muted)',
+                        fontSize: '0.9rem'
+                      }}>
+                        Δεν βρέθηκαν αποτελέσματα
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Status indicators */}
@@ -369,7 +572,7 @@ export default function LongTerm({ user }) {
                   <span>Οι προβλέψεις κλείδωσαν οριστικά.</span>
                 </>
               ) : (
-                <span>{getBonusText()}</span>
+                getBonusText()
               )}
             </div>
 
@@ -391,7 +594,7 @@ export default function LongTerm({ user }) {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
                   <span>Τρέχουσα αποθηκευμένη πρόβλεψη: </span>
                   {renderFlag(savedChampionTeam)}
-                  <strong style={{ color: '#ffffff', textTransform: 'uppercase' }}>{savedChampionTeam}</strong>
+                  <strong style={{ color: '#ffffff' }}>{uppercaseNoAccents(savedChampionTeam)}</strong>
                 </div>
                 {submittedAt && (
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>

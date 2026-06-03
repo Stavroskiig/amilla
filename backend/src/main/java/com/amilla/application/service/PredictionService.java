@@ -76,14 +76,12 @@ public class PredictionService implements SubmitPredictionUseCase {
 
         predictionDomainService.validateLongTermPredictionAllowed(groupStageEnd, Instant.now());
 
-        LongTermPrediction prediction = longTermPredictionRepository.findByUserId(userId)
-                .orElse(LongTermPrediction.builder()
-                        .id(UUID.randomUUID())
-                        .userId(userId)
-                        .build());
-
-        prediction.setPredictedChampionTeam(championTeam);
-        prediction.setSubmittedAt(Instant.now());
+        LongTermPrediction prediction = LongTermPrediction.builder()
+                .id(UUID.randomUUID())
+                .userId(userId)
+                .predictedChampionTeam(championTeam)
+                .submittedAt(Instant.now())
+                .build();
 
         return longTermPredictionRepository.save(prediction);
     }

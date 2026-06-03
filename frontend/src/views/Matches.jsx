@@ -306,6 +306,14 @@ export default function Matches({ user }) {
     return true; // 'all'
   });
 
+  if (filterTab === 'past') {
+    filteredMatches.sort((a, b) => {
+      const timeA = a.kickoffTime ? new Date(a.kickoffTime).getTime() : 0;
+      const timeB = b.kickoffTime ? new Date(b.kickoffTime).getTime() : 0;
+      return timeB - timeA;
+    });
+  }
+
   return (
     <div className="animate-fade-in">
       <div style={{

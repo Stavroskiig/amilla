@@ -21,7 +21,7 @@ public class LongTermPredictionEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "user_id", nullable = false, unique = true)
+    @Column(name = "user_id", nullable = false)
     private UUID userId;
 
     @Column(name = "predicted_champion_team", nullable = false)

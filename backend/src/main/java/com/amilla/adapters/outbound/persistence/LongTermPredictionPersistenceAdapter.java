@@ -27,7 +27,7 @@ public class LongTermPredictionPersistenceAdapter implements LongTermPredictionR
 
     @Override
     public Optional<LongTermPrediction> findByUserId(UUID userId) {
-        return repository.findByUserId(userId).map(this::toDomain);
+        return repository.findFirstByUserIdOrderBySubmittedAtDesc(userId).map(this::toDomain);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class LongTermPredictionPersistenceAdapter implements LongTermPredictionR
 
     @Override
     public List<LongTermPrediction> findAll() {
-        return repository.findAll().stream()
+        return repository.findAllLatest().stream()
                 .map(this::toDomain)
                 .collect(Collectors.toList());
     }
