@@ -1,0 +1,1118 @@
+import React, { useState, useEffect } from 'react';
+import { Shield, RefreshCw, Calculator, Save, User as UserIcon, Calendar, Check, AlertCircle, Trash2, Plus, Upload, FileJson } from 'lucide-react';
+
+const countryToFlagCode = {
+  'Αίγυπτος': 'eg',
+  'Αγγλία': 'gb-eng',
+  'Ακτή Ελεφαντοστού': 'ci',
+  'Αλγερία': 'dz',
+  'Αργεντινή': 'ar',
+  'Αυστρία': 'at',
+  'Αυστραλία': 'au',
+  'Αϊτή': 'ht',
+  'Βέλγιο': 'be',
+  'Βοσνία και Ερζεγοβίνη': 'ba',
+  'Βραζιλία': 'br',
+  'Γαλλία': 'fr',
+  'Γερμανία': 'de',
+  'Γκάνα': 'gh',
+  'Ελβετία': 'ch',
+  'Ηνωμένες Πολιτείες Αμερικής': 'us',
+  'Ιαπωνία': 'jp',
+  'Ιορδανία': 'jo',
+  'Ιράκ': 'iq',
+  'Ιράν': 'ir',
+  'Ισημερινός': 'ec',
+  'Ισπανία': 'es',
+  'Καναδάς': 'ca',
+  'Κατάρ': 'qa',
+  'Κολομβία': 'co',
+  'Κουρασάο': 'cw',
+  'Κροατία': 'hr',
+  'Λαϊκή Δημοκρατία του Κονγκό': 'cd',
+  'Μαρόκο': 'ma',
+  'Μεξικό': 'mx',
+  'Νέα Ζηλανδία': 'nz',
+  'Νορβηγία': 'no',
+  'Νότια Αφρική': 'za',
+  'Νότια Κορέα': 'kr',
+  'Ολλανδία': 'nl',
+  'Ουζμπεκιστάν': 'uz',
+  'Ουρουγουάη': 'uy',
+  'Παναμάς': 'pa',
+  'Παραγουάη': 'py',
+  'Πορτογαλία': 'pt',
+  'Πράσινο Ακρωτήριο': 'cv',
+  'Σαουδική Αραβία': 'sa',
+  'Σενεγάλη': 'sn',
+  'Σκωτία': 'gb-sct',
+  'Σουηδία': 'se',
+  'Τουρκία': 'tr',
+  'Τσεχία': 'cz',
+  'Τυνησία': 'tn'
+};
+
+const renderFlag = (teamName) => {
+  const code = countryToFlagCode[teamName];
+  if (!code) return null;
+  return (
+    <img
+      src={`https://flagcdn.com/w40/${code}.png`}
+      srcSet={`https://flagcdn.com/w80/${code}.png 2x`}
+      alt={teamName}
+      style={{
+        width: '24px',
+        height: '16px',
+        objectFit: 'cover',
+        borderRadius: '2px',
+        border: '1px solid rgba(255,255,255,0.15)',
+        verticalAlign: 'middle',
+        flexShrink: 0
+      }}
+    />
+  );
+};
+
+const getStageLabel = (stage) => {
+  switch (stage) {
+    case 'GROUP': return 'ΦΑΣΗ ΟΜΙΛΩΝ';
+    case 'ROUND_OF_32': return 'ΦΑΣΗ ΤΩΝ 32';
+    case 'ROUND_OF_16': return 'ΦΑΣΗ ΤΩΝ 16';
+    case 'QUARTER_FINAL':
+    case 'QUARTERS':
+      return 'ΠΡΟΗΜΙΤΕΛΙΚΟΣ';
+    case 'SEMI_FINAL':
+    case 'SEMIS':
+      return 'ΗΜΙΤΕΛΙΚΟΣ';
+    case 'THIRD_PLACE': return 'ΜΙΚΡΟΣ ΤΕΛΙΚΟΣ';
+    case 'FINAL': return 'ΤΕΛΙΚΟΣ';
+    default: return stage || '';
+  }
+};
+
+const COUNTRIES = [
+  'Αγγλία',
+  'Αίγυπτος',
+  'Αϊτή',
+  'Ακτή Ελεφαντοστού',
+  'Αλγερία',
+  'Αργεντινή',
+  'Αυστραλία',
+  'Αυστρία',
+  'Βέλγιο',
+  'Βοσνία και Ερζεγοβίνη',
+  'Βραζιλία',
+  'Γαλλία',
+  'Γερμανία',
+  'Γκάνα',
+  'Ελβετία',
+  'Ηνωμένες Πολιτείες Αμερικής',
+  'Ιαπωνία',
+  'Ιορδανία',
+  'Ιράκ',
+  'Ιράν',
+  'Ισημερινός',
+  'Ισπανία',
+  'Καναδάς',
+  'Κατάρ',
+  'Κολομβία',
+  'Κουρασάο',
+  'Κροατία',
+  'Λαϊκή Δημοκρατία του Κονγκό',
+  'Μαρόκο',
+  'Μεξικό',
+  'Νέα Ζηλανδία',
+  'Νορβηγία',
+  'Νότια Αφρική',
+  'Νότια Κορέα',
+  'Ολλανδία',
+  'Ουζμπεκιστάν',
+  'Ουρουγουάη',
+  'Παναμάς',
+  'Παραγουάη',
+  'Πορτογαλία',
+  'Πράσινο Ακρωτήριο',
+  'Σαουδική Αραβία',
+  'Σενεγάλη',
+  'Σκωτία',
+  'Σουηδία',
+  'Τουρκία',
+  'Τσεχία',
+  'Τυνησία'
+];
+
+const KNOCKOUT_PLACEHOLDERS = [
+  'Νικητής Ομίλου Α', 'Δεύτερος Ομίλου Α',
+  'Νικητής Ομίλου Β', 'Δεύτερος Ομίλου Β',
+  'Νικητής Ομίλου Γ', 'Δεύτερος Ομίλου Γ',
+  'Νικητής Ομίλου Δ', 'Δεύτερος Ομίλου Δ',
+  'Νικητής Ομίλου Ε', 'Δεύτερος Ομίλου Ε',
+  'Νικητής Ομίλου ΣΤ', 'Δεύτερος Ομίλου ΣΤ',
+  'Νικητής Ομίλου Ζ', 'Δεύτερος Ομίλου Ζ',
+  'Νικητής Ομίλου Η', 'Δεύτερος Ομίλου Η',
+  'Νικητής Match 1', 'Νικητής Match 2',
+  'Νικητής Match 3', 'Νικητής Match 4',
+  'Νικητής Match 5', 'Νικητής Match 6',
+  'Νικητής Match 7', 'Νικητής Match 8',
+  'Νικητής Προημιτελικού 1', 'Νικητής Προημιτελικού 2',
+  'Νικητής Προημιτελικού 3', 'Νικητής Προημιτελικού 4',
+  'Νικητής Ημιτελικού 1', 'Νικητής Ημιτελικού 2'
+];
+
+export default function Admin() {
+  const [matches, setMatches] = useState([]);
+  const [users, setUsers] = useState([]);
+  
+  // Scoring state
+  const [matchScores, setMatchScores] = useState({});
+  const [syncing, setSyncing] = useState(false);
+  const [recalculating, setRecalculating] = useState(false);
+  const [savingMatchId, setSavingMatchId] = useState(null);
+
+  // Override state
+  const [selectedUserId, setSelectedUserId] = useState('');
+  const [selectedMatchId, setSelectedMatchId] = useState('');
+  const [overrideHome, setOverrideHome] = useState('');
+  const [overrideAway, setOverrideAway] = useState('');
+  const [overrideQualifier, setOverrideQualifier] = useState('');
+  const [overrideSubmitting, setOverrideSubmitting] = useState(false);
+  const [overrideSuccess, setOverrideSuccess] = useState(false);
+  const [overrideError, setOverrideError] = useState('');
+
+  // Single manual match state
+  const [singleHomeTeamSelect, setSingleHomeTeamSelect] = useState('');
+  const [singleHomeTeamCustom, setSingleHomeTeamCustom] = useState('');
+  const [singleAwayTeamSelect, setSingleAwayTeamSelect] = useState('');
+  const [singleAwayTeamCustom, setSingleAwayTeamCustom] = useState('');
+  const [singleStage, setSingleStage] = useState('GROUP');
+  const [singleKickoff, setSingleKickoff] = useState('');
+  const [singleMatchId, setSingleMatchId] = useState('');
+  const [singleSubmitting, setSingleSubmitting] = useState(false);
+  const [singleSuccess, setSingleSuccess] = useState(false);
+  const [singleError, setSingleError] = useState('');
+
+  // Bulk JSON state
+  const [jsonText, setJsonText] = useState('');
+  const [jsonSubmitting, setJsonSubmitting] = useState(false);
+  const [jsonSuccess, setJsonSuccess] = useState(false);
+  const [jsonError, setJsonError] = useState('');
+  const [clearing, setClearing] = useState(false);
+
+  useEffect(() => {
+    fetchAdminData();
+  }, []);
+
+  const handleClearAllMatches = async () => {
+    if (!window.confirm('⚠️ ΠΡΟΣΟΧΗ! Αυτό θα διαγράψει ΟΛΟΥΣ τους αγώνες και ΟΛΕΣ τις προβλέψεις των παικτών. Θέλετε σίγουρα να συνεχίσετε;')) {
+      return;
+    }
+    setClearing(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('/api/admin/matches', {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        alert('Όλοι οι αγώνες και οι προβλέψεις διαγράφηκαν επιτυχώς!');
+        fetchAdminData();
+      } else {
+        alert('Σφάλμα κατά τη διαγραφή των αγώνων');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Προέκυψε σφάλμα επικοινωνίας');
+    } finally {
+      setClearing(false);
+    }
+  };
+
+  const handleDeleteMatch = async (matchId) => {
+    if (!window.confirm('Θέλετε σίγουρα να διαγράψετε αυτόν τον αγώνα και όλες τις προβλέψεις του;')) {
+      return;
+    }
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`/api/admin/matches/${matchId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        alert('Ο αγώνας διαγράφηκε επιτυχώς!');
+        fetchAdminData();
+      } else {
+        alert('Σφάλμα κατά τη διαγραφή του αγώνα');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Προέκυψε σφάλμα επικοινωνίας');
+    }
+  };
+
+  const handleSingleMatchSubmit = async (e) => {
+    e.preventDefault();
+    const finalHomeTeam = singleHomeTeamSelect === 'CUSTOM' ? singleHomeTeamCustom.trim() : singleHomeTeamSelect;
+    const finalAwayTeam = singleAwayTeamSelect === 'CUSTOM' ? singleAwayTeamCustom.trim() : singleAwayTeamSelect;
+
+    if (!finalHomeTeam || !finalAwayTeam || !singleKickoff) {
+      setSingleError('Παρακαλώ συμπληρώστε τα υποχρεωτικά πεδία (Γηπεδούχος, Φιλοξενούμενος, Ημερομηνία & Ώρα)');
+      return;
+    }
+
+    setSingleSubmitting(true);
+    setSingleError('');
+    setSingleSuccess(false);
+
+    try {
+      const token = localStorage.getItem('token');
+      let kickoffTimeStr = singleKickoff;
+      if (!kickoffTimeStr.includes('Z') && !/[-+]\d{2}(:?\d{2})?$/.test(kickoffTimeStr)) {
+        kickoffTimeStr += '+03:00';
+      }
+      const kickoffTime = new Date(kickoffTimeStr).toISOString();
+      const res = await fetch('/api/admin/matches', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          id: singleMatchId.trim() || null,
+          homeTeam: finalHomeTeam,
+          awayTeam: finalAwayTeam,
+          matchStage: singleStage,
+          kickoffTime: kickoffTime
+        })
+      });
+
+      if (res.ok) {
+        setSingleSuccess(true);
+        setSingleHomeTeamSelect('');
+        setSingleHomeTeamCustom('');
+        setSingleAwayTeamSelect('');
+        setSingleAwayTeamCustom('');
+        setSingleMatchId('');
+        setSingleKickoff('');
+        fetchAdminData();
+        setTimeout(() => setSingleSuccess(false), 3000);
+      } else {
+        const err = await res.json();
+        throw new Error(err.error || 'Σφάλμα κατά τη δημιουργία αγώνα');
+      }
+    } catch (err) {
+      setSingleError(err.message);
+    } finally {
+      setSingleSubmitting(false);
+    }
+  };
+
+  const handleJsonImportSubmit = async (e) => {
+    e.preventDefault();
+    if (!jsonText.trim()) return;
+
+    setJsonSubmitting(true);
+    setJsonError('');
+    setJsonSuccess(false);
+
+    try {
+      let parsed;
+      try {
+        parsed = JSON.parse(jsonText);
+      } catch (err) {
+        throw new Error('Μη έγκυρη μορφή JSON: ' + err.message);
+      }
+
+      if (!Array.isArray(parsed)) {
+        throw new Error('Το JSON πρέπει να είναι ένας πίνακας (array) από αγώνες.');
+      }
+
+      const matchesData = parsed.map((m, idx) => {
+        if (!m.homeTeam || !m.awayTeam || !m.matchStage || !m.kickoffTime) {
+          throw new Error(`Το αντικείμενο στη θέση ${idx} δεν έχει όλα τα απαραίτητα πεδία (homeTeam, awayTeam, matchStage, kickoffTime)`);
+        }
+        return {
+          id: m.id ? String(m.id).trim() : null,
+          homeTeam: String(m.homeTeam).trim(),
+          awayTeam: String(m.awayTeam).trim(),
+          matchStage: String(m.matchStage).trim(),
+          kickoffTime: (() => {
+            let kt = String(m.kickoffTime).trim();
+            if (!kt.endsWith('Z') && !/[-+]\d{2}(:?\d{2})?$/.test(kt)) {
+              kt += '+03:00';
+            }
+            return new Date(kt).toISOString();
+          })()
+        };
+      });
+
+      const token = localStorage.getItem('token');
+      const res = await fetch('/api/admin/matches/bulk', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(matchesData)
+      });
+
+      if (res.ok) {
+        setJsonSuccess(true);
+        setJsonText('');
+        fetchAdminData();
+        setTimeout(() => setJsonSuccess(false), 3000);
+      } else {
+        const err = await res.json();
+        throw new Error(err.error || 'Σφάλμα κατά την bulk εισαγωγή');
+      }
+    } catch (err) {
+      setJsonError(err.message);
+    } finally {
+      setJsonSubmitting(false);
+    }
+  };
+
+  const handleJsonFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setJsonText(event.target.result);
+    };
+    reader.onerror = () => {
+      setJsonError('Σφάλμα κατά την ανάγνωση του αρχείου.');
+    };
+    reader.readAsText(file);
+    // Clear input so same file can be uploaded again
+    e.target.value = null;
+  };
+
+  const fetchAdminData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      
+      // 1. Fetch matches
+      const matchRes = await fetch('/api/matches', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const matchesData = await matchRes.json();
+      if (matchRes.ok) {
+        setMatches(matchesData);
+        // Pre-fill score states
+        const scores = {};
+        matchesData.forEach(m => {
+          scores[m.id] = {
+            home: m.homeScore90 !== null ? m.homeScore90 : '',
+            away: m.awayScore90 !== null ? m.awayScore90 : '',
+            qualifier: m.qualifiedTeam || '',
+            status: m.status
+          };
+        });
+        setMatchScores(scores);
+      }
+
+      // 2. Fetch users for override dropdown
+      const userRes = await fetch('/api/admin/users', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const usersData = await userRes.json();
+      if (userRes.ok) {
+        setUsers(usersData);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleSeed = async () => {
+    setSyncing(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('/api/admin/matches/seed', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        alert('Η εισαγωγή από matches-seed.json ολοκληρώθηκε επιτυχώς!');
+        fetchAdminData();
+      } else {
+        alert('Σφάλμα κατά την εισαγωγή (σημείωση: η εισαγωγή γίνεται μόνο αν η βάση είναι άδεια)');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Προέκυψε σφάλμα επικοινωνίας');
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  const handleRecalculate = async () => {
+    setRecalculating(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('/api/admin/points/recalculate', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        alert('Υπολογισμός πόντων ολοκληρώθηκε!');
+      } else {
+        alert('Σφάλμα υπολογισμού');
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setRecalculating(false);
+    }
+  };
+
+  const handleScoreChange = (matchId, field, val) => {
+    setMatchScores(prev => ({
+      ...prev,
+      [matchId]: {
+        ...prev[matchId],
+        [field]: val
+      }
+    }));
+  };
+
+  const saveScore = async (matchId) => {
+    setSavingMatchId(matchId);
+    const score = matchScores[matchId];
+    const cleanHome = score.home === '' ? null : parseInt(score.home);
+    const cleanAway = score.away === '' ? null : parseInt(score.away);
+    const cleanQual = score.qualifier || null;
+
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`/api/admin/matches/${matchId}/score`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          homeScore: cleanHome,
+          awayScore: cleanAway,
+          qualifiedTeam: cleanQual,
+          status: score.status
+        })
+      });
+
+      if (res.ok) {
+        alert('Το σκορ αποθηκεύτηκε και οι πόντοι υπολογίστηκαν!');
+        fetchAdminData();
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Σφάλμα αποθήκευσης');
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSavingMatchId(null);
+    }
+  };
+
+  const handleOverrideSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedUserId || !selectedMatchId) return;
+
+    setOverrideSubmitting(true);
+    setOverrideError('');
+    setOverrideSuccess(false);
+
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('/api/admin/predictions/override', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          userId: selectedUserId,
+          matchId: selectedMatchId,
+          homeScore: parseInt(overrideHome) || 0,
+          awayScore: parseInt(overrideAway) || 0,
+          qualifier: overrideQualifier || null
+        })
+      });
+
+      if (res.ok) {
+        setOverrideSuccess(true);
+        // Clear fields
+        setOverrideHome('');
+        setOverrideAway('');
+        setOverrideQualifier('');
+        setTimeout(() => setOverrideSuccess(false), 3000);
+      } else {
+        const err = await res.json();
+        throw new Error(err.error || 'Σφάλμα override');
+      }
+    } catch (err) {
+      setOverrideError(err.message);
+    } finally {
+      setOverrideSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="animate-fade-in">
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
+        <Shield size={32} className="text-indigo-400" />
+        <div>
+          <h1 style={{ fontSize: '2.2rem', fontWeight: 800 }}>Admin Dashboard</h1>
+          <p style={{ color: 'var(--text-muted)' }}>Διαχείριση αγώνων, αποτελεσμάτων και overrides.</p>
+        </div>
+      </div>
+
+      {/* Global Actions */}
+      <div className="glass-card" style={{ padding: '24px', marginBottom: '32px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+        <button className="btn btn-primary" onClick={handleSeed} disabled={syncing}>
+          <RefreshCw size={18} className={syncing ? 'animate-spin' : ''} />
+          <span>{syncing ? 'Εισαγωγή...' : 'Εισαγωγή από matches-seed.json'}</span>
+        </button>
+
+        <button className="btn btn-secondary" onClick={handleRecalculate} disabled={recalculating}>
+          <Calculator size={18} />
+          <span>{recalculating ? 'Υπολογισμός...' : 'Επανυπολογισμός Πόντων (Scratch)'}</span>
+        </button>
+
+        <button 
+          className="btn btn-secondary" 
+          onClick={handleClearAllMatches} 
+          disabled={clearing} 
+          style={{ borderColor: 'rgba(239, 68, 68, 0.3)', color: '#ef4444', marginLeft: 'auto' }}
+        >
+          <Trash2 size={18} />
+          <span>{clearing ? 'Διαγραφή...' : 'Καθαρισμός Αγώνων'}</span>
+        </button>
+      </div>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))',
+        gap: '32px',
+        alignItems: 'start'
+      }}>
+        {/* Left Column: Match Scoring Panel */}
+        <div className="glass-card" style={{ padding: '24px' }}>
+          <h2 style={{ fontSize: '1.4rem', marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
+            Αποτελέσματα Αγώνων
+          </h2>
+          {matches.length === 0 ? (
+            <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '20px 0' }}>Δεν υπάρχουν αγώνες. Προσθέστε αγώνες χειροκίνητα ή μέσω JSON.</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {matches.map(match => {
+                const score = matchScores[match.id] || { home: '', away: '', qualifier: '', status: 'SCHEDULED' };
+                const isKnockout = match.matchStage !== 'GROUP';
+
+                return (
+                  <div key={match.id} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '16px',
+                    paddingBottom: '16px',
+                    borderBottom: '1px solid var(--border-color)'
+                  }}>
+                    <div style={{ flex: '1', minWidth: '200px' }}>
+                      <div style={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                        {renderFlag(match.homeTeam)}
+                        <span>{match.homeTeam}</span>
+                        <span style={{ color: 'var(--text-muted)', fontWeight: 'normal' }}>vs</span>
+                        {renderFlag(match.awayTeam)}
+                        <span>{match.awayTeam}</span>
+                      </div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                        {getStageLabel(match.matchStage)} • {new Date(match.kickoffTime).toLocaleString('el-GR', { timeZone: 'Europe/Athens' })}
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                      {/* Score entry */}
+                      <input
+                        type="number"
+                        className="score-box"
+                        value={score.home}
+                        onChange={(e) => handleScoreChange(match.id, 'home', e.target.value)}
+                      />
+                      <span>-</span>
+                      <input
+                        type="number"
+                        className="score-box"
+                        value={score.away}
+                        onChange={(e) => handleScoreChange(match.id, 'away', e.target.value)}
+                      />
+
+                      {/* Qualifier dropdown for knockouts */}
+                      {isKnockout && (
+                        <select
+                          value={score.qualifier}
+                          onChange={(e) => handleScoreChange(match.id, 'qualifier', e.target.value)}
+                          style={{
+                            background: 'rgba(10, 11, 16, 0.7)',
+                            border: '1px solid var(--border-color)',
+                            color: '#ffffff',
+                            padding: '10px',
+                            borderRadius: 'var(--radius-sm)'
+                          }}
+                        >
+                          <option value="">Πρόκριση...</option>
+                          <option value={match.homeTeam}>{match.homeTeam}</option>
+                          <option value={match.awayTeam}>{match.awayTeam}</option>
+                        </select>
+                      )}
+
+                      {/* Status dropdown */}
+                      <select
+                        value={score.status}
+                        onChange={(e) => handleScoreChange(match.id, 'status', e.target.value)}
+                        style={{
+                          background: 'rgba(10, 11, 16, 0.7)',
+                          border: '1px solid var(--border-color)',
+                          color: '#ffffff',
+                          padding: '10px',
+                          borderRadius: 'var(--radius-sm)'
+                        }}
+                      >
+                        <option value="SCHEDULED">SCHEDULED</option>
+                        <option value="LIVE">LIVE</option>
+                        <option value="FINISHED">FINISHED</option>
+                      </select>
+
+                      <button
+                        className="btn btn-primary"
+                        disabled={savingMatchId === match.id}
+                        onClick={() => saveScore(match.id)}
+                        style={{ padding: '10px', minWidth: '40px' }}
+                        title="Αποθήκευση Σκορ"
+                      >
+                        <Save size={16} />
+                      </button>
+
+                      <button
+                        className="btn btn-secondary"
+                        onClick={() => handleDeleteMatch(match.id)}
+                        style={{ padding: '10px', minWidth: '40px', borderColor: 'rgba(239, 68, 68, 0.25)', color: '#ef4444' }}
+                        title="Διαγραφή Αγώνα"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Right Column: Creation & Override Tools */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+          
+          {/* Section: Create Single Match */}
+          <div className="glass-card" style={{ padding: '24px' }}>
+            <h2 style={{ fontSize: '1.4rem', marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
+              Προσθήκη Νέου Αγώνα
+            </h2>
+
+            {singleSuccess && (
+              <div className="glass" style={{
+                padding: '12px 16px',
+                borderRadius: 'var(--radius-sm)',
+                borderLeft: '4px solid var(--success)',
+                background: 'rgba(16, 185, 129, 0.08)',
+                color: '#a7f3d0',
+                fontSize: '0.85rem',
+                marginBottom: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <Check size={16} />
+                <span>Ο αγώνας προστέθηκε επιτυχώς!</span>
+              </div>
+            )}
+
+            {singleError && (
+              <div className="glass" style={{
+                padding: '12px 16px',
+                borderRadius: 'var(--radius-sm)',
+                borderLeft: '4px solid var(--danger)',
+                background: 'rgba(239, 68, 68, 0.08)',
+                color: '#fca5a5',
+                fontSize: '0.85rem',
+                marginBottom: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <AlertCircle size={16} />
+                <span>{singleError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSingleMatchSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                <div className="form-group" style={{ flex: '1', minWidth: '150px' }}>
+                  <label className="form-label">Γηπεδούχος *</label>
+                  <select
+                    className="form-input"
+                    value={singleHomeTeamSelect}
+                    onChange={(e) => setSingleHomeTeamSelect(e.target.value)}
+                    style={{ background: 'rgba(10, 11, 16, 0.7)' }}
+                  >
+                    <option value="">Επιλέξτε ομάδα...</option>
+                    {COUNTRIES.map(c => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                    <optgroup label="Φάση Νοκ-Άουτ">
+                      {KNOCKOUT_PLACEHOLDERS.map(p => (
+                        <option key={p} value={p}>{p}</option>
+                      ))}
+                    </optgroup>
+                    <option value="CUSTOM">✍️ Άλλη ομάδα (Χειροκίνητα)...</option>
+                  </select>
+                  {singleHomeTeamSelect === 'CUSTOM' && (
+                    <input
+                      type="text"
+                      required
+                      placeholder="Όνομα ομάδας..."
+                      className="form-input"
+                      style={{ marginTop: '8px' }}
+                      value={singleHomeTeamCustom}
+                      onChange={(e) => setSingleHomeTeamCustom(e.target.value)}
+                    />
+                  )}
+                </div>
+                <div className="form-group" style={{ flex: '1', minWidth: '150px' }}>
+                  <label className="form-label">Φιλοξενούμενος *</label>
+                  <select
+                    className="form-input"
+                    value={singleAwayTeamSelect}
+                    onChange={(e) => setSingleAwayTeamSelect(e.target.value)}
+                    style={{ background: 'rgba(10, 11, 16, 0.7)' }}
+                  >
+                    <option value="">Επιλέξτε ομάδα...</option>
+                    {COUNTRIES.map(c => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                    <optgroup label="Φάση Νοκ-Άουτ">
+                      {KNOCKOUT_PLACEHOLDERS.map(p => (
+                        <option key={p} value={p}>{p}</option>
+                      ))}
+                    </optgroup>
+                    <option value="CUSTOM">✍️ Άλλη ομάδα (Χειροκίνητα)...</option>
+                  </select>
+                  {singleAwayTeamSelect === 'CUSTOM' && (
+                    <input
+                      type="text"
+                      required
+                      placeholder="Όνομα ομάδας..."
+                      className="form-input"
+                      style={{ marginTop: '8px' }}
+                      value={singleAwayTeamCustom}
+                      onChange={(e) => setSingleAwayTeamCustom(e.target.value)}
+                    />
+                  )}
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                <div className="form-group" style={{ flex: '1', minWidth: '150px' }}>
+                  <label className="form-label">Φάση Διοργάνωσης</label>
+                  <select
+                    className="form-input"
+                    value={singleStage}
+                    onChange={(e) => setSingleStage(e.target.value)}
+                    style={{ background: 'rgba(10, 11, 16, 0.7)' }}
+                  >
+                    <option value="GROUP">ΦΑΣΗ ΟΜΙΛΩΝ (GROUP)</option>
+                    <option value="ROUND_OF_32">ΦΑΣΗ ΤΩΝ 32 (ROUND_OF_32)</option>
+                    <option value="ROUND_OF_16">ΦΑΣΗ ΤΩΝ 16 (ROUND_OF_16)</option>
+                    <option value="QUARTER_FINAL">ΠΡΟΗΜΙΤΕΛΙΚΟΣ (QUARTER_FINAL)</option>
+                    <option value="SEMI_FINAL">ΗΜΙΤΕΛΙΚΟΣ (SEMI_FINAL)</option>
+                    <option value="THIRD_PLACE">ΜΙΚΡΟΣ ΤΕΛΙΚΟΣ (THIRD_PLACE)</option>
+                    <option value="FINAL">ΤΕΛΙΚΟΣ (FINAL)</option>
+                  </select>
+                </div>
+
+                <div className="form-group" style={{ flex: '1', minWidth: '150px' }}>
+                  <label className="form-label">Κωδικός ID (Προαιρετικό)</label>
+                  <input
+                    type="text"
+                    placeholder="π.χ. match-1"
+                    className="form-input"
+                    value={singleMatchId}
+                    onChange={(e) => setSingleMatchId(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Ημερομηνία & Ώρα Σέντρας *</label>
+                <input
+                  type="datetime-local"
+                  required
+                  className="form-input"
+                  value={singleKickoff}
+                  onChange={(e) => setSingleKickoff(e.target.value)}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={singleSubmitting}
+                className="btn btn-primary"
+                style={{ alignSelf: 'flex-start', marginTop: '8px' }}
+              >
+                <Plus size={18} />
+                <span>{singleSubmitting ? 'Προσθήκη...' : 'Προσθήκη Αγώνα'}</span>
+              </button>
+            </form>
+          </div>
+
+          {/* Section: Bulk Import Matches JSON */}
+          <div className="glass-card" style={{ padding: '24px' }}>
+            <h2 style={{ fontSize: '1.4rem', marginBottom: '10px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
+              Bulk Εισαγωγή Schedule (JSON)
+            </h2>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '16px' }}>
+              Ανεβάστε αρχείο JSON ή επικολλήστε το schedule της διοργανώσης.
+            </p>
+
+            {jsonSuccess && (
+              <div className="glass" style={{
+                padding: '12px 16px',
+                borderRadius: 'var(--radius-sm)',
+                borderLeft: '4px solid var(--success)',
+                background: 'rgba(16, 185, 129, 0.08)',
+                color: '#a7f3d0',
+                fontSize: '0.85rem',
+                marginBottom: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <Check size={16} />
+                <span>Το schedule εισήχθη επιτυχώς!</span>
+              </div>
+            )}
+
+            {jsonError && (
+              <div className="glass" style={{
+                padding: '12px 16px',
+                borderRadius: 'var(--radius-sm)',
+                borderLeft: '4px solid var(--danger)',
+                background: 'rgba(239, 68, 68, 0.08)',
+                color: '#fca5a5',
+                fontSize: '0.85rem',
+                marginBottom: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <AlertCircle size={16} />
+                <span>{jsonError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleJsonImportSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div className="form-group" style={{ marginBottom: '8px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <label className="form-label">Δεδομένα JSON</label>
+                  <label className="btn btn-secondary" style={{ padding: '6px 12px', fontSize: '0.8rem', height: 'auto', gap: '4px' }}>
+                    <Upload size={14} />
+                    <span>Upload Αρχείου</span>
+                    <input
+                      type="file"
+                      accept=".json"
+                      onChange={handleJsonFileUpload}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                </div>
+                <textarea
+                  className="form-input"
+                  rows="6"
+                  placeholder='[
+  {
+    "id": "match-1",
+    "homeTeam": "Γερμανία",
+    "awayTeam": "Σκωτία",
+    "matchStage": "GROUP",
+    "kickoffTime": "2026-06-14T22:00:00+03:00"
+  }
+]'
+                  value={jsonText}
+                  onChange={(e) => setJsonText(e.target.value)}
+                  style={{
+                    fontFamily: 'monospace',
+                    fontSize: '0.85rem',
+                    background: 'rgba(15, 16, 26, 0.8)',
+                    resize: 'vertical'
+                  }}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={jsonSubmitting || !jsonText.trim()}
+                className="btn btn-primary"
+                style={{ alignSelf: 'flex-start' }}
+              >
+                <FileJson size={18} />
+                <span>{jsonSubmitting ? 'Εισαγωγή...' : 'Εισαγωγή Schedule'}</span>
+              </button>
+            </form>
+          </div>
+
+          {/* Section: Prediction Override Form */}
+          <div className="glass-card" style={{ padding: '24px' }}>
+            <h2 style={{ fontSize: '1.4rem', marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
+              Force Override Πρόβλεψης Χρήστη
+            </h2>
+
+            {overrideSuccess && (
+              <div className="glass" style={{
+                padding: '12px 16px',
+                borderRadius: 'var(--radius-sm)',
+                borderLeft: '4px solid var(--success)',
+                background: 'rgba(16, 185, 129, 0.08)',
+                color: '#a7f3d0',
+                fontSize: '0.85rem',
+                marginBottom: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <Check size={16} />
+                <span>Η πρόβλεψη παρακάμφθηκε και αποθηκεύτηκε επιτυχώς!</span>
+              </div>
+            )}
+
+            {overrideError && (
+              <div className="glass" style={{
+                padding: '12px 16px',
+                borderRadius: 'var(--radius-sm)',
+                borderLeft: '4px solid var(--danger)',
+                background: 'rgba(239, 68, 68, 0.08)',
+                color: '#fca5a5',
+                fontSize: '0.85rem',
+                marginBottom: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <AlertCircle size={16} />
+                <span>{overrideError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleOverrideSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                
+                {/* Select User */}
+                <div className="form-group" style={{ flex: '1', minWidth: '200px' }}>
+                  <label className="form-label">Επιλογή Παίκτη</label>
+                  <select
+                    required
+                    value={selectedUserId}
+                    onChange={(e) => setSelectedUserId(e.target.value)}
+                    style={{
+                      background: 'rgba(10, 11, 16, 0.7)',
+                      border: '1px solid var(--border-color)',
+                      color: '#ffffff',
+                      padding: '12px',
+                      borderRadius: 'var(--radius-md)',
+                      fontSize: '0.95rem'
+                    }}
+                  >
+                    <option value="">Επιλέξτε παίκτη...</option>
+                    {users.map(u => (
+                      <option key={u.id} value={u.id}>{u.username} ({u.email})</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Select Match */}
+                <div className="form-group" style={{ flex: '1', minWidth: '200px' }}>
+                  <label className="form-label">Επιλογή Αγώνα</label>
+                  <select
+                    required
+                    value={selectedMatchId}
+                    onChange={(e) => setSelectedMatchId(e.target.value)}
+                    style={{
+                      background: 'rgba(10, 11, 16, 0.7)',
+                      border: '1px solid var(--border-color)',
+                      color: '#ffffff',
+                      padding: '12px',
+                      borderRadius: 'var(--radius-md)',
+                      fontSize: '0.95rem'
+                    }}
+                  >
+                    <option value="">Επιλέξτε αγώνα...</option>
+                    {matches.map(m => (
+                      <option key={m.id} value={m.id}>{m.homeTeam} vs {m.awayTeam} ({getStageLabel(m.matchStage)})</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Prediction Values */}
+              <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
+                <div className="form-group" style={{ width: '100px' }}>
+                  <label className="form-label">Home Score</label>
+                  <input
+                    type="number"
+                    min="0"
+                    required
+                    className="form-input"
+                    value={overrideHome}
+                    onChange={(e) => setOverrideHome(e.target.value)}
+                  />
+                </div>
+
+                <div className="form-group" style={{ width: '100px' }}>
+                  <label className="form-label">Away Score</label>
+                  <input
+                    type="number"
+                    min="0"
+                    required
+                    className="form-input"
+                    value={overrideAway}
+                    onChange={(e) => setOverrideAway(e.target.value)}
+                  />
+                </div>
+
+                {/* Qualifier override */}
+                <div className="form-group" style={{ flex: '1', minWidth: '180px' }}>
+                  <label className="form-label">Πρόκριση (Κολλάει μόνο στα knockouts)</label>
+                  <input
+                    type="text"
+                    placeholder="Όνομα ομάδας πρόκρισης"
+                    className="form-input"
+                    value={overrideQualifier}
+                    onChange={(e) => setOverrideQualifier(e.target.value)}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={overrideSubmitting || !selectedUserId || !selectedMatchId}
+                  className="btn btn-primary"
+                  style={{ height: '45px', padding: '0 24px', marginBottom: '4px' }}
+                >
+                  {overrideSubmitting ? '...' : 'Επιβολή Πρόβλεψης'}
+                </button>
+              </div>
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  );
+}

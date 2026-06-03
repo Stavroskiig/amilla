@@ -1,0 +1,71 @@
+package com.amilla.application.service;
+
+import com.amilla.adapters.security.JwtTokenProvider;
+import com.amilla.domain.model.User;
+import com.amilla.ports.inbound.AuthenticationUseCase;
+import com.amilla.ports.outbound.UserRepositoryPort;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+public class AuthService implements AuthenticationUseCase {
+
+    private final UserRepositoryPort userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider tokenProvider;
+
+    public AuthService(UserRepositoryPort userRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtTokenProvider tokenProvider) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenProvider = tokenProvider;
+    }
+
+    @Override
+    public User register(String username, String email, String password) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new IllegalArgumentException("Email already in use!");
+        }
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("Username already in use!");
+        }
+
+        // The first registered user can be ADMIN for easier setup/testing,
+        // all subsequent users are USER role.
+        long userCount = userRepository.findAll().size();
+        String role = userCount == 0 ? "ROLE_ADMIN" : "ROLE_USER";
+
+        User user = User.builder()
+                .id(UUID.randomUUID())
+                .username(username)
+                .email(email)
+                .passwordHash(passwordEncoder.encode(password))
+                .role(role)
+                .totalPoints(0)
+                .build();
+
+        return userRepository.save(user);
+    }
+
+    @Override
+    public String login(String email, String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password!"));
+
+        if (!passwordEncoder.matches(password, user.getPasswordHash())) {
+            throw new IllegalArgumentException("Invalid email or password!");
+        }
+
+        return tokenProvider.generateToken(user.getEmail(), user.getRole());
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found!"));
+    }
+}
