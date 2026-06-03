@@ -29,9 +29,6 @@
 
 - **Dynamic Leaderboard:** Συνολική κατάταξη των χρηστών σε πραγματικό χρόνο, βάσει των συνολικών πόντων που έχουν συγκεντρώσει.
 - **Visibility (Διαφάνεια):** Οι παίκτες **δεν** μπορούν να δουν τι έχουν παίξει οι υπόλοιποι πριν το κλείδωμα. Μόλις το ματς κλειδώσει (στο T-5), οι προβλέψεις όλων γίνονται άμεσα ορατές σε ειδικό section, για να γίνεται η σωστή καζούρα κατά τη διάρκεια του αγώνα.
-- **Viber Bot (Outgoing Only):** Σύνδεση με το Viber Group της οικογένειας. Το bot στέλνει αυτοματοποιημένες ειδοποιήσεις για σημαντικά events:
-  - *Reminders:* "Έμεινε 1 ώρα για το ματς [Ομάδα Α - Ομάδα Β], μην ξεχάσετε να παίξετε!"
-  - *Updates:* "Το ματς έληξε! Ο @User βρήκε το ακριβές σκορ και ανέβηκε στην 1η θέση του Leaderboard!"
 
 ---
 
@@ -40,7 +37,7 @@
 Η εφαρμογή θα υλοποιηθεί με full decoupling (διαχωρισμό) Frontend και Backend.
 
 - **Backend:** Java 21 με **Spring Boot**.
-  - **Architecture Pattern:** **Hexagonal Architecture (Ports & Adapters)** για την πλήρη απομόνωση του Core Domain από εξωτερικές βιβλιοθήκες, frameworks και APIs (Postgres, Viber, Football API).
+  - **Architecture Pattern:** **Hexagonal Architecture (Ports & Adapters)** για την πλήρη απομόνωση του Core Domain από εξωτερικές βιβλιοθήκες, frameworks και APIs (Postgres, Football API).
 - **Database:** **PostgreSQL** (Relational Database).
 - **Frontend:** **React** (Single Page Application) για σύγχρονο, γρήγορο και responsive user experience σε mobile και desktop συσκευές.
 
@@ -57,7 +54,7 @@ com.family.worldcup
 │
 ├── ports/                           <-- Interfaces (Η γέφυρα του Domain με το περιβάλλον)
 │   ├── inbound/                     <-- Use Cases (π.χ. SubmitPredictionUseCase, ViewLeaderboardUseCase)
-│   └── outbound/                    <-- SPIs (π.χ. MatchRepositoryPort, FootballApiPort, NotificationPort)
+│   └── outbound/                    <-- SPIs (π.χ. MatchRepositoryPort, FootballApiPort)
 │
 └── adapters/                        <-- Υλοποιήσεις των Ports (Framework-specific κώδικας)
     ├── inbound/
@@ -65,8 +62,7 @@ com.family.worldcup
     │
     └── outbound/
         ├── persistence/             <-- Spring Data JPA Repositories & Postgres Entities
-        ├── footballapi/             <-- REST Client (e.g., Feign / WebClient) για το Free Football API
-        └── viber/                   <-- HTTP Client για το Outbound Viber Messaging API
+        └── footballapi/             <-- REST Client (e.g., Feign / WebClient) για το Free Football API
 ```
 
 ---

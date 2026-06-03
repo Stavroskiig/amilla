@@ -27,12 +27,10 @@ C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\repository\PredictionJpaRepository.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\repository\UserJpaRepository.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\UserPersistenceAdapter.java
-C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\viber\ViberAdapter.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\security\JwtAuthenticationFilter.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\security\JwtTokenProvider.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\security\SecurityConfig.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\AmillaApplication.java
-C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\scheduler\MatchReminderScheduler.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\service\AuthService.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\service\DatabaseSeeder.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\service\LeaderboardService.java
@@ -53,6 +51,5 @@ C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\in
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\FootballApiPort.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\LongTermPredictionRepositoryPort.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\MatchRepositoryPort.java
-C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\NotificationPort.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\PredictionRepositoryPort.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\UserRepositoryPort.java

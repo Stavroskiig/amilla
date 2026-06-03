@@ -34,7 +34,6 @@ public class MatchService implements ManageMatchUseCase {
     private final LongTermPredictionRepositoryPort longTermPredictionRepository;
     private final UserRepositoryPort userRepository;
     private final FootballApiPort footballApi;
-    private final NotificationPort notificationPort;
     private final PointCalculatorService pointCalculatorService;
 
     public MatchService(
@@ -43,14 +42,12 @@ public class MatchService implements ManageMatchUseCase {
             LongTermPredictionRepositoryPort longTermPredictionRepository,
             UserRepositoryPort userRepository,
             FootballApiPort footballApi,
-            NotificationPort notificationPort,
             PointCalculatorService pointCalculatorService) {
         this.matchRepository = matchRepository;
         this.predictionRepository = predictionRepository;
         this.longTermPredictionRepository = longTermPredictionRepository;
         this.userRepository = userRepository;
         this.footballApi = footballApi;
-        this.notificationPort = notificationPort;
         this.pointCalculatorService = pointCalculatorService;
     }
 
@@ -313,11 +310,6 @@ public class MatchService implements ManageMatchUseCase {
 
     private void settleMatchPoints(Match match) {
         List<Prediction> predictions = predictionRepository.findByMatchId(match.getId());
-        StringBuilder viberMessage = new StringBuilder();
-        viberMessage.append(String.format("⚽ Το ματς %s - %s έληξε! (Σκορ: %d - %d)\n",
-                match.getHomeTeam(), match.getAwayTeam(), match.getHomeScore90(), match.getAwayScore90()));
-
-        boolean exactFinderExists = false;
 
         // Save current rank before settling this match as previousRank
         List<User> usersBefore = userRepository.findAllOrderByPointsDesc();
@@ -336,15 +328,8 @@ public class MatchService implements ManageMatchUseCase {
             userRepository.findById(pred.getUserId()).ifPresent(user -> {
                 user.setTotalPoints(user.getTotalPoints() + pts);
                 userRepository.save(user);
-
-                if (pts == 5) {
-                    viberMessage.append(String.format("🔥 Ο @%s βρήκε το ΑΚΡΙΒΕΣ ΣΚΟΡ (+5 πόντοι)!\n", user.getUsername()));
-                }
             });
         }
-
-        // Send Viber update
-        notificationPort.sendNotification(viberMessage.toString());
 
         // Recalculate streaks for all users
         List<User> allUsers = userRepository.findAll();
@@ -361,7 +346,6 @@ public class MatchService implements ManageMatchUseCase {
 
         // Check if champion was decided in this match (if it's the final)
         if ("FINAL".equalsIgnoreCase(match.getMatchStage())) {
-            notificationPort.sendNotification("🏆 Ο ΤΕΛΙΚΟΣ ΤΕΛΕΙΩΣΕ! Ολοκληρώνεται ο υπολογισμός των μακροχρόνιων προβλέψεων!");
             forceRecalculatePoints();
         }
     }

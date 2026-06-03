@@ -4,7 +4,6 @@ com\amilla\adapters\inbound\web\dto\RegisterRequest.class
 com\amilla\domain\model\Prediction.class
 com\amilla\domain\model\Match.class
 com\amilla\ports\inbound\ViewLeaderboardUseCase.class
-com\amilla\ports\outbound\NotificationPort.class
 com\amilla\domain\model\LongTermPrediction.class
 com\amilla\application\service\AuthService.class
 com\amilla\adapters\outbound\persistence\entity\PredictionEntity$PredictionEntityBuilder.class
@@ -46,7 +45,6 @@ com\amilla\adapters\outbound\persistence\entity\UserEntity.class
 com\amilla\adapters\outbound\persistence\repository\MatchJpaRepository.class
 com\amilla\adapters\security\JwtTokenProvider.class
 com\amilla\adapters\outbound\persistence\entity\UserEntity$UserEntityBuilder.class
-com\amilla\adapters\outbound\viber\ViberAdapter.class
 com\amilla\adapters\inbound\web\PredictionController.class
 com\amilla\adapters\inbound\web\dto\AuthResponse.class
 com\amilla\application\service\LeaderboardService.class
@@ -55,7 +53,6 @@ com\amilla\domain\model\LongTermPrediction$LongTermPredictionBuilder.class
 com\amilla\adapters\outbound\persistence\entity\MatchEntity$MatchEntityBuilder.class
 com\amilla\adapters\inbound\web\dto\PredictionOverrideRequest.class
 com\amilla\adapters\outbound\persistence\entity\PredictionEntity.class
-com\amilla\application\scheduler\MatchReminderScheduler.class
 com\amilla\ports\outbound\MatchRepositoryPort.class
 com\amilla\adapters\security\SecurityConfig.class
 com\amilla\ports\inbound\AuthenticationUseCase.class
