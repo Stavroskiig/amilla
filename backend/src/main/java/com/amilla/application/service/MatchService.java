@@ -228,6 +228,13 @@ public class MatchService implements ManageMatchUseCase {
             }
         }
 
+        // Calculate current streaks
+        List<Prediction> allPreds = predictionRepository.findAll();
+        for (User user : users) {
+            int streak = calculateCurrentStreak(user.getId(), allPreds, finishedMatches);
+            user.setCurrentStreak(streak);
+        }
+
         // Save users
         for (User user : users) {
             userRepository.save(user);
@@ -251,6 +258,31 @@ public class MatchService implements ManageMatchUseCase {
                     .findFirst()
                     .ifPresent(u -> u.setTotalPoints(u.getTotalPoints() + pts));
         }
+    }
+
+    private int calculateCurrentStreak(UUID userId, List<Prediction> allPredictions, List<Match> finishedMatches) {
+        List<Prediction> userFinishedPreds = allPredictions.stream()
+                .filter(p -> p.getUserId().equals(userId))
+                .filter(p -> finishedMatches.stream().anyMatch(m -> m.getId().equals(p.getMatchId())))
+                .collect(Collectors.toList());
+
+        // Sort finished predictions by match kickoff time descending (most recent first)
+        userFinishedPreds.sort((p1, p2) -> {
+            Match m1 = finishedMatches.stream().filter(m -> m.getId().equals(p1.getMatchId())).findFirst().orElse(null);
+            Match m2 = finishedMatches.stream().filter(m -> m.getId().equals(p2.getMatchId())).findFirst().orElse(null);
+            if (m1 == null || m2 == null) return 0;
+            return m2.getKickoffTime().compareTo(m1.getKickoffTime());
+        });
+
+        int streak = 0;
+        for (Prediction pred : userFinishedPreds) {
+            if (pred.getPointsEarned() > 0) {
+                streak++;
+            } else {
+                break; // streak broken
+            }
+        }
+        return streak;
     }
 
     @Override
@@ -313,6 +345,19 @@ public class MatchService implements ManageMatchUseCase {
 
         // Send Viber update
         notificationPort.sendNotification(viberMessage.toString());
+
+        // Recalculate streaks for all users
+        List<User> allUsers = userRepository.findAll();
+        List<Prediction> allPreds = predictionRepository.findAll();
+        List<Match> allFinishedMatches = matchRepository.findAll().stream()
+                .filter(m -> "FINISHED".equalsIgnoreCase(m.getStatus()))
+                .collect(Collectors.toList());
+
+        for (User user : allUsers) {
+            int streak = calculateCurrentStreak(user.getId(), allPreds, allFinishedMatches);
+            user.setCurrentStreak(streak);
+            userRepository.save(user);
+        }
 
         // Check if champion was decided in this match (if it's the final)
         if ("FINAL".equalsIgnoreCase(match.getMatchStage())) {

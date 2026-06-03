@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, Award, Search, Sparkles, TrendingUp, TrendingDown } from 'lucide-react';
+import { Trophy, Award, Search, TrendingUp, TrendingDown, Flame } from 'lucide-react';
 import { Avatar } from '../components/Avatars';
 
 export default function Leaderboard({ currentUser }) {
@@ -171,6 +171,29 @@ export default function Leaderboard({ currentUser }) {
                           <span style={{ fontSize: '1rem', color: isSelf ? '#ffffff' : 'var(--text-main)' }}>
                             {user.username}
                           </span>
+                          {user.currentStreak >= 3 && (
+                            <span
+                              title={`Καυτός! ${user.currentStreak} συνεχόμενες σωστές προβλέψεις`}
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '3px',
+                                background: 'rgba(249, 115, 22, 0.15)',
+                                color: '#f97316',
+                                border: '1px solid rgba(249, 115, 22, 0.3)',
+                                padding: '2px 8px',
+                                borderRadius: '12px',
+                                fontSize: '0.75rem',
+                                fontWeight: 800,
+                                boxShadow: '0 0 10px rgba(249, 115, 22, 0.25)',
+                                animation: 'pulse 1.5s infinite',
+                                fontFamily: 'var(--font-heading)'
+                              }}
+                            >
+                              <Flame size={12} fill="#f97316" />
+                              <span>{user.currentStreak}</span>
+                            </span>
+                          )}
                           {isSelf && (
                             <span className="badge" style={{
                               background: 'rgba(99,102,241,0.2)',
@@ -181,9 +204,6 @@ export default function Leaderboard({ currentUser }) {
                             }}>
                               ΕΣΥ
                             </span>
-                          )}
-                          {idx === 0 && (
-                            <Sparkles size={14} style={{ color: '#fbbf24' }} title="Πρωτοπόρος!" />
                           )}
                         </div>
                       </td>

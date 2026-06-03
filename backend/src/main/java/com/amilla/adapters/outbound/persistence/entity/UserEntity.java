@@ -40,4 +40,7 @@ public class UserEntity {
 
     @Column(name = "previous_rank")
     private Integer previousRank;
+
+    @Column(name = "current_streak")
+    private Integer currentStreak;
 }

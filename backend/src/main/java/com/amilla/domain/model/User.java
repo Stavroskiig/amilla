@@ -24,4 +24,5 @@ public class User {
     private int totalPoints;
     private String avatar;
     private Integer previousRank;
+    private Integer currentStreak;
 }
