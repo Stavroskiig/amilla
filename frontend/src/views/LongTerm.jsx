@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Award, Check, AlertTriangle, Lock, HelpCircle, ChevronDown, Search, Zap } from 'lucide-react';
-import { COUNTRIES, Flag } from '../components/Countries';
+import { COUNTRIES, Flag, uppercaseNoAccents } from '../components/Countries';
 
 export default function LongTerm({ user }) {
   const [championTeam, setChampionTeam] = useState('');
@@ -26,15 +26,6 @@ export default function LongTerm({ user }) {
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase();
-  };
-
-  // Greek uppercase without accents utility
-  const uppercaseNoAccents = (text) => {
-    if (!text) return '';
-    return text
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .toUpperCase();
   };
 
   // Handle click outside to close dropdown
@@ -530,7 +521,7 @@ export default function LongTerm({ user }) {
             {!locked && (
               <button
                 type="submit"
-                disabled={submitting || !championTeam.trim() || championTeam.trim().toUpperCase() === savedChampionTeam.toUpperCase()}
+                disabled={submitting || !championTeam.trim() || uppercaseNoAccents(championTeam.trim()) === uppercaseNoAccents(savedChampionTeam)}
                 className="btn btn-primary"
                 style={{ width: '100%', padding: '14px', marginTop: '10px' }}
               >

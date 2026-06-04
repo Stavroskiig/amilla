@@ -108,3 +108,13 @@ export const getStageLabel = (stage) => {
     default: return stage || '';
   }
 };
+
+// Greek uppercase without accents utility (retaining diaeresis)
+export const uppercaseNoAccents = (text) => {
+  if (!text) return '';
+  return text
+    .normalize('NFD')
+    .replace(/[\u0300-\u0307\u0309-\u036f]/g, '')
+    .toUpperCase()
+    .normalize('NFC');
+};
