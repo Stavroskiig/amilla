@@ -344,6 +344,7 @@ export default function Profile({ user, setUser }) {
   const [showAvatarGrid, setShowAvatarGrid] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
+  const [hoveredAvatar, setHoveredAvatar] = useState(null);
 
   useEffect(() => {
     fetchProfileData();
@@ -603,6 +604,8 @@ export default function Profile({ user, setUser }) {
                     key={avatar.id}
                     disabled={savingAvatar}
                     onClick={() => handleAvatarChange(avatar.id)}
+                    onMouseEnter={() => setHoveredAvatar(avatar)}
+                    onMouseLeave={() => setHoveredAvatar(null)}
                     className={`avatar-item ${isSelected ? 'selected' : ''}`}
                     style={{ border: 'none' }}
                   >
@@ -611,6 +614,33 @@ export default function Profile({ user, setUser }) {
                 );
               })}
             </div>
+
+            {/* Selected / Hovered Avatar Info Section */}
+            {(() => {
+              const activeAvatar = hoveredAvatar || AVATARS.find(a => a.id === user.avatar) || AVATARS[0];
+              return (
+                <div style={{
+                  marginTop: '20px',
+                  padding: '12px 16px',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  textAlign: 'center',
+                  minHeight: '74px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  transition: 'all 0.2s ease'
+                }}>
+                  <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.95rem', marginBottom: '4px' }}>
+                    {activeAvatar.name}
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                    {activeAvatar.description}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         )}
       </div>
