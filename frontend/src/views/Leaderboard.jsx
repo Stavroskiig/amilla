@@ -87,7 +87,10 @@ export default function Leaderboard({ currentUser }) {
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
                 <th className="hide-on-mobile" style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΡΟΛΟΣ</th>
-                <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'right' }}>ΣΥΝΟΛΙΚΟΙ ΠΟΝΤΟΙ</th>
+                <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'right' }}>
+                  <span className="hide-on-mobile">ΣΥΝΟΛΙΚΟΙ ΠΟΝΤΟΙ</span>
+                  <span className="show-on-mobile">ΠΟΝΤΟΙ</span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -108,67 +111,70 @@ export default function Leaderboard({ currentUser }) {
                       className="leaderboard-row"
                     >
                       {/* Rank Position */}
-                      <td style={{ padding: '18px 24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: '28px',
-                          height: '28px',
-                          borderRadius: '50%',
-                          background: idx < 3 ? 'rgba(255,255,255,0.03)' : 'transparent',
-                          color: rank.color,
-                          fontWeight: 700
-                        }}>
-                          {idx + 1}
-                        </span>
-                        <span style={{ color: rank.color, display: 'flex', alignItems: 'center' }}>
-                          {rank.icon}
-                        </span>
+                      <td style={{ padding: '18px 24px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="leaderboard-rank-cell">
+                          <span style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '28px',
+                            height: '28px',
+                            borderRadius: '50%',
+                            background: idx < 3 ? 'rgba(255,255,255,0.03)' : 'transparent',
+                            color: rank.color,
+                            fontWeight: 700,
+                            flexShrink: 0
+                          }}>
+                            {idx + 1}
+                          </span>
+                          <span className="hide-on-mobile" style={{ color: rank.color, display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                            {rank.icon}
+                          </span>
 
-                        {/* Trend Indicator */}
-                        {(() => {
-                          const currentRank = idx + 1;
-                          const prevRank = user.previousRank;
-                          const change = prevRank > 0 ? prevRank - currentRank : 0;
+                          {/* Trend Indicator */}
+                          {(() => {
+                            const currentRank = idx + 1;
+                            const prevRank = user.previousRank;
+                            const change = prevRank > 0 ? prevRank - currentRank : 0;
 
-                          if (prevRank === 0) {
-                            return (
-                              <span className="trend-badge trend-neutral" title="Σταθερή θέση">
-                                <span style={{ fontSize: '10px' }}>—</span>
-                              </span>
-                            );
-                          }
+                            if (prevRank === 0) {
+                              return (
+                                <span className="trend-badge trend-neutral" title="Σταθερή θέση">
+                                  <span style={{ fontSize: '10px' }}>—</span>
+                                </span>
+                              );
+                            }
 
-                          if (change > 0) {
-                            return (
-                              <span className="trend-badge trend-up" title={`Ανέβηκε ${change} ${change === 1 ? 'θέση' : 'θέσεις'}`}>
-                                <TrendingUp size={12} style={{ marginRight: '2px' }} />
-                                {change}
-                              </span>
-                            );
-                          } else if (change < 0) {
-                            return (
-                              <span className="trend-badge trend-down" title={`Έπεσε ${Math.abs(change)} ${Math.abs(change) === 1 ? 'θέση' : 'θέσεις'}`}>
-                                <TrendingDown size={12} style={{ marginRight: '2px' }} />
-                                {Math.abs(change)}
-                              </span>
-                            );
-                          } else {
-                            return (
-                              <span className="trend-badge trend-neutral" title="Σταθερή θέση">
-                                <span style={{ fontSize: '10px' }}>—</span>
-                              </span>
-                            );
-                          }
-                        })()}
+                            if (change > 0) {
+                              return (
+                                <span className="trend-badge trend-up" title={`Ανέβηκε ${change} ${change === 1 ? 'θέση' : 'θέσεις'}`}>
+                                  <TrendingUp size={12} style={{ marginRight: '2px' }} />
+                                  {change}
+                                </span>
+                              );
+                            } else if (change < 0) {
+                              return (
+                                <span className="trend-badge trend-down" title={`Έπεσε ${Math.abs(change)} ${Math.abs(change) === 1 ? 'θέση' : 'θέσεις'}`}>
+                                  <TrendingDown size={12} style={{ marginRight: '2px' }} />
+                                  {Math.abs(change)}
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span className="trend-badge trend-neutral" title="Σταθερή θέση">
+                                  <span style={{ fontSize: '10px' }}>—</span>
+                                </span>
+                              );
+                            }
+                          })()}
+                        </div>
                       </td>
 
                       {/* Username */}
                       <td style={{ padding: '18px 24px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }} className="leaderboard-player-cell">
                           <Avatar id={user.avatar} size={28} />
-                          <span style={{ fontSize: '1rem', color: isSelf ? '#ffffff' : 'var(--text-main)' }}>
+                          <span style={{ fontSize: '1rem', color: isSelf ? '#ffffff' : 'var(--text-main)' }} className="leaderboard-username">
                             {user.username}
                           </span>
                           {user.currentStreak >= 3 && (
@@ -189,13 +195,14 @@ export default function Leaderboard({ currentUser }) {
                                 animation: 'pulse 1.5s infinite',
                                 fontFamily: 'var(--font-heading)'
                               }}
+                              className="streak-badge"
                             >
                               <Flame size={12} fill="#f97316" />
                               <span>{user.currentStreak}</span>
                             </span>
                           )}
                           {isSelf && (
-                            <span className="badge" style={{
+                            <span className="badge self-badge" style={{
                               background: 'rgba(99,102,241,0.2)',
                               color: '#a5b4fc',
                               fontSize: '0.7rem',
