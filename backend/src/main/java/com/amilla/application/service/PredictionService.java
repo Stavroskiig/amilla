@@ -1,6 +1,5 @@
 package com.amilla.application.service;
 
-import com.amilla.domain.exception.PredictionsLockedException;
 import com.amilla.domain.model.LongTermPrediction;
 import com.amilla.domain.model.Match;
 import com.amilla.domain.model.Prediction;
@@ -16,7 +15,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -42,7 +40,8 @@ public class PredictionService implements SubmitPredictionUseCase {
     }
 
     @Override
-    public Prediction submitMatchPrediction(UUID userId, String matchId, int homeScore, int awayScore, String qualifier) {
+    public Prediction submitMatchPrediction(UUID userId, String matchId, int homeScore, int awayScore,
+            String qualifier) {
         Match match = matchRepository.findById(matchId)
                 .orElseThrow(() -> new IllegalArgumentException("Match not found: " + matchId));
 
@@ -65,7 +64,8 @@ public class PredictionService implements SubmitPredictionUseCase {
 
     @Override
     public LongTermPrediction submitLongTermPrediction(UUID userId, String championTeam) {
-        // Calculate dynamic cutoff: group stage end is the kickoff of the first knockout (ROUND_OF_16) match.
+        // Calculate dynamic cutoff: group stage end is the kickoff of the first
+        // knockout (ROUND_OF_16) match.
         // Fallback to 30 days from now if not present.
         List<Match> matches = matchRepository.findAll();
         Instant groupStageEnd = matches.stream()

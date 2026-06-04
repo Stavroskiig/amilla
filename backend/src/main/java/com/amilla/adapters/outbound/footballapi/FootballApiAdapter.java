@@ -5,12 +5,10 @@ import com.amilla.ports.outbound.FootballApiPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +18,6 @@ public class FootballApiAdapter implements FootballApiPort {
 
     private static final Logger log = LoggerFactory.getLogger(FootballApiAdapter.class);
 
-    private final String apiUrl;
     private final String apiToken;
     private final WebClient webClient;
 
@@ -28,12 +25,12 @@ public class FootballApiAdapter implements FootballApiPort {
             @Value("${amilla.football-api.api-url}") String apiUrl,
             @Value("${amilla.football-api.api-token}") String apiToken,
             WebClient.Builder webClientBuilder) {
-        this.apiUrl = apiUrl;
         this.apiToken = apiToken;
         this.webClient = webClientBuilder.baseUrl(apiUrl).build();
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Match> fetchFixturesAndResults() {
 
         log.info("Fetching matches from live Football API...");
@@ -57,13 +54,13 @@ public class FootballApiAdapter implements FootballApiPort {
             for (Map<String, Object> matchJson : matchJsonList) {
                 try {
                     String id = String.valueOf(matchJson.get("id"));
-                    
+
                     Map<String, Object> homeTeamJson = (Map<String, Object>) matchJson.get("homeTeam");
                     String homeTeam = homeTeamJson != null ? String.valueOf(homeTeamJson.get("name")) : "Home Team";
-                    
+
                     Map<String, Object> awayTeamJson = (Map<String, Object>) matchJson.get("awayTeam");
                     String awayTeam = awayTeamJson != null ? String.valueOf(awayTeamJson.get("name")) : "Away Team";
-                    
+
                     String stage = String.valueOf(matchJson.get("stage")); // e.g. GROUP_STAGE -> map to GROUP
                     if (stage.contains("GROUP")) {
                         stage = "GROUP";

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,8 +21,8 @@ public class AuthService implements AuthenticationUseCase {
     private final JwtTokenProvider tokenProvider;
 
     public AuthService(UserRepositoryPort userRepository,
-                       PasswordEncoder passwordEncoder,
-                       JwtTokenProvider tokenProvider) {
+            PasswordEncoder passwordEncoder,
+            JwtTokenProvider tokenProvider) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
@@ -31,7 +30,8 @@ public class AuthService implements AuthenticationUseCase {
 
     @Override
     public User register(String username, String email, String password, String groupCode) {
-        if (configuredGroupCode == null || groupCode == null || !groupCode.trim().equalsIgnoreCase(configuredGroupCode.trim())) {
+        if (configuredGroupCode == null || groupCode == null
+                || !groupCode.trim().equalsIgnoreCase(configuredGroupCode.trim())) {
             throw new IllegalArgumentException("Λάθος κωδικός ομάδας!");
         }
         if (userRepository.findByEmail(email).isPresent()) {
