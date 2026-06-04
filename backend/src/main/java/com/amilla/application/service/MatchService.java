@@ -17,6 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.ClassPathResource;
 import java.io.InputStream;
 import java.time.Instant;
+import com.amilla.domain.model.UserRankHistory;
+import com.amilla.ports.outbound.UserRankHistoryRepositoryPort;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +37,7 @@ public class MatchService implements ManageMatchUseCase {
     private final UserRepositoryPort userRepository;
     private final FootballApiPort footballApi;
     private final PointCalculatorService pointCalculatorService;
+    private final UserRankHistoryRepositoryPort userRankHistoryRepository;
 
     public MatchService(
             MatchRepositoryPort matchRepository,
@@ -42,13 +45,15 @@ public class MatchService implements ManageMatchUseCase {
             LongTermPredictionRepositoryPort longTermPredictionRepository,
             UserRepositoryPort userRepository,
             FootballApiPort footballApi,
-            PointCalculatorService pointCalculatorService) {
+            PointCalculatorService pointCalculatorService,
+            UserRankHistoryRepositoryPort userRankHistoryRepository) {
         this.matchRepository = matchRepository;
         this.predictionRepository = predictionRepository;
         this.longTermPredictionRepository = longTermPredictionRepository;
         this.userRepository = userRepository;
         this.footballApi = footballApi;
         this.pointCalculatorService = pointCalculatorService;
+        this.userRankHistoryRepository = userRankHistoryRepository;
     }
 
     @Override
@@ -146,27 +151,39 @@ public class MatchService implements ManageMatchUseCase {
 
         int totalFinished = finishedMatches.size();
 
-        if (totalFinished > 1) {
-            // 1. Process matches 1 to N-1
-            List<Match> firstNMinus1Matches = finishedMatches.subList(0, totalFinished - 1);
-            for (Match match : firstNMinus1Matches) {
-                applyMatchPointsToUsers(match, predictions, users);
-            }
+        userRankHistoryRepository.deleteAll();
 
-            // 2. Sort users by points at this intermediate stage to get their previous rank
+        // We will build history step-by-step chronologically
+        for (int mIdx = 0; mIdx < totalFinished; mIdx++) {
+            Match match = finishedMatches.get(mIdx);
+            applyMatchPointsToUsers(match, predictions, users);
+
+            // Sort users by points at this stage to record intermediate ranks
             users.sort(Comparator.comparingInt(User::getTotalPoints).reversed());
+
             for (int i = 0; i < users.size(); i++) {
-                users.get(i).setPreviousRank(i + 1);
+                User u = users.get(i);
+                UserRankHistory history = UserRankHistory.builder()
+                        .id(UUID.randomUUID())
+                        .userId(u.getId())
+                        .matchId(match.getId())
+                        .points(u.getTotalPoints())
+                        .rank(i + 1)
+                        .createdAt(Instant.now())
+                        .build();
+                userRankHistoryRepository.save(history);
+
+                // If this is the second-to-last match, we cache this rank as their previousRank
+                if (totalFinished > 1 && mIdx == totalFinished - 2) {
+                    u.setPreviousRank(i + 1);
+                }
             }
+        }
 
-            // 3. Process the last match
-            Match lastMatch = finishedMatches.get(totalFinished - 1);
-            applyMatchPointsToUsers(lastMatch, predictions, users);
-
-        } else {
-            // If there's 0 or 1 finished matches, previous rank is 0 for everyone
-            for (Match match : finishedMatches) {
-                applyMatchPointsToUsers(match, predictions, users);
+        // If there's 0 or 1 finished matches, previous rank is 0 for everyone
+        if (totalFinished <= 1) {
+            for (User u : users) {
+                u.setPreviousRank(0);
             }
         }
 
@@ -344,6 +361,21 @@ public class MatchService implements ManageMatchUseCase {
             int streak = calculateCurrentStreak(user.getId(), allPreds, allFinishedMatches);
             user.setCurrentStreak(streak);
             userRepository.save(user);
+        }
+
+        // Save rank and points history snapshot after settling this match
+        List<User> usersAfter = userRepository.findAllOrderByPointsDesc();
+        for (int i = 0; i < usersAfter.size(); i++) {
+            User u = usersAfter.get(i);
+            UserRankHistory history = UserRankHistory.builder()
+                    .id(UUID.randomUUID())
+                    .userId(u.getId())
+                    .matchId(match.getId())
+                    .points(u.getTotalPoints())
+                    .rank(i + 1)
+                    .createdAt(Instant.now())
+                    .build();
+            userRankHistoryRepository.save(history);
         }
 
         // Check if champion was decided in this match (if it's the final)

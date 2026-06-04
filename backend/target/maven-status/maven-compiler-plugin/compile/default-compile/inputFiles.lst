@@ -10,6 +10,7 @@ C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\PredictionRequest.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\RegisterRequest.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\ScoreUpdateRequest.java
+C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\UserRankHistoryDto.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\GlobalExceptionHandler.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\LeaderboardController.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\MatchController.java
@@ -19,6 +20,7 @@ C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\entity\MatchEntity.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\entity\PredictionEntity.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\entity\UserEntity.java
+C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\entity\UserRankHistoryEntity.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\LongTermPredictionPersistenceAdapter.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\MatchPersistenceAdapter.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\PredictionPersistenceAdapter.java
@@ -26,7 +28,9 @@ C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\repository\MatchJpaRepository.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\repository\PredictionJpaRepository.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\repository\UserJpaRepository.java
+C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\repository\UserRankHistoryJpaRepository.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\UserPersistenceAdapter.java
+C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\UserRankHistoryPersistenceAdapter.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\security\JwtAuthenticationFilter.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\security\JwtTokenProvider.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\security\SecurityConfig.java
@@ -42,14 +46,17 @@ C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\domain\m
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\domain\model\Match.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\domain\model\Prediction.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\domain\model\User.java
+C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\domain\model\UserRankHistory.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\domain\service\PointCalculatorService.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\domain\service\PredictionDomainService.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\inbound\AuthenticationUseCase.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\inbound\ManageMatchUseCase.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\inbound\SubmitPredictionUseCase.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\inbound\ViewLeaderboardUseCase.java
+C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\inbound\ViewRankHistoryUseCase.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\FootballApiPort.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\LongTermPredictionRepositoryPort.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\MatchRepositoryPort.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\PredictionRepositoryPort.java
+C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\UserRankHistoryRepositoryPort.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\UserRepositoryPort.java

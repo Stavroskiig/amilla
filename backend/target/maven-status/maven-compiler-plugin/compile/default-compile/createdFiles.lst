@@ -14,6 +14,7 @@ com\amilla\adapters\outbound\persistence\repository\UserJpaRepository.class
 com\amilla\adapters\outbound\persistence\LongTermPredictionPersistenceAdapter.class
 com\amilla\domain\model\Match$MatchBuilder.class
 com\amilla\ports\outbound\UserRepositoryPort.class
+com\amilla\adapters\outbound\persistence\entity\UserRankHistoryEntity.class
 com\amilla\adapters\inbound\web\LeaderboardController.class
 com\amilla\adapters\outbound\persistence\PredictionPersistenceAdapter.class
 com\amilla\adapters\outbound\persistence\entity\MatchEntity.class
@@ -30,6 +31,7 @@ com\amilla\adapters\inbound\web\dto\LoginRequest.class
 com\amilla\adapters\inbound\web\dto\MatchCreateRequest.class
 com\amilla\domain\service\PointCalculatorService.class
 com\amilla\ports\outbound\FootballApiPort.class
+com\amilla\adapters\outbound\persistence\entity\UserRankHistoryEntity$UserRankHistoryEntityBuilder.class
 com\amilla\ports\inbound\SubmitPredictionUseCase.class
 com\amilla\ports\inbound\ManageMatchUseCase.class
 com\amilla\domain\exception\TournamentStartedException.class
@@ -47,7 +49,6 @@ com\amilla\adapters\security\JwtTokenProvider.class
 com\amilla\adapters\outbound\persistence\entity\UserEntity$UserEntityBuilder.class
 com\amilla\adapters\inbound\web\PredictionController.class
 com\amilla\adapters\inbound\web\dto\AuthResponse.class
-com\amilla\application\service\LeaderboardService.class
 com\amilla\domain\model\User$UserBuilder.class
 com\amilla\domain\model\LongTermPrediction$LongTermPredictionBuilder.class
 com\amilla\adapters\outbound\persistence\entity\MatchEntity$MatchEntityBuilder.class
