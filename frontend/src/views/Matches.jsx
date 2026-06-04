@@ -1,94 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Lock, Unlock, Check, Clock, AlertTriangle, Eye, Award } from 'lucide-react';
-
-const countryToFlagCode = {
-  'Αίγυπτος': 'eg',
-  'Αγγλία': 'gb-eng',
-  'Ακτή Ελεφαντοστού': 'ci',
-  'Αλγερία': 'dz',
-  'Αργεντινή': 'ar',
-  'Αυστρία': 'at',
-  'Αυστραλία': 'au',
-  'Αϊτή': 'ht',
-  'Βέλγιο': 'be',
-  'Βοσνία και Ερζεγοβίνη': 'ba',
-  'Βραζιλία': 'br',
-  'Γαλλία': 'fr',
-  'Γερμανία': 'de',
-  'Γκάνα': 'gh',
-  'Ελβετία': 'ch',
-  'Ηνωμένες Πολιτείες Αμερικής': 'us',
-  'Ιαπωνία': 'jp',
-  'Ιορδανία': 'jo',
-  'Ιράκ': 'iq',
-  'Ιράν': 'ir',
-  'Ισημερινός': 'ec',
-  'Ισπανία': 'es',
-  'Καναδάς': 'ca',
-  'Κατάρ': 'qa',
-  'Κολομβία': 'co',
-  'Κουρασάο': 'cw',
-  'Κροατία': 'hr',
-  'Λαϊκή Δημοκρατία του Κονγκό': 'cd',
-  'Μαρόκο': 'ma',
-  'Μεξικό': 'mx',
-  'Νέα Ζηλανδία': 'nz',
-  'Νορβηγία': 'no',
-  'Νότια Αφρική': 'za',
-  'Νότια Κορέα': 'kr',
-  'Ολλανδία': 'nl',
-  'Ουζμπεκιστάν': 'uz',
-  'Ουρουγουάη': 'uy',
-  'Παναμάς': 'pa',
-  'Παραγουάη': 'py',
-  'Πορτογαλία': 'pt',
-  'Πράσινο Ακρωτήριο': 'cv',
-  'Σαουδική Αραβία': 'sa',
-  'Σενεγάλη': 'sn',
-  'Σκωτία': 'gb-sct',
-  'Σουηδία': 'se',
-  'Τουρκία': 'tr',
-  'Τσεχία': 'cz',
-  'Τυνησία': 'tn'
-};
-
-const renderFlag = (teamName) => {
-  const code = countryToFlagCode[teamName];
-  if (!code) return null;
-  return (
-    <img
-      src={`https://flagcdn.com/w40/${code}.png`}
-      srcSet={`https://flagcdn.com/w80/${code}.png 2x`}
-      alt={teamName}
-      style={{
-        width: '28px',
-        height: '18px',
-        objectFit: 'cover',
-        borderRadius: '3px',
-        border: '1px solid rgba(255,255,255,0.15)',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
-        flexShrink: 0
-      }}
-    />
-  );
-};
-
-const getStageLabel = (stage) => {
-  switch (stage) {
-    case 'GROUP': return 'ΦΑΣΗ ΟΜΙΛΩΝ';
-    case 'ROUND_OF_32': return 'ΦΑΣΗ ΤΩΝ 32';
-    case 'ROUND_OF_16': return 'ΦΑΣΗ ΤΩΝ 16';
-    case 'QUARTER_FINAL':
-    case 'QUARTERS':
-      return 'ΠΡΟΗΜΙΤΕΛΙΚΟΣ';
-    case 'SEMI_FINAL':
-    case 'SEMIS':
-      return 'ΗΜΙΤΕΛΙΚΟΣ';
-    case 'THIRD_PLACE': return 'ΜΙΚΡΟΣ ΤΕΛΙΚΟΣ';
-    case 'FINAL': return 'ΤΕΛΙΚΟΣ';
-    default: return stage || '';
-  }
-};
+import { Flag, getStageLabel } from '../components/Countries';
 
 export default function Matches({ user }) {
   const [matches, setMatches] = useState([]);
@@ -424,7 +336,7 @@ export default function Matches({ user }) {
                 <div className="team-details-container" style={{ display: 'flex', alignItems: 'center', gap: '20px', flex: '1', minWidth: '280px', justifyContent: 'center' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'flex-end', flex: '1', textAlign: 'right' }}>
                     <h3 className="team-name" style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>{match.homeTeam}</h3>
-                    {renderFlag(match.homeTeam)}
+                    <Flag teamName={match.homeTeam} width={28} height={18} />
                   </div>
 
                   {/* Score Display (Actual vs Predicted) */}
@@ -448,7 +360,7 @@ export default function Matches({ user }) {
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'flex-start', flex: '1', textAlign: 'left' }}>
-                    {renderFlag(match.awayTeam)}
+                    <Flag teamName={match.awayTeam} width={28} height={18} />
                     <h3 className="team-name" style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>{match.awayTeam}</h3>
                   </div>
                 </div>

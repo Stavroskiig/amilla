@@ -1,129 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Award, Check, AlertTriangle, Lock, HelpCircle, ChevronDown, Search, Zap } from 'lucide-react';
-
-const countryToFlagCode = {
-  'Αίγυπτος': 'eg',
-  'Αγγλία': 'gb-eng',
-  'Ακτή Ελεφαντοστού': 'ci',
-  'Αλγερία': 'dz',
-  'Αργεντινή': 'ar',
-  'Αυστρία': 'at',
-  'Αυστραλία': 'au',
-  'Αϊτή': 'ht',
-  'Βέλγιο': 'be',
-  'Βοσνία και Ερζεγοβίνη': 'ba',
-  'Βραζιλία': 'br',
-  'Γαλλία': 'fr',
-  'Γερμανία': 'de',
-  'Γκάνα': 'gh',
-  'Ελβετία': 'ch',
-  'Ηνωμένες Πολιτείες Αμερικής': 'us',
-  'Ιαπωνία': 'jp',
-  'Ιορδανία': 'jo',
-  'Ιράκ': 'iq',
-  'Ιράν': 'ir',
-  'Ισημερινός': 'ec',
-  'Ισπανία': 'es',
-  'Καναδάς': 'ca',
-  'Κατάρ': 'qa',
-  'Κολομβία': 'co',
-  'Κουρασάο': 'cw',
-  'Κροατία': 'hr',
-  'Λαϊκή Δημοκρατία του Κονγκό': 'cd',
-  'Μαρόκο': 'ma',
-  'Μεξικό': 'mx',
-  'Νέα Ζηλανδία': 'nz',
-  'Νορβηγία': 'no',
-  'Νότια Αφρική': 'za',
-  'Νότια Κορέα': 'kr',
-  'Ολλανδία': 'nl',
-  'Ουζμπεκιστάν': 'uz',
-  'Ουρουγουάη': 'uy',
-  'Παναμάς': 'pa',
-  'Παραγουάη': 'py',
-  'Πορτογαλία': 'pt',
-  'Πράσινο Ακρωτήριο': 'cv',
-  'Σαουδική Αραβία': 'sa',
-  'Σενεγάλη': 'sn',
-  'Σκωτία': 'gb-sct',
-  'Σουηδία': 'se',
-  'Τουρκία': 'tr',
-  'Τσεχία': 'cz',
-  'Τυνησία': 'tn'
-};
-
-const renderFlag = (teamName) => {
-  const code = countryToFlagCode[teamName];
-  if (!code) return null;
-  return (
-    <img
-      src={`https://flagcdn.com/w40/${code}.png`}
-      srcSet={`https://flagcdn.com/w80/${code}.png 2x`}
-      alt={teamName}
-      style={{
-        width: '28px',
-        height: '18px',
-        objectFit: 'cover',
-        borderRadius: '3px',
-        border: '1px solid rgba(255,255,255,0.15)',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
-        verticalAlign: 'middle',
-        flexShrink: 0
-      }}
-    />
-  );
-};
-
-const COUNTRIES = [
-  'Αγγλία',
-  'Αίγυπτος',
-  'Αϊτή',
-  'Ακτή Ελεφαντοστού',
-  'Αλγερία',
-  'Αργεντινή',
-  'Αυστραλία',
-  'Αυστρία',
-  'Βέλγιο',
-  'Βοσνία και Ερζεγοβίνη',
-  'Βραζιλία',
-  'Γαλλία',
-  'Γερμανία',
-  'Γκάνα',
-  'Ελβετία',
-  'Ηνωμένες Πολιτείες Αμερικής',
-  'Ιαπωνία',
-  'Ιορδανία',
-  'Ιράκ',
-  'Ιράν',
-  'Ισημερινός',
-  'Ισπανία',
-  'Καναδάς',
-  'Κατάρ',
-  'Κολομβία',
-  'Κουρασάο',
-  'Κροατία',
-  'Λαϊκή Δημοκρατία του Κονγκό',
-  'Μαρόκο',
-  'Μεξικό',
-  'Νέα Ζηλανδία',
-  'Νορβηγία',
-  'Νότια Αφρική',
-  'Νότια Κορέα',
-  'Ολλανδία',
-  'Ουζμπεκιστάν',
-  'Ουρουγουάη',
-  'Παναμάς',
-  'Παραγουάη',
-  'Πορτογαλία',
-  'Πράσινο Ακρωτήριο',
-  'Σαουδική Αραβία',
-  'Σενεγάλη',
-  'Σκωτία',
-  'Σουηδία',
-  'Τουρκία',
-  'Τσεχία',
-  'Τυνησία'
-];
+import { COUNTRIES, Flag } from '../components/Countries';
 
 export default function LongTerm({ user }) {
   const [championTeam, setChampionTeam] = useState('');
@@ -443,7 +320,7 @@ export default function LongTerm({ user }) {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   {championTeam ? (
                     <>
-                      {renderFlag(championTeam)}
+                      <Flag teamName={championTeam} width={28} height={18} />
                       <span style={{ fontSize: '1.1rem', fontWeight: 700 }}>
                         {uppercaseNoAccents(championTeam)}
                       </span>
@@ -546,7 +423,7 @@ export default function LongTerm({ user }) {
                             }}
                           >
                             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                              {renderFlag(country)}
+                              <Flag teamName={country} width={28} height={18} />
                               <span style={{
                                 fontSize: '0.95rem',
                                 fontWeight: isSelected ? 700 : 500,
@@ -614,7 +491,7 @@ export default function LongTerm({ user }) {
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
                   <span>Τρέχουσα αποθηκευμένη πρόβλεψη: </span>
-                  {renderFlag(savedChampionTeam)}
+                  <Flag teamName={savedChampionTeam} width={28} height={18} />
                   <strong style={{ color: '#ffffff' }}>{uppercaseNoAccents(savedChampionTeam)}</strong>
                 </div>
                 {submittedAt && (
@@ -670,7 +547,7 @@ export default function LongTerm({ user }) {
                     <span style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{p.username || 'Παίκτης'}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', paddingLeft: '4px' }}>
-                    {renderFlag(p.predictedChampionTeam)}
+                    <Flag teamName={p.predictedChampionTeam} width={28} height={18} />
                     <span style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--primary)' }}>
                       {uppercaseNoAccents(p.predictedChampionTeam)}
                     </span>

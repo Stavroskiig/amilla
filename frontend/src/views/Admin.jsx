@@ -1,145 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, RefreshCw, Calculator, Save, User as UserIcon, Calendar, Check, AlertCircle, Trash2, Plus, Upload, FileJson } from 'lucide-react';
-
-const countryToFlagCode = {
-  'Αίγυπτος': 'eg',
-  'Αγγλία': 'gb-eng',
-  'Ακτή Ελεφαντοστού': 'ci',
-  'Αλγερία': 'dz',
-  'Αργεντινή': 'ar',
-  'Αυστρία': 'at',
-  'Αυστραλία': 'au',
-  'Αϊτή': 'ht',
-  'Βέλγιο': 'be',
-  'Βοσνία και Ερζεγοβίνη': 'ba',
-  'Βραζιλία': 'br',
-  'Γαλλία': 'fr',
-  'Γερμανία': 'de',
-  'Γκάνα': 'gh',
-  'Ελβετία': 'ch',
-  'Ηνωμένες Πολιτείες Αμερικής': 'us',
-  'Ιαπωνία': 'jp',
-  'Ιορδανία': 'jo',
-  'Ιράκ': 'iq',
-  'Ιράν': 'ir',
-  'Ισημερινός': 'ec',
-  'Ισπανία': 'es',
-  'Καναδάς': 'ca',
-  'Κατάρ': 'qa',
-  'Κολομβία': 'co',
-  'Κουρασάο': 'cw',
-  'Κροατία': 'hr',
-  'Λαϊκή Δημοκρατία του Κονγκό': 'cd',
-  'Μαρόκο': 'ma',
-  'Μεξικό': 'mx',
-  'Νέα Ζηλανδία': 'nz',
-  'Νορβηγία': 'no',
-  'Νότια Αφρική': 'za',
-  'Νότια Κορέα': 'kr',
-  'Ολλανδία': 'nl',
-  'Ουζμπεκιστάν': 'uz',
-  'Ουρουγουάη': 'uy',
-  'Παναμάς': 'pa',
-  'Παραγουάη': 'py',
-  'Πορτογαλία': 'pt',
-  'Πράσινο Ακρωτήριο': 'cv',
-  'Σαουδική Αραβία': 'sa',
-  'Σενεγάλη': 'sn',
-  'Σκωτία': 'gb-sct',
-  'Σουηδία': 'se',
-  'Τουρκία': 'tr',
-  'Τσεχία': 'cz',
-  'Τυνησία': 'tn'
-};
-
-const renderFlag = (teamName) => {
-  const code = countryToFlagCode[teamName];
-  if (!code) return null;
-  return (
-    <img
-      src={`https://flagcdn.com/w40/${code}.png`}
-      srcSet={`https://flagcdn.com/w80/${code}.png 2x`}
-      alt={teamName}
-      style={{
-        width: '24px',
-        height: '16px',
-        objectFit: 'cover',
-        borderRadius: '2px',
-        border: '1px solid rgba(255,255,255,0.15)',
-        verticalAlign: 'middle',
-        flexShrink: 0
-      }}
-    />
-  );
-};
-
-const getStageLabel = (stage) => {
-  switch (stage) {
-    case 'GROUP': return 'ΦΑΣΗ ΟΜΙΛΩΝ';
-    case 'ROUND_OF_32': return 'ΦΑΣΗ ΤΩΝ 32';
-    case 'ROUND_OF_16': return 'ΦΑΣΗ ΤΩΝ 16';
-    case 'QUARTER_FINAL':
-    case 'QUARTERS':
-      return 'ΠΡΟΗΜΙΤΕΛΙΚΟΣ';
-    case 'SEMI_FINAL':
-    case 'SEMIS':
-      return 'ΗΜΙΤΕΛΙΚΟΣ';
-    case 'THIRD_PLACE': return 'ΜΙΚΡΟΣ ΤΕΛΙΚΟΣ';
-    case 'FINAL': return 'ΤΕΛΙΚΟΣ';
-    default: return stage || '';
-  }
-};
-
-const COUNTRIES = [
-  'Αγγλία',
-  'Αίγυπτος',
-  'Αϊτή',
-  'Ακτή Ελεφαντοστού',
-  'Αλγερία',
-  'Αργεντινή',
-  'Αυστραλία',
-  'Αυστρία',
-  'Βέλγιο',
-  'Βοσνία και Ερζεγοβίνη',
-  'Βραζιλία',
-  'Γαλλία',
-  'Γερμανία',
-  'Γκάνα',
-  'Ελβετία',
-  'Ηνωμένες Πολιτείες Αμερικής',
-  'Ιαπωνία',
-  'Ιορδανία',
-  'Ιράκ',
-  'Ιράν',
-  'Ισημερινός',
-  'Ισπανία',
-  'Καναδάς',
-  'Κατάρ',
-  'Κολομβία',
-  'Κουρασάο',
-  'Κροατία',
-  'Λαϊκή Δημοκρατία του Κονγκό',
-  'Μαρόκο',
-  'Μεξικό',
-  'Νέα Ζηλανδία',
-  'Νορβηγία',
-  'Νότια Αφρική',
-  'Νότια Κορέα',
-  'Ολλανδία',
-  'Ουζμπεκιστάν',
-  'Ουρουγουάη',
-  'Παναμάς',
-  'Παραγουάη',
-  'Πορτογαλία',
-  'Πράσινο Ακρωτήριο',
-  'Σαουδική Αραβία',
-  'Σενεγάλη',
-  'Σκωτία',
-  'Σουηδία',
-  'Τουρκία',
-  'Τσεχία',
-  'Τυνησία'
-];
+import { COUNTRIES, Flag, getStageLabel } from '../components/Countries';
 
 const KNOCKOUT_PLACEHOLDERS = [
   'Νικητής Ομίλου Α', 'Δεύτερος Ομίλου Α',
@@ -620,10 +481,10 @@ export default function Admin() {
                   }}>
                     <div style={{ flex: '1', minWidth: '200px' }}>
                       <div style={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                        {renderFlag(match.homeTeam)}
+                        <Flag teamName={match.homeTeam} />
                         <span>{match.homeTeam}</span>
                         <span style={{ color: 'var(--text-muted)', fontWeight: 'normal' }}>vs</span>
-                        {renderFlag(match.awayTeam)}
+                        <Flag teamName={match.awayTeam} />
                         <span>{match.awayTeam}</span>
                       </div>
                       <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
