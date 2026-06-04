@@ -176,23 +176,46 @@ export default function Matches({ user }) {
     }
   };
 
+  // Helper to get local date representing Europe/Athens time fields in local browser timezone
+  const getAthensDate = (date) => {
+    if (!date) return null;
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Europe/Athens',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false
+    });
+    const parts = formatter.formatToParts(date);
+    const val = {};
+    for (const part of parts) {
+      if (part.type !== 'literal') {
+        val[part.type] = parseInt(part.value, 10);
+      }
+    }
+    return new Date(val.year, val.month - 1, val.day, val.hour, val.minute, val.second);
+  };
+
   // Helper to calculate lock status (Kickoff - 5 minutes)
   const isMatchLocked = (match) => {
-    const kickoff = new Date(match.kickoffTime);
+    const kickoff = getAthensDate(new Date(match.kickoffTime));
     const lockTime = new Date(kickoff.getTime() - 5 * 60000);
-    return now > lockTime;
+    return getAthensDate(now) > lockTime;
   };
 
   const isPredictionTooFar = (match) => {
-    const kickoff = new Date(match.kickoffTime);
+    const kickoff = getAthensDate(new Date(match.kickoffTime));
     const openTime = new Date(kickoff.getTime() - 24 * 60 * 60 * 1000);
-    return now < openTime;
+    return getAthensDate(now) < openTime;
   };
 
   // Format countdown string
   const getCountdown = (match) => {
-    const kickoff = new Date(match.kickoffTime);
-    const diffMs = kickoff - now;
+    const kickoff = getAthensDate(new Date(match.kickoffTime));
+    const diffMs = kickoff - getAthensDate(now);
     if (diffMs < 0) return 'Σε εξέλιξη / Live';
 
     const diffMins = Math.floor(diffMs / 60000);

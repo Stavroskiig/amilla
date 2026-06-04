@@ -14,6 +14,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { Avatar, AVATARS } from '../components/Avatars';
+import { Flag } from '../components/Countries';
 
 
 
@@ -887,7 +888,7 @@ export default function Profile({ user, setUser }) {
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingLeft: '30px' }}>
-                    {renderFlag(longTermPred.predictedChampionTeam)}
+                    <Flag teamName={longTermPred.predictedChampionTeam} width={28} height={18} />
                     <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff' }}>
                       {longTermPred.predictedChampionTeam.toUpperCase()}
                     </span>

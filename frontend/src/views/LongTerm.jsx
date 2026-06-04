@@ -70,6 +70,29 @@ export default function LongTerm({ user }) {
     return normalizedCountry.includes(normalizedQuery);
   });
 
+  // Helper to get local date representing Europe/Athens time fields in local browser timezone
+  const getAthensDate = (date) => {
+    if (!date) return null;
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Europe/Athens',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false
+    });
+    const parts = formatter.formatToParts(date);
+    const val = {};
+    for (const part of parts) {
+      if (part.type !== 'literal') {
+        val[part.type] = parseInt(part.value, 10);
+      }
+    }
+    return new Date(val.year, val.month - 1, val.day, val.hour, val.minute, val.second);
+  };
+
   useEffect(() => {
     fetchLongTermInfo();
   }, []);
@@ -117,7 +140,7 @@ export default function LongTerm({ user }) {
           setGroupStageEndTime(groupEnd);
 
           // Lock if current time is past groupEnd
-          if (new Date() > groupEnd) {
+          if (getAthensDate(new Date()) > getAthensDate(groupEnd)) {
             setLocked(true);
             try {
               const othersRes = await fetch('/api/predictions/longterm/all', {
@@ -187,10 +210,12 @@ export default function LongTerm({ user }) {
       );
     }
 
-    const now = new Date();
+    const now = getAthensDate(new Date());
+    const opening = getAthensDate(openingMatchTime);
+    const groupEnd = getAthensDate(groupStageEndTime);
 
     // The current time is before the kickoff of the very first match of the tournament.
-    if (now < openingMatchTime) {
+    if (opening && now < opening) {
       return (
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
           <Zap size={16} style={{ color: '#ffffff' }} />
@@ -200,7 +225,7 @@ export default function LongTerm({ user }) {
     }
 
     // The current time is after the kickoff of the first match but before the kickoff of the first knockout match.
-    if (groupStageEndTime && now < groupStageEndTime) {
+    if (groupEnd && now < groupEnd) {
       return (
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
           <AlertTriangle size={16} style={{ color: '#ffffff' }} />
