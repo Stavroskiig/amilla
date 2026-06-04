@@ -204,11 +204,13 @@ public class MatchService implements ManageMatchUseCase {
                 List<Match> allMatches = matchRepository.findAll();
                 Instant openingKickoff = allMatches.stream()
                         .map(Match::getKickoffTime)
+                        .filter(t -> t != null)
                         .min(Comparator.naturalOrder())
                         .orElse(Instant.now());
                 Instant groupStageEnd = allMatches.stream()
                         .filter(m -> !"GROUP".equalsIgnoreCase(m.getMatchStage()))
                         .map(Match::getKickoffTime)
+                        .filter(t -> t != null)
                         .min(Comparator.naturalOrder())
                         .orElse(Instant.now().plusSeconds(3600 * 24 * 14));
 

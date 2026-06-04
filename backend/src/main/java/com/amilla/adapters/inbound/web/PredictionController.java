@@ -82,6 +82,12 @@ public class PredictionController {
         return ResponseEntity.ok(prediction);
     }
 
+    @GetMapping("/longterm/all")
+    public ResponseEntity<List<LongTermPrediction>> getAllLongTermPredictions() {
+        List<LongTermPrediction> predictions = submitPredictionUseCase.getAllLongTermPredictions();
+        return ResponseEntity.ok(predictions);
+    }
+
     private User getCurrentUser() {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return authenticationUseCase.getUserByEmail(email);

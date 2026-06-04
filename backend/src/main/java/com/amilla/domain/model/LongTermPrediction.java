@@ -19,6 +19,7 @@ import java.util.UUID;
 public class LongTermPrediction {
     private UUID id;
     private UUID userId;
+    private String username;
     private String predictedChampionTeam;
     private Instant submittedAt;
 }

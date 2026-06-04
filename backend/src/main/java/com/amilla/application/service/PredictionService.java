@@ -71,6 +71,7 @@ public class PredictionService implements SubmitPredictionUseCase {
         Instant groupStageEnd = matches.stream()
                 .filter(m -> !"GROUP".equalsIgnoreCase(m.getMatchStage()))
                 .map(Match::getKickoffTime)
+                .filter(t -> t != null)
                 .min(Comparator.naturalOrder())
                 .orElse(Instant.now().plus(30, ChronoUnit.DAYS));
 
@@ -113,5 +114,24 @@ public class PredictionService implements SubmitPredictionUseCase {
     @Override
     public LongTermPrediction getLongTermPrediction(UUID userId) {
         return longTermPredictionRepository.findByUserId(userId).orElse(null);
+    }
+
+    @Override
+    public List<LongTermPrediction> getAllLongTermPredictions() {
+        List<Match> matches = matchRepository.findAll();
+        Instant groupStageEnd = matches.stream()
+                .filter(m -> !"GROUP".equalsIgnoreCase(m.getMatchStage()))
+                .map(Match::getKickoffTime)
+                .filter(t -> t != null)
+                .min(Comparator.naturalOrder())
+                .orElse(Instant.now().plus(30, ChronoUnit.DAYS));
+
+        predictionDomainService.validateOtherLongTermPredictionsVisibility(groupStageEnd, Instant.now());
+
+        List<LongTermPrediction> predictions = longTermPredictionRepository.findAll();
+        for (LongTermPrediction p : predictions) {
+            userRepository.findById(p.getUserId()).ifPresent(user -> p.setUsername(user.getUsername()));
+        }
+        return predictions;
     }
 }

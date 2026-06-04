@@ -28,6 +28,10 @@ export default function Auth({ onLoginSuccess }) {
         setError('Παρακαλώ συμπληρώστε όλα τα πεδία.');
         return;
       }
+      if (password.length < 6) {
+        setError('Ο κωδικός πρόσβασης πρέπει να έχει τουλάχιστον 6 χαρακτήρες!');
+        return;
+      }
     }
 
     setLoading(true);

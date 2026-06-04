@@ -13,4 +13,5 @@ public interface SubmitPredictionUseCase {
     List<Prediction> getPredictionsByUser(UUID userId);
     List<Prediction> getAllPredictionsForMatch(String matchId);
     LongTermPrediction getLongTermPrediction(UUID userId);
+    List<LongTermPrediction> getAllLongTermPredictions();
 }

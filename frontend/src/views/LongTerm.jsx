@@ -136,6 +136,7 @@ export default function LongTerm({ user }) {
   const [error, setError] = useState('');
   const [openingMatchTime, setOpeningMatchTime] = useState(null);
   const [groupStageEndTime, setGroupStageEndTime] = useState(null);
+  const [othersPredictions, setOthersPredictions] = useState([]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -219,19 +220,39 @@ export default function LongTerm({ user }) {
       });
       const matches = await matchRes.json();
       if (matchRes.ok && matches.length > 0) {
-        // Opening kickoff is the minimum kickoff time
-        const opening = new Date(Math.min(...matches.map(m => new Date(m.kickoffTime))));
-        setOpeningMatchTime(opening);
+        const validMatchTimes = matches
+          .map(m => m.kickoffTime ? new Date(m.kickoffTime).getTime() : null)
+          .filter(t => t !== null && !isNaN(t));
+
+        if (validMatchTimes.length > 0) {
+          const opening = new Date(Math.min(...validMatchTimes));
+          setOpeningMatchTime(opening);
+        }
 
         // Group stage end is the kickoff of the first ROUND_OF_16/Knockout match
         const knockouts = matches.filter(m => m.matchStage !== 'GROUP');
-        if (knockouts.length > 0) {
-          const groupEnd = new Date(Math.min(...knockouts.map(m => new Date(m.kickoffTime))));
+        const validKoTimes = knockouts
+          .map(m => m.kickoffTime ? new Date(m.kickoffTime).getTime() : null)
+          .filter(t => t !== null && !isNaN(t));
+
+        if (validKoTimes.length > 0) {
+          const groupEnd = new Date(Math.min(...validKoTimes));
           setGroupStageEndTime(groupEnd);
 
           // Lock if current time is past groupEnd
           if (new Date() > groupEnd) {
             setLocked(true);
+            try {
+              const othersRes = await fetch('/api/predictions/longterm/all', {
+                headers: { 'Authorization': `Bearer ${token}` }
+              });
+              if (othersRes.ok) {
+                const othersData = await othersRes.json();
+                setOthersPredictions(othersData);
+              }
+            } catch (err) {
+              console.error("Failed to fetch all champion predictions:", err);
+            }
           }
         } else {
           // If no knockouts scheduled yet, lock after 30 days from now as backup
@@ -296,7 +317,7 @@ export default function LongTerm({ user }) {
       return (
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
           <Zap size={16} style={{ color: '#ffffff' }} />
-          <span>Αν βρείτε τον πρωταθλητή τώρα, κερδίζετε και τους 10 πόντους!</span>
+          <span>Αν βρείτε τον πρωταθλητή από την αρχή, κερδίζετε και τους 10 πόντους!</span>
         </span>
       );
     }
@@ -617,6 +638,53 @@ export default function LongTerm({ user }) {
           </form>
         )}
       </div>
+
+      {/* Other Users' Long Term Predictions Reveal */}
+      {locked && othersPredictions && othersPredictions.length > 0 && (
+        <div className="glass-card responsive-card-padding animate-fade-in" style={{ padding: '32px', marginTop: '32px' }}>
+          <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Award size={20} className="text-indigo-400" />
+            <span>Προβλέψεις Πρωταθλητή Σογιού</span>
+          </h3>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '20px' }}>
+            Οι προβλέψεις κλείδωσαν! Δείτε ποιον υποστήριξε ο καθένας για την κατάκτηση του κυπέλλου:
+          </p>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+            gap: '16px'
+          }}>
+            {othersPredictions
+              .filter(p => p.userId !== user.id) // Exclude current user since it's already shown above
+              .map((p, idx) => (
+                <div key={idx} className="glass" style={{
+                  padding: '16px',
+                  borderRadius: 'var(--radius-md)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px',
+                  border: '1px solid rgba(255,255,255,0.03)'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{p.username || 'Παίκτης'}</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', paddingLeft: '4px' }}>
+                    {renderFlag(p.predictedChampionTeam)}
+                    <span style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--primary)' }}>
+                      {uppercaseNoAccents(p.predictedChampionTeam)}
+                    </span>
+                  </div>
+                  {p.submittedAt && (
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '6px' }}>
+                      Υποβλήθηκε: {new Date(p.submittedAt).toLocaleDateString('el-GR', { day: '2-digit', month: '2-digit' })} {new Date(p.submittedAt).toLocaleTimeString('el-GR', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                    </div>
+                  )}
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
