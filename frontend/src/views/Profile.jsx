@@ -114,7 +114,7 @@ const HistoryChart = ({ history }) => {
   }
 
   const N = history.length;
-  const paddingLeft = 45;
+  const paddingLeft = 52;
   const paddingRight = 20;
   const paddingTop = 25;
   const paddingBottom = 35;
@@ -163,13 +163,13 @@ const HistoryChart = ({ history }) => {
   }
 
   return (
-    <div className="glass-card responsive-card-padding" style={{ padding: '28px', marginBottom: '32px', position: 'relative' }}>
+    <div className="glass-card responsive-card-padding" style={{ padding: '28px', marginBottom: '32px', position: 'relative', overflow: 'visible' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
         <h3 style={{ fontSize: '1.2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
           <TrendingUp size={18} style={{ color: 'var(--primary)' }} />
           <span>Πορεία στο Τουρνουά</span>
         </h3>
-        
+
         {/* Tab Selector */}
         <div style={{
           display: 'flex',
@@ -215,6 +215,26 @@ const HistoryChart = ({ history }) => {
 
       <div style={{ position: 'relative', width: '100%', overflow: 'visible' }}>
         <svg viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} style={{ width: '100%', height: 'auto', overflow: 'visible' }}>
+          <style>{`
+            .chart-axis-text {
+              font-size: 10px;
+            }
+            .chart-axis-text-x {
+              font-size: 9px;
+              font-weight: 500;
+            }
+            @media (max-width: 767px) {
+              .chart-axis-text {
+                font-size: 18px;
+                font-weight: 700;
+              }
+              .chart-axis-text-x {
+                font-size: 14px;
+                font-weight: 600;
+              }
+            }
+          `}</style>
+
           <defs>
             <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.4" />
@@ -249,12 +269,12 @@ const HistoryChart = ({ history }) => {
                     strokeDasharray="4 4"
                   />
                   <text
-                    x={paddingLeft - 8}
+                    x={paddingLeft - 10}
                     y={y + 4}
                     textAnchor="end"
                     fill="var(--text-muted)"
-                    fontSize="10px"
                     fontFamily="var(--font-body)"
+                    className="chart-axis-text"
                   >
                     {chartType === 'rank' ? `#${val}` : val}
                   </text>
@@ -330,13 +350,13 @@ const HistoryChart = ({ history }) => {
                 {(N <= 8 || idx === 0 || idx === N - 1 || idx === Math.floor(N / 2)) && (
                   <text
                     x={pt.x}
-                    y={paddingTop + chartHeight + 18}
+                    y={paddingTop + chartHeight + 20}
                     textAnchor="middle"
                     fill="var(--text-muted)"
-                    fontSize="9px"
                     fontFamily="var(--font-body)"
+                    className="chart-axis-text-x"
                   >
-                    {`${pt.data.homeTeam.substring(0,3)}-${pt.data.awayTeam.substring(0,3)}`}
+                    {`${pt.data.homeTeam.substring(0, 3)}-${pt.data.awayTeam.substring(0, 3)}`}
                   </text>
                 )}
 
@@ -827,7 +847,7 @@ export default function Profile({ user, setUser }) {
                         {exactScoresCount} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>({Math.round(pctExact)}%)</span>
                       </div>
                       <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Ακριβές Σκορ</div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--success)', fontWeight: 600 }}>+5 ή +6 Πόντοι</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--success)', fontWeight: 600 }}>+5 Πόντοι</div>
                     </div>
                   </div>
 
@@ -839,7 +859,7 @@ export default function Profile({ user, setUser }) {
                         {correctOutcomesCount} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>({Math.round(pctOutcome)}%)</span>
                       </div>
                       <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Σημείο Αγώνα (1Χ2)</div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--warning)', fontWeight: 600 }}>+2 ή +3 Πόντοι</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--warning)', fontWeight: 600 }}>+2 Πόντοι</div>
                     </div>
                   </div>
 
