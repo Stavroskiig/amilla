@@ -25,4 +25,8 @@ public class Match {
     private Integer awayScore90;
     private String qualifiedTeam; // Only populated for Knockout matches
     private String status; // e.g. "SCHEDULED", "LIVE", "FINISHED"
+    private Double homeOdds;
+    private Double drawOdds;
+    private Double awayOdds;
+    private String exactScoreOddsJson; // JSON representation of exact score odds map
 }

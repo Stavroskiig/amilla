@@ -41,6 +41,7 @@ C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\applicat
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\service\DatabaseSeeder.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\service\LeaderboardService.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\service\MatchService.java
+C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\service\OddsSyncService.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\service\PredictionService.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\service\StatsService.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\domain\exception\PredictionsLockedException.java

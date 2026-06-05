@@ -12,12 +12,11 @@ import java.time.Instant;
  */
 public class PointCalculatorService {
 
-    private static final int POINTS_EXACT_SCORE = 5;
-    private static final int POINTS_SIGN_MATCH = 2;
-    private static final int POINTS_QUALIFIER_BONUS = 1;
+    private static final int ODDS_TO_POINTS_MULTIPLIER = 10;
+    private static final int POINTS_QUALIFIER_BONUS = 10;
 
-    private static final int POINTS_LONG_TERM_EARLY = 10;
-    private static final int POINTS_LONG_TERM_LATE = 5;
+    private static final int POINTS_LONG_TERM_EARLY = 50;
+    private static final int POINTS_LONG_TERM_LATE = 25;
 
     /**
      * Calculates the points earned for a single match prediction.
@@ -40,11 +39,13 @@ public class PointCalculatorService {
 
         // 1. Check Exact Score Match
         if (actualHome == predHome && actualAway == predAway) {
-            points += POINTS_EXACT_SCORE;
+            double odds = getExactScoreOdds(match, predHome, predAway);
+            points += (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * odds);
         } 
         // 2. Check Sign Match (Outcome 1X2)
         else if (Integer.signum(actualHome - actualAway) == Integer.signum(predHome - predAway)) {
-            points += POINTS_SIGN_MATCH;
+            double odds = getSignOdds(match, actualHome - actualAway);
+            points += (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * odds);
         }
 
         // 3. Check Qualifier Bonus (Knock-out stage only)
@@ -55,6 +56,40 @@ public class PointCalculatorService {
         }
 
         return points;
+    }
+
+    private double getExactScoreOdds(Match match, int homeScore, int awayScore) {
+        if (match.getExactScoreOddsJson() == null || match.getExactScoreOddsJson().isEmpty()) {
+            return 15.0; // Realistic Fallback for rare scores
+        }
+        try {
+            // Simple parsing to avoid adding Jackson dependency if it's not strictly necessary in domain
+            // format is roughly {"1-0":8.5,"0-1":12.0}
+            String key = "\"" + homeScore + "-" + awayScore + "\":";
+            int idx = match.getExactScoreOddsJson().indexOf(key);
+            if (idx != -1) {
+                int start = idx + key.length();
+                int end = match.getExactScoreOddsJson().indexOf(",", start);
+                if (end == -1) end = match.getExactScoreOddsJson().indexOf("}", start);
+                if (end != -1) {
+                    return Double.parseDouble(match.getExactScoreOddsJson().substring(start, end).trim());
+                }
+            }
+        } catch (Exception e) {
+            // Fallback
+        }
+        return 15.0; // Realistic Fallback for rare scores
+    }
+
+    private double getSignOdds(Match match, int goalDiff) {
+        if (goalDiff > 0 && match.getHomeOdds() != null) {
+            return match.getHomeOdds();
+        } else if (goalDiff == 0 && match.getDrawOdds() != null) {
+            return match.getDrawOdds();
+        } else if (goalDiff < 0 && match.getAwayOdds() != null) {
+            return match.getAwayOdds();
+        }
+        return 1.0; // Fallback
     }
 
     /**

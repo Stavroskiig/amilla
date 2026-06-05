@@ -45,4 +45,16 @@ public class MatchEntity {
 
     @Column(nullable = false)
     private String status; // "SCHEDULED", "LIVE", "FINISHED"
+
+    @Column(name = "home_odds")
+    private Double homeOdds;
+
+    @Column(name = "draw_odds")
+    private Double drawOdds;
+
+    @Column(name = "away_odds")
+    private Double awayOdds;
+
+    @Column(name = "exact_score_odds_json", columnDefinition = "TEXT")
+    private String exactScoreOddsJson;
 }

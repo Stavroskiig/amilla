@@ -1,0 +1,314 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.odds-api.io/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Fetching Odds
+
+> Fetch and compare betting odds from 250+ bookmakers. Covers single events, batch requests, filtering by sport/league, and real-time updates.
+
+## Overview
+
+The Odds-API.io provides several endpoints for fetching odds data from multiple bookmakers. This guide covers best practices and common patterns for working with odds data.
+
+<Note>
+  For an up-to-date list of all supported bookmakers, visit [odds-api.io/sportsbooks](https://odds-api.io/sportsbooks).
+</Note>
+
+## Basic Workflow
+
+1. **Get available sports** - Fetch the list of supported sports
+2. **Get leagues** - Retrieve leagues for your chosen sport
+3. **Get events** - Find upcoming or live events
+4. **Get odds** - Fetch odds from selected bookmakers
+
+## Fetching Odds for a Single Event
+
+Use the `/v3/odds` endpoint to get odds for a specific event:
+
+<CodeGroup>
+  ```javascript JavaScript theme={null}
+  const apiKey = process.env.ODDS_API_KEY;
+  const eventId = 123456;
+  const bookmakers = ['Bet365', 'Unibet', 'SingBet'].join(',');
+
+  const response = await fetch(
+    `https://api.odds-api.io/v3/odds?apiKey=${apiKey}&eventId=${eventId}&bookmakers=${bookmakers}`
+  );
+
+  const data = await response.json();
+  console.log(data);
+  ```
+
+  ```python Python theme={null}
+  import requests
+  import os
+
+  api_key = os.environ['ODDS_API_KEY']
+  event_id = 123456
+  bookmakers = 'Bet365,Unibet,SingBet'
+
+  response = requests.get(
+      'https://api.odds-api.io/v3/odds',
+      params={
+          'apiKey': api_key,
+          'eventId': event_id,
+          'bookmakers': bookmakers
+      }
+  )
+
+  data = response.json()
+  print(data)
+  ```
+
+  ```php PHP theme={null}
+  <?php
+  $apiKey = getenv('ODDS_API_KEY');
+  $eventId = 123456;
+  $bookmakers = 'Bet365,Unibet,SingBet';
+
+  $url = 'https://api.odds-api.io/v3/odds?' . http_build_query([
+      'apiKey' => $apiKey,
+      'eventId' => $eventId,
+      'bookmakers' => $bookmakers
+  ]);
+
+  $response = file_get_contents($url);
+  $data = json_decode($response, true);
+  print_r($data);
+  ```
+</CodeGroup>
+
+## Fetching Odds for Multiple Events
+
+For better efficiency, use the `/v3/odds/multi` endpoint to fetch odds for up to 10 events in a single request:
+
+<CodeGroup>
+  ```javascript JavaScript theme={null}
+  const apiKey = process.env.ODDS_API_KEY;
+  const eventIds = [123456, 123457, 123458].join(',');
+  const bookmakers = ['Bet365', 'Unibet'].join(',');
+
+  const response = await fetch(
+    `https://api.odds-api.io/v3/odds/multi?apiKey=${apiKey}&eventIds=${eventIds}&bookmakers=${bookmakers}`
+  );
+
+  const data = await response.json();
+  // Returns an array of event odds
+  console.log(data);
+  ```
+
+  ```python Python theme={null}
+  import requests
+  import os
+
+  api_key = os.environ['ODDS_API_KEY']
+  event_ids = '123456,123457,123458'
+  bookmakers = 'Bet365,Unibet'
+
+  response = requests.get(
+      'https://api.odds-api.io/v3/odds/multi',
+      params={
+          'apiKey': api_key,
+          'eventIds': event_ids,
+          'bookmakers': bookmakers
+      }
+  )
+
+  data = response.json()
+  # Returns an array of event odds
+  print(data)
+  ```
+</CodeGroup>
+
+<Tip>
+  The multi-odds endpoint counts as only **1 API request** regardless of how many events you fetch (up to 10).
+</Tip>
+
+## Understanding the Odds Response
+
+The odds response includes multiple markets for each bookmaker:
+
+```json theme={null}
+{
+  "id": 123456,
+  "home": "Manchester United",
+  "away": "Liverpool",
+  "date": "2025-10-15T15:00:00Z",
+  "status": "pending",
+  "bookmakers": {
+    "Bet365": [
+      {
+        "name": "ML",
+        "odds": [
+          {
+            "home": "2.10",
+            "draw": "3.40",
+            "away": "3.20"
+          }
+        ],
+        "updatedAt": "2025-10-04T10:30:00Z"
+      },
+      {
+        "name": "Asian Handicap",
+        "odds": [
+          {
+            "hdp": -0.5,
+            "home": "1.95",
+            "away": "1.85"
+          }
+        ]
+      },
+      {
+        "name": "Over/Under",
+        "odds": [
+          {
+            "max": 2.5,
+            "over": "1.90",
+            "under": "1.90"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### Market Types
+
+* **ML** - Match result (Home, Draw, Away)
+* **Spread** - Handicap betting with fractional lines
+* **Totals** - Total goals/points over or under a line
+* **Both Teams to Score** - Yes/No markets
+* **Correct Score** - Exact score predictions
+* **And many more...**
+
+## Finding the Best Odds
+
+Here's an example of comparing odds across bookmakers to find the best value:
+
+```javascript theme={null}
+function findBestOdds(oddsData) {
+  const market = 'ML';
+  const bestOdds = {
+    home: { bookmaker: null, odds: 0, link: null },
+    draw: { bookmaker: null, odds: 0, link: null },
+    away: { bookmaker: null, odds: 0, link: null }
+  };
+
+  for (const [bookmaker, markets] of Object.entries(oddsData.bookmakers)) {
+    const marketML = markets.find(m => m.name === market);
+    if (!marketML?.odds[0]) continue;
+
+    const odds = marketML.odds[0];
+
+    if (parseFloat(odds.home) > bestOdds.home.odds) {
+      bestOdds.home = {
+        bookmaker,
+        odds: parseFloat(odds.home)
+      };
+    }
+
+    if (odds.draw && parseFloat(odds.draw) > bestOdds.draw.odds) {
+      bestOdds.draw = {
+        bookmaker,
+        odds: parseFloat(odds.draw)
+      };
+    }
+
+    if (parseFloat(odds.away) > bestOdds.away.odds) {
+      bestOdds.away = {
+        bookmaker,
+        odds: parseFloat(odds.away)
+      };
+    }
+  }
+
+  return bestOdds;
+}
+
+// Usage
+const bestOdds = findBestOdds(oddsData);
+console.log('Best home odds:', bestOdds.home.odds, 'at', bestOdds.home.bookmaker);
+```
+
+## Getting Updated Odds
+
+For real-time applications, use the `/v3/odds/updated` endpoint to fetch only odds that have changed:
+
+```javascript theme={null}
+const apiKey = process.env.ODDS_API_KEY;
+const since = Math.floor(Date.now() / 1000) - 60; // Last 60 seconds
+const bookmaker = 'Bet365';
+const sport = 'Football';
+
+const response = await fetch(
+  `https://api.odds-api.io/v3/odds/updated?apiKey=${apiKey}&since=${since}&bookmaker=${bookmaker}&sport=${sport}`
+);
+
+const updatedOdds = await response.json();
+```
+
+<Note>
+  The `since` parameter must be a UNIX timestamp no older than 1 minute.
+</Note>
+
+## Caching Strategies
+
+To optimize performance and reduce API calls:
+
+1. **Cache event lists** for 5-10 minutes
+2. **Cache pre-match odds** for 30-60 seconds
+3. **Cache live odds** for 5-10 seconds
+4. **Use updated odds endpoint** for incremental updates
+
+```javascript theme={null}
+// Example caching with Node.js
+const cache = new Map();
+const CACHE_TTL = 60000; // 60 seconds
+
+async function getCachedOdds(eventId) {
+  const cacheKey = `odds:${eventId}`;
+  const cached = cache.get(cacheKey);
+
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    return cached.data;
+  }
+
+  const data = await fetchOdds(eventId);
+  cache.set(cacheKey, { data, timestamp: Date.now() });
+
+  return data;
+}
+```
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Select Only Needed Bookmakers">
+    Select only the most relevant bookmakers for your users. See the [full list of supported bookmakers](https://odds-api.io/sportsbooks).
+  </Accordion>
+
+  <Accordion title="Use Multi-Odds Endpoint">
+    Batch requests using `/v3/odds/multi` to reduce API calls and stay within rate limits.
+  </Accordion>
+
+  <Accordion title="Implement Proper Caching">
+    Cache odds data appropriately based on match status (pre-match vs live).
+  </Accordion>
+
+  <Accordion title="Handle Missing Data Gracefully">
+    Not all bookmakers offer all markets. Always check if data exists before accessing it.
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Value Bets" icon="magnifying-glass-dollar" href="/guides/value-bets">
+    Learn how to identify profitable betting opportunities
+  </Card>
+
+  <Card title="WebSockets" icon="bolt" href="/guides/websockets">
+    Get real-time odds updates via WebSocket connections
+  </Card>
+</CardGroup>
