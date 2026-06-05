@@ -140,6 +140,10 @@ public class MatchService implements ManageMatchUseCase {
         for (User user : users) {
             user.setTotalPoints(0);
             user.setPreviousRank(null);
+            user.setExactHits(0);
+            user.setCorrectOutcomes(0);
+            user.setLongestStreak(0);
+            user.setCurrentStreak(0);
         }
 
         List<Match> finishedMatches = matchRepository.findAll().stream()
@@ -244,11 +248,12 @@ public class MatchService implements ManageMatchUseCase {
             }
         }
 
-        // Calculate current streaks
+        // Calculate current and longest streaks
         List<Prediction> allPreds = predictionRepository.findAll();
         for (User user : users) {
-            int streak = calculateCurrentStreak(user.getId(), allPreds, finishedMatches);
-            user.setCurrentStreak(streak);
+            int[] streaks = calculateStreaks(user.getId(), allPreds, finishedMatches);
+            user.setCurrentStreak(streaks[0]);
+            user.setLongestStreak(streaks[1]);
         }
 
         // Save users
@@ -272,33 +277,51 @@ public class MatchService implements ManageMatchUseCase {
             users.stream()
                     .filter(u -> u.getId().equals(pred.getUserId()))
                     .findFirst()
-                    .ifPresent(u -> u.setTotalPoints(u.getTotalPoints() + pts));
+                    .ifPresent(u -> {
+                        u.setTotalPoints(u.getTotalPoints() + pts);
+                        
+                        int actualHome = match.getHomeScore90() != null ? match.getHomeScore90() : 0;
+                        int actualAway = match.getAwayScore90() != null ? match.getAwayScore90() : 0;
+                        int predHome = pred.getPredictedHomeScore();
+                        int predAway = pred.getPredictedAwayScore();
+                        
+                        if (actualHome == predHome && actualAway == predAway) {
+                            u.setExactHits((u.getExactHits() != null ? u.getExactHits() : 0) + 1);
+                            u.setCorrectOutcomes((u.getCorrectOutcomes() != null ? u.getCorrectOutcomes() : 0) + 1);
+                        } else if (Integer.signum(actualHome - actualAway) == Integer.signum(predHome - predAway)) {
+                            u.setCorrectOutcomes((u.getCorrectOutcomes() != null ? u.getCorrectOutcomes() : 0) + 1);
+                        }
+                    });
         }
     }
 
-    private int calculateCurrentStreak(UUID userId, List<Prediction> allPredictions, List<Match> finishedMatches) {
+    private int[] calculateStreaks(UUID userId, List<Prediction> allPredictions, List<Match> finishedMatches) {
         List<Prediction> userFinishedPreds = allPredictions.stream()
                 .filter(p -> p.getUserId().equals(userId))
                 .filter(p -> finishedMatches.stream().anyMatch(m -> m.getId().equals(p.getMatchId())))
                 .collect(Collectors.toList());
 
-        // Sort finished predictions by match kickoff time descending (most recent first)
+        // Sort finished predictions by match kickoff time ascending (oldest first)
         userFinishedPreds.sort((p1, p2) -> {
             Match m1 = finishedMatches.stream().filter(m -> m.getId().equals(p1.getMatchId())).findFirst().orElse(null);
             Match m2 = finishedMatches.stream().filter(m -> m.getId().equals(p2.getMatchId())).findFirst().orElse(null);
             if (m1 == null || m2 == null) return 0;
-            return m2.getKickoffTime().compareTo(m1.getKickoffTime());
+            return m1.getKickoffTime().compareTo(m2.getKickoffTime());
         });
 
-        int streak = 0;
+        int currentStreak = 0;
+        int longestStreak = 0;
         for (Prediction pred : userFinishedPreds) {
             if (pred.getPointsEarned() > 0) {
-                streak++;
+                currentStreak++;
+                if (currentStreak > longestStreak) {
+                    longestStreak = currentStreak;
+                }
             } else {
-                break; // streak broken
+                currentStreak = 0; // streak broken
             }
         }
-        return streak;
+        return new int[]{currentStreak, longestStreak};
     }
 
     @Override
@@ -346,6 +369,18 @@ public class MatchService implements ManageMatchUseCase {
             // Update user points
             userRepository.findById(pred.getUserId()).ifPresent(user -> {
                 user.setTotalPoints(user.getTotalPoints() + pts);
+                
+                int actualHome = match.getHomeScore90() != null ? match.getHomeScore90() : 0;
+                int actualAway = match.getAwayScore90() != null ? match.getAwayScore90() : 0;
+                int predHome = pred.getPredictedHomeScore();
+                int predAway = pred.getPredictedAwayScore();
+                
+                if (actualHome == predHome && actualAway == predAway) {
+                    user.setExactHits((user.getExactHits() != null ? user.getExactHits() : 0) + 1);
+                    user.setCorrectOutcomes((user.getCorrectOutcomes() != null ? user.getCorrectOutcomes() : 0) + 1);
+                } else if (Integer.signum(actualHome - actualAway) == Integer.signum(predHome - predAway)) {
+                    user.setCorrectOutcomes((user.getCorrectOutcomes() != null ? user.getCorrectOutcomes() : 0) + 1);
+                }
                 userRepository.save(user);
             });
         }
@@ -358,8 +393,9 @@ public class MatchService implements ManageMatchUseCase {
                 .collect(Collectors.toList());
 
         for (User user : allUsers) {
-            int streak = calculateCurrentStreak(user.getId(), allPreds, allFinishedMatches);
-            user.setCurrentStreak(streak);
+            int[] streaks = calculateStreaks(user.getId(), allPreds, allFinishedMatches);
+            user.setCurrentStreak(streaks[0]);
+            user.setLongestStreak(streaks[1]);
             userRepository.save(user);
         }
 

@@ -18,7 +18,7 @@ export default function LongTerm({ user }) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const { data: infoData, isLoading: infoLoading } = useLongTermInfo();
-  const { data: othersPredictions } = useAllLongTermPredictions();
+  const { data: othersPredictions } = useAllLongTermPredictions(locked);
   const { mutate: submitPrediction, isPending: submitting } = useSubmitLongTermPrediction();
 
   // Greek normalization utility for accent-insensitive search

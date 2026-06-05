@@ -7,6 +7,7 @@ import Leaderboard from './views/Leaderboard';
 import LongTerm from './views/LongTerm';
 import Admin from './views/Admin';
 import Profile from './views/Profile';
+import Stats from './views/Stats';
 
 function AppContent({ user, setUser, onLogout }) {
   const location = useLocation();
@@ -36,6 +37,10 @@ function AppContent({ user, setUser, onLogout }) {
           <Route 
             path="/profile" 
             element={user ? <Profile user={user} setUser={setUser} /> : <Navigate to="/auth" />} 
+          />
+          <Route 
+            path="/stats" 
+            element={user ? <Stats user={user} /> : <Navigate to="/auth" />} 
           />
           <Route 
             path="/admin" 

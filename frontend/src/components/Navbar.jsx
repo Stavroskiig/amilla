@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Trophy, LogOut, Calendar, ShieldAlert, Award, Compass, User } from 'lucide-react';
+import { Trophy, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart } from 'lucide-react';
 
 import { Avatar } from './Avatars';
 
@@ -47,6 +47,14 @@ export default function Navbar({ user, onLogout }) {
           >
             <Award size={18} />
             <span>Πρωταθλητής</span>
+          </NavLink>
+
+          <NavLink
+            to="/stats"
+            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          >
+            <PieChart size={18} />
+            <span>Στατιστικά</span>
           </NavLink>
 
           {isAdmin && (
@@ -103,6 +111,14 @@ export default function Navbar({ user, onLogout }) {
         >
           <Award size={20} />
           <span>Πρωταθλητής</span>
+        </NavLink>
+
+        <NavLink
+          to="/stats"
+          className={({ isActive }) => `mobile-bottom-link ${isActive ? 'active' : ''}`}
+        >
+          <PieChart size={20} />
+          <span>Στατιστικά</span>
         </NavLink>
 
         <NavLink

@@ -25,4 +25,7 @@ public class User {
     private String avatar;
     private Integer previousRank;
     private Integer currentStreak;
+    private Integer longestStreak;
+    private Integer exactHits;
+    private Integer correctOutcomes;
 }

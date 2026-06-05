@@ -116,14 +116,16 @@ export const useLongTermInfo = () => {
   });
 };
 
-export const useAllLongTermPredictions = () => {
+export const useAllLongTermPredictions = (enabled = true) => {
   return useQuery({
     queryKey: ['allLongTermPredictions'],
     queryFn: async () => {
       const res = await fetch('/api/predictions/longterm/all', { headers: getAuthHeaders() });
       if (!res.ok) throw new Error('Σφάλμα φόρτωσης προβλέψεων πρωταθλητή');
       return res.json();
-    }
+    },
+    enabled,
+    retry: false
   });
 };
 

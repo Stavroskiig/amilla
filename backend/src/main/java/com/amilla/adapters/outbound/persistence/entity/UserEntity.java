@@ -41,6 +41,19 @@ public class UserEntity {
     @Column(name = "previous_rank")
     private Integer previousRank;
 
+    @Builder.Default
     @Column(name = "current_streak")
-    private Integer currentStreak;
+    private Integer currentStreak = 0;
+
+    @Builder.Default
+    @Column(name = "longest_streak")
+    private Integer longestStreak = 0;
+
+    @Builder.Default
+    @Column(name = "exact_hits")
+    private Integer exactHits = 0;
+
+    @Builder.Default
+    @Column(name = "correct_outcomes")
+    private Integer correctOutcomes = 0;
 }

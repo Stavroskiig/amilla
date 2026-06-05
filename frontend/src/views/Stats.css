@@ -1,0 +1,356 @@
+.stats-container {
+  padding: 16px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-bottom: 96px;
+}
+
+.stats-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stats-header-icon {
+  padding: 8px;
+  background: rgba(99, 102, 241, 0.2);
+  border-radius: var(--radius-md);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stats-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.stats-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .stats-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: var(--radius-xl);
+}
+
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 4px;
+}
+
+.stat-icon {
+  opacity: 0.5;
+}
+
+.stats-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (min-width: 1024px) {
+  .stats-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  border-radius: var(--radius-xl);
+}
+
+.chart-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.chart-container {
+  width: 100%;
+  height: 300px;
+}
+
+.stats-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (min-width: 768px) {
+  .stats-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.superlative-card {
+  padding: 24px;
+  border-radius: var(--radius-xl);
+}
+
+.superlative-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.superlative-box {
+  background: rgba(26, 27, 38, 0.5);
+  padding: 16px;
+  border-radius: var(--radius-md);
+}
+
+.superlative-match {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.superlative-team {
+  font-weight: 600;
+}
+
+.superlative-score {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.superlative-avg {
+  font-size: 0.875rem;
+  text-align: center;
+  color: var(--text-muted);
+  margin-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 8px;
+}
+
+.hof-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hof-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(26, 27, 38, 0.5);
+  padding: 12px;
+  border-radius: var(--radius-md);
+}
+
+.hof-info {
+  flex: 1;
+}
+
+.hof-role {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.hof-name {
+  font-weight: 600;
+}
+
+.hof-stat {
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+/* Prediction Matrix Table */
+.matrix-card {
+  margin-top: 32px;
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+}
+
+.matrix-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.matrix-table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.matrix-table th {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  white-space: nowrap;
+}
+
+.matrix-table td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
+  vertical-align: middle;
+}
+
+.matrix-table th:last-child,
+.matrix-table td:last-child {
+  border-right: none;
+}
+
+.matrix-match-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  min-width: 180px;
+}
+
+.matrix-match-teams {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.matrix-match-score {
+  color: var(--primary);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.matrix-match-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.matrix-player-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 80px;
+}
+
+.matrix-player-name {
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.matrix-pred-cell {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.matrix-pred-pts {
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-top: 4px;
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.pts-exact {
+  background: var(--success-glow);
+  color: var(--success);
+}
+
+.pts-correct {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+.pts-miss {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--danger);
+}
+
+.pts-pending {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+}
+
+.cell-exact-hit {
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 8px 4px;
+}
+
+.cell-exact-hit .matrix-pred-cell {
+  color: var(--success);
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}

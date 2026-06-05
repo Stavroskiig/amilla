@@ -68,6 +68,9 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
                 .avatar(entity.getAvatar())
                 .previousRank(entity.getPreviousRank())
                 .currentStreak(entity.getCurrentStreak())
+                .longestStreak(entity.getLongestStreak())
+                .exactHits(entity.getExactHits())
+                .correctOutcomes(entity.getCorrectOutcomes())
                 .build();
     }
 
@@ -83,6 +86,9 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
                 .avatar(domain.getAvatar())
                 .previousRank(domain.getPreviousRank())
                 .currentStreak(domain.getCurrentStreak())
+                .longestStreak(domain.getLongestStreak())
+                .exactHits(domain.getExactHits())
+                .correctOutcomes(domain.getCorrectOutcomes())
                 .build();
     }
 }

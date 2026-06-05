@@ -3,6 +3,7 @@ C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\AuthController.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\AuthResponse.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\AvatarUpdateRequest.java
+C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\GlobalStatsDto.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\LoginRequest.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\LongTermRequest.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\dto\MatchCreateRequest.java
@@ -15,6 +16,7 @@ C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\LeaderboardController.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\MatchController.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\PredictionController.java
+C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\StatsController.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\footballapi\FootballApiAdapter.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\entity\LongTermPredictionEntity.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\entity\MatchEntity.java
@@ -40,6 +42,7 @@ C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\applicat
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\service\LeaderboardService.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\service\MatchService.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\service\PredictionService.java
+C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\application\service\StatsService.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\domain\exception\PredictionsLockedException.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\domain\exception\TournamentStartedException.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\domain\model\LongTermPrediction.java
