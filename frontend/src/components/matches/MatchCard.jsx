@@ -41,6 +41,8 @@ export default function MatchCard({
     matchPred.away !== matchPred.savedAway ||
     matchPred.qualifier !== matchPred.savedQualifier;
 
+  const isValidPrediction = matchPred.home !== '' && matchPred.away !== '';
+
   const handleScoreChange = (matchId, team, val) => {
     const cleanVal = val === '' ? '' : Math.max(0, parseInt(val) || 0);
     setPredictions(prev => ({
@@ -228,7 +230,7 @@ export default function MatchCard({
           ) : !isMatchLocked ? (
             <button
               className="btn btn-primary"
-              disabled={!hasChanges || submitting}
+              disabled={!hasChanges || !isValidPrediction || submitting}
               onClick={handleSubmit}
               style={{ padding: '10px 16px', fontSize: '0.85rem' }}
             >

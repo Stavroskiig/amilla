@@ -28,7 +28,7 @@ export default function PredictionInput({
           <input
             type="number"
             className="score-box"
-            value={matchPred.home}
+            value={matchPred.home ?? ''}
             onChange={(e) => handleScoreChange(match.id, 'home', e.target.value)}
             disabled={disabled}
             placeholder="-"
@@ -37,7 +37,7 @@ export default function PredictionInput({
           <input
             type="number"
             className="score-box"
-            value={matchPred.away}
+            value={matchPred.away ?? ''}
             onChange={(e) => handleScoreChange(match.id, 'away', e.target.value)}
             disabled={disabled}
             placeholder="-"
@@ -49,7 +49,7 @@ export default function PredictionInput({
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: 600 }}>ΠΡΟΚΡΙΣΗ</span>
           <select
-            value={matchPred.qualifier}
+            value={matchPred.qualifier ?? ''}
             onChange={(e) => handleQualifierChange(match.id, e.target.value)}
             disabled={disabled}
             style={{
