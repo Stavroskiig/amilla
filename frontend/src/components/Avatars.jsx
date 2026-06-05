@@ -12,7 +12,8 @@ import {
   Beer, 
   Cat, 
   Ghost,
-  User
+  User,
+  Lock
 } from 'lucide-react';
 
 export const AVATARS = [
@@ -22,7 +23,8 @@ export const AVATARS = [
     description: 'Για αυτούς που ονειρεύονται το χρυσό κύπελλο.',
     gradient: 'linear-gradient(135deg, #fbbf24 0%, #d97706 100%)',
     icon: Trophy,
-    color: '#ffffff'
+    color: '#ffffff',
+    unlockThreshold: 50
   },
   {
     id: 'avatar_2',
@@ -30,7 +32,8 @@ export const AVATARS = [
     description: 'Μάγος της μπάλας, παίζει μόνο με εξωτερικό φάλτσο.',
     gradient: 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)',
     icon: Sparkles,
-    color: '#ffffff'
+    color: '#ffffff',
+    unlockThreshold: 30
   },
   {
     id: 'avatar_3',
@@ -38,7 +41,8 @@ export const AVATARS = [
     description: 'Βλέπει και την παραμικρή λεπτομέρεια, ακόμα και στο ριπλέι.',
     gradient: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
     icon: Glasses,
-    color: '#ffffff'
+    color: '#ffffff',
+    unlockThreshold: 20
   },
   {
     id: 'avatar_4',
@@ -46,7 +50,8 @@ export const AVATARS = [
     description: 'Άμυνα μπετόν αρμέ, 11 παίκτες πίσω από τη σέντρα.',
     gradient: 'linear-gradient(135deg, #3b82f6 0%, #ef4444 100%)',
     icon: Siren,
-    color: '#ffffff'
+    color: '#ffffff',
+    unlockThreshold: 10
   },
   {
     id: 'avatar_5',
@@ -54,7 +59,8 @@ export const AVATARS = [
     description: 'Κερδίζει με αυτογκόλ στο 95\' και κόντρα της κόντρας.',
     gradient: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
     icon: Clover,
-    color: '#ffffff'
+    color: '#ffffff',
+    unlockThreshold: 0
   },
   {
     id: 'avatar_6',
@@ -62,7 +68,8 @@ export const AVATARS = [
     description: 'Ειδικός στις γκέλες και στα απρόβλεπτα στραβοπατήματα.',
     gradient: 'linear-gradient(135deg, #facc15 0%, #ca8a04 100%)',
     icon: Banana,
-    color: '#ffffff'
+    color: '#ffffff',
+    unlockThreshold: 0
   },
   {
     id: 'avatar_7',
@@ -70,7 +77,8 @@ export const AVATARS = [
     description: 'Περνάει η μπάλα ή ο παίκτης, ποτέ και τα δύο μαζί.',
     gradient: 'linear-gradient(135deg, #f43f5e 0%, #be123c 100%)',
     icon: Hammer,
-    color: '#ffffff'
+    color: '#ffffff',
+    unlockThreshold: 0
   },
   {
     id: 'avatar_8',
@@ -78,7 +86,8 @@ export const AVATARS = [
     description: 'Χαλαρός στον πάγκο με φραπέ, βλέπει το ματς σαν προπόνηση.',
     gradient: 'linear-gradient(135deg, #78350f 0%, #451a03 100%)',
     icon: Coffee,
-    color: '#ffffff'
+    color: '#ffffff',
+    unlockThreshold: 0
   },
   {
     id: 'avatar_9',
@@ -86,7 +95,8 @@ export const AVATARS = [
     description: 'Μόνιμος κάτοικος του κουβά των προβλέψεων.',
     gradient: 'linear-gradient(135deg, #6b7280 0%, #374151 100%)',
     icon: Trash,
-    color: '#ffffff'
+    color: '#ffffff',
+    unlockThreshold: 0
   },
   {
     id: 'avatar_10',
@@ -94,7 +104,8 @@ export const AVATARS = [
     description: 'Παίζει μπάλα μόνο στο μπαρ με μπύρες μετά τον αγώνα.',
     gradient: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
     icon: Beer,
-    color: '#ffffff'
+    color: '#ffffff',
+    unlockThreshold: 0
   },
   {
     id: 'avatar_11',
@@ -102,7 +113,8 @@ export const AVATARS = [
     description: 'Αιλουροειδές κάτω από τα δοκάρια, δεν περνάει τίποτα.',
     gradient: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)',
     icon: Cat,
-    color: '#ffffff'
+    color: '#ffffff',
+    unlockThreshold: 40
   },
   {
     id: 'avatar_12',
@@ -110,11 +122,12 @@ export const AVATARS = [
     description: 'Έπαιξε 90 λεπτά αλλά κανείς δεν κατάλαβε ότι ήταν εκεί.',
     gradient: 'linear-gradient(135deg, #94a3b8 0%, #475569 100%)',
     icon: Ghost,
-    color: '#ffffff'
+    color: '#ffffff',
+    unlockThreshold: 0
   }
 ];
 
-export function Avatar({ id, size = 24, style = {}, className = '' }) {
+export function Avatar({ id, size = 24, style = {}, className = '', isLocked = false }) {
   const avatar = AVATARS.find(a => a.id === id);
 
   if (!avatar) {
@@ -148,16 +161,33 @@ export function Avatar({ id, size = 24, style = {}, className = '' }) {
         width: `${size}px`,
         height: `${size}px`,
         borderRadius: '50%',
-        background: avatar.gradient,
+        background: isLocked ? 'rgba(255, 255, 255, 0.05)' : avatar.gradient,
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+        boxShadow: isLocked ? 'none' : '0 2px 8px rgba(0, 0, 0, 0.2)',
+        position: 'relative',
+        filter: isLocked ? 'grayscale(100%) opacity(50%)' : 'none',
         ...style
       }}
-      title={avatar.name}
+      title={isLocked ? `${avatar.name} (Ξεκλειδώνει στους ${avatar.unlockThreshold} πόντους)` : avatar.name}
     >
-      <IconComponent size={size * 0.55} color={avatar.color} />
+      <IconComponent size={size * 0.55} color={isLocked ? '#9ca3af' : avatar.color} />
+      {isLocked && (
+        <div style={{
+          position: 'absolute',
+          bottom: '-2px',
+          right: '-2px',
+          background: 'var(--bg-main)',
+          borderRadius: '50%',
+          padding: '2px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <Lock size={size * 0.25} color="var(--text-muted)" />
+        </div>
+      )}
     </div>
   );
 }
