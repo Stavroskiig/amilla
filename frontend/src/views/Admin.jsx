@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Shield, RefreshCw, Calculator, Save, User as UserIcon, Calendar, Check, AlertCircle, Trash2, Plus, Upload, FileJson } from 'lucide-react';
 import { COUNTRIES, Flag, getStageLabel } from '../components/Countries';
 
@@ -21,6 +22,7 @@ const KNOCKOUT_PLACEHOLDERS = [
 ];
 
 export default function Admin() {
+  const queryClient = useQueryClient();
   const [matches, setMatches] = useState([]);
   const [users, setUsers] = useState([]);
   
@@ -77,6 +79,7 @@ export default function Admin() {
       if (res.ok) {
         alert('Όλοι οι αγώνες και οι προβλέψεις διαγράφηκαν επιτυχώς!');
         fetchAdminData();
+        queryClient.invalidateQueries();
       } else {
         alert('Σφάλμα κατά τη διαγραφή των αγώνων');
       }
@@ -101,6 +104,7 @@ export default function Admin() {
       if (res.ok) {
         alert('Ο αγώνας διαγράφηκε επιτυχώς!');
         fetchAdminData();
+        queryClient.invalidateQueries();
       } else {
         alert('Σφάλμα κατά τη διαγραφή του αγώνα');
       }
@@ -155,6 +159,7 @@ export default function Admin() {
         setSingleMatchId('');
         setSingleKickoff('');
         fetchAdminData();
+        queryClient.invalidateQueries();
         setTimeout(() => setSingleSuccess(false), 3000);
       } else {
         const err = await res.json();
@@ -220,6 +225,7 @@ export default function Admin() {
         setJsonSuccess(true);
         setJsonText('');
         fetchAdminData();
+        queryClient.invalidateQueries();
         setTimeout(() => setJsonSuccess(false), 3000);
       } else {
         const err = await res.json();
@@ -296,6 +302,7 @@ export default function Admin() {
       if (res.ok) {
         alert('Η εισαγωγή από matches-seed.json ολοκληρώθηκε επιτυχώς!');
         fetchAdminData();
+        queryClient.invalidateQueries();
       } else {
         alert('Σφάλμα κατά την εισαγωγή (σημείωση: η εισαγωγή γίνεται μόνο αν η βάση είναι άδεια)');
       }
@@ -317,6 +324,7 @@ export default function Admin() {
       });
       if (res.ok) {
         alert('Υπολογισμός πόντων ολοκληρώθηκε!');
+        queryClient.invalidateQueries();
       } else {
         alert('Σφάλμα υπολογισμού');
       }
@@ -363,6 +371,7 @@ export default function Admin() {
       if (res.ok) {
         alert('Το σκορ αποθηκεύτηκε και οι πόντοι υπολογίστηκαν!');
         fetchAdminData();
+        queryClient.invalidateQueries();
       } else {
         const err = await res.json();
         alert(err.error || 'Σφάλμα αποθήκευσης');
@@ -405,6 +414,7 @@ export default function Admin() {
         setOverrideHome('');
         setOverrideAway('');
         setOverrideQualifier('');
+        queryClient.invalidateQueries();
         setTimeout(() => setOverrideSuccess(false), 3000);
       } else {
         const err = await res.json();
