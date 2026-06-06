@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Trophy, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart } from 'lucide-react';
+import { Trophy, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart, Info } from 'lucide-react';
 
 import { Avatar } from './Avatars';
 
@@ -69,6 +69,14 @@ export default function Navbar({ user, onLogout }) {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <NavLink 
+            to="/rules" 
+            title="Οδηγίες" 
+            style={{ display: 'flex', alignItems: 'center', color: '#ffffff', textDecoration: 'none' }}
+          >
+            <Info size={20} />
+          </NavLink>
+
           <NavLink to="/profile" className="user-badge">
             <Avatar id={user.avatar} size={20} />
             <span>{user.username}</span>

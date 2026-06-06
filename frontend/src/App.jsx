@@ -8,6 +8,7 @@ import LongTerm from './views/LongTerm';
 import Admin from './views/Admin';
 import Profile from './views/Profile';
 import Stats from './views/Stats';
+import Rules from './views/Rules';
 
 function AppContent({ user, setUser, onLogout }) {
   const location = useLocation();
@@ -41,6 +42,10 @@ function AppContent({ user, setUser, onLogout }) {
           <Route 
             path="/stats" 
             element={user ? <Stats user={user} /> : <Navigate to="/auth" />} 
+          />
+          <Route 
+            path="/rules" 
+            element={user ? <Rules /> : <Navigate to="/auth" />} 
           />
           <Route 
             path="/admin" 
