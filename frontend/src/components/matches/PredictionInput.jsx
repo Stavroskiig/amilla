@@ -10,6 +10,11 @@ export default function PredictionInput({
   isKnockout
 }) {
   const disabled = isLocked || isPredictionTooFar;
+  
+  const hScore = matchPred.home !== undefined && matchPred.home !== '' ? parseInt(matchPred.home, 10) : null;
+  const aScore = matchPred.away !== undefined && matchPred.away !== '' ? parseInt(matchPred.away, 10) : null;
+  const hasWinningScore = hScore !== null && aScore !== null && hScore !== aScore;
+  const qualifierDisabled = disabled || hasWinningScore;
 
   return (
     <div className="score-inputs-container" style={{
@@ -63,7 +68,7 @@ export default function PredictionInput({
                 <button
                   key={team}
                   type="button"
-                  disabled={disabled}
+                  disabled={qualifierDisabled}
                   onClick={() => handleQualifierChange(match.id, isSelected ? '' : team)}
                   title={uppercaseNoAccents(team)}
                   style={{
@@ -74,8 +79,8 @@ export default function PredictionInput({
                     borderRadius: '4px',
                     border: isSelected ? '1px solid var(--primary)' : '1px solid transparent',
                     background: isSelected ? 'rgba(99, 102, 241, 0.2)' : 'transparent',
-                    cursor: disabled ? 'not-allowed' : 'pointer',
-                    opacity: disabled && !isSelected ? 0.4 : 1,
+                    cursor: qualifierDisabled ? 'not-allowed' : 'pointer',
+                    opacity: qualifierDisabled && !isSelected ? 0.4 : 1,
                     transition: 'all 0.2s ease'
                   }}
                 >

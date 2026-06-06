@@ -33,10 +33,10 @@ export default function LongTerm({ user }) {
   const filteredCountries = searchQuery === ''
     ? COUNTRIES
     : COUNTRIES.filter((country) => {
-        const normalizedCountry = normalizeGreek(country);
-        const normalizedQuery = normalizeGreek(searchQuery);
-        return normalizedCountry.includes(normalizedQuery);
-      });
+      const normalizedCountry = normalizeGreek(country);
+      const normalizedQuery = normalizeGreek(searchQuery);
+      return normalizedCountry.includes(normalizedQuery);
+    });
 
   useEffect(() => {
     if (infoData) {
@@ -219,7 +219,7 @@ export default function LongTerm({ user }) {
           <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div className="form-group" style={{ position: 'relative' }}>
               <label className="form-label">Η Πρόβλεψή σας</label>
-              
+
               <Combobox value={championTeam} onChange={setChampionTeam} disabled={locked}>
                 <div style={{ position: 'relative' }}>
                   <ComboboxInput
@@ -253,7 +253,7 @@ export default function LongTerm({ user }) {
                     <ChevronDown size={20} color="var(--text-muted)" />
                   </ComboboxButton>
 
-                  <ComboboxOptions 
+                  <ComboboxOptions
                     style={{
                       position: 'absolute',
                       top: 'calc(100% + 4px)',
@@ -384,7 +384,7 @@ export default function LongTerm({ user }) {
         <div className="glass-card responsive-card-padding animate-fade-in" style={{ padding: '32px', marginTop: '32px' }}>
           <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Award size={20} className="text-indigo-400" />
-            <span>Προβλέψεις Πρωταθλητή Σογιού</span>
+            <span>Προβλέψεις Πρωταθλητή Αντιπάλων</span>
           </h3>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '20px' }}>
             Οι προβλέψεις κλείδωσαν! Δείτε ποιον υποστήριξε ο καθένας για την κατάκτηση του κυπέλλου:

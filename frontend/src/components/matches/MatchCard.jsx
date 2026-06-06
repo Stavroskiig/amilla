@@ -45,13 +45,30 @@ export default function MatchCard({
 
   const handleScoreChange = (matchId, team, val) => {
     const cleanVal = val === '' ? '' : Math.max(0, parseInt(val) || 0);
-    setPredictions(prev => ({
-      ...prev,
-      [matchId]: {
-        ...prev[matchId],
-        [team]: cleanVal
+    
+    setPredictions(prev => {
+      const currentPred = prev[matchId] || {};
+      const newHome = team === 'home' ? cleanVal : currentPred.home;
+      const newAway = team === 'away' ? cleanVal : currentPred.away;
+      
+      let newQualifier = currentPred.qualifier;
+      
+      if (isKnockout) {
+        if (newHome !== '' && newAway !== '' && newHome !== newAway) {
+          // Winning score, auto-select winner
+          newQualifier = newHome > newAway ? match.homeTeam : match.awayTeam;
+        }
       }
-    }));
+
+      return {
+        ...prev,
+        [matchId]: {
+          ...currentPred,
+          [team]: cleanVal,
+          qualifier: newQualifier
+        }
+      };
+    });
   };
 
   const handleQualifierChange = (matchId, val) => {

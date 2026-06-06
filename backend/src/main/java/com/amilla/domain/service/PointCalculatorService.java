@@ -33,26 +33,43 @@ public class PointCalculatorService {
         int predHome = prediction.getPredictedHomeScore();
         int predAway = prediction.getPredictedAwayScore();
 
-        // 1. Check Exact Score Match
-        if (actualHome == predHome && actualAway == predAway) {
+        boolean isKnockout = !"GROUP".equalsIgnoreCase(match.getMatchStage());
+        boolean gotExactScore = actualHome == predHome && actualAway == predAway;
+        boolean gotSign = Integer.signum(actualHome - actualAway) == Integer.signum(predHome - predAway);
+        
+        boolean predictedDraw = predHome == predAway;
+        boolean correctlyPredictedQualifier = isKnockout && match.getQualifiedTeam() != null && match.getQualifiedTeam().equalsIgnoreCase(prediction.getPredictedQualifier());
+
+        int scorePoints = 0;
+        int advancePoints = 0;
+
+        if (gotExactScore) {
             double odds = getExactScoreOdds(match, predHome, predAway);
-            points += (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * odds);
-        }
-        // 2. Check Sign Match (Outcome 1X2)
-        else if (Integer.signum(actualHome - actualAway) == Integer.signum(predHome - predAway)) {
+            scorePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * odds);
+        } else if (gotSign) {
             double odds = getSignOdds(match, actualHome - actualAway);
-            points += (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * odds);
+            scorePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * odds);
         }
 
-        // 3. Check Qualifier Bonus (Knock-out stage only)
-        if (!"GROUP".equalsIgnoreCase(match.getMatchStage()) && match.getQualifiedTeam() != null) {
-            if (match.getQualifiedTeam().equalsIgnoreCase(prediction.getPredictedQualifier())) {
+        if (isKnockout && correctlyPredictedQualifier) {
+            if (predictedDraw) {
+                // If they predicted a draw, they get both score points (if any) and advance points
                 double advanceOdds = getAdvanceOdds(match, prediction.getPredictedQualifier());
-                points += (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
+                advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
+            } else {
+                // They predicted a 90-min win. Advance team was auto-selected.
+                if (scorePoints > 0) {
+                    // Their predicted team won in 90 mins. No double dipping.
+                    advancePoints = 0;
+                } else {
+                    // Consolation: They missed 90-min score/sign, but their auto-selected team advanced anyway.
+                    double advanceOdds = getAdvanceOdds(match, prediction.getPredictedQualifier());
+                    advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
+                }
             }
         }
 
-        return points;
+        return scorePoints + advancePoints;
     }
 
     private double getExactScoreOdds(Match match, int homeScore, int awayScore) {

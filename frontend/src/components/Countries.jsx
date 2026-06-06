@@ -44,7 +44,9 @@ export const countryToFlagCode = {
   'Σουηδία': 'se',
   'Τουρκία': 'tr',
   'Τσεχία': 'cz',
-  'Τυνησία': 'tn'
+  'Τυνησία': 'tn',
+  'Ηνωμένες Πολιτείες Αμερικής': 'us',
+  'ΗΠΑ': 'us'
 };
 
 // Dynamically generate sorted array of country names for selection lists

@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  PieChart, Pie, Cell, Tooltip as RechartsTooltip, Legend, ResponsiveContainer,
-  BarChart, Bar, XAxis, YAxis, CartesianGrid
-} from 'recharts';
 import { Avatar } from '../components/Avatars';
+import { Flag } from '../components/Countries';
 import { TrendingUp, Award, BarChart2, Zap, Target, Flame } from 'lucide-react';
 import './Stats.css';
 
@@ -49,12 +46,17 @@ export default function Stats({ user }) {
 
   const COLORS = ['#6366f1', '#ec4899', '#10b981', '#f59e0b', '#3b82f6', '#8b5cf6', '#ef4444', '#14b8a6'];
 
+  const exactCount = stats.totalExactScores || 0;
+  const correctSignCount = Math.max(0, (stats.totalCorrectResults || 0) - exactCount);
+  const missCount = stats.totalMisses || 0;
+
   const accuracyData = [
-    { name: 'Ακριβές Σκορ', value: stats.totalExactScores || 0 },
-    { name: 'Σωστό Αποτέλεσμα', value: stats.totalCorrectResults || 0 },
-    { name: 'Λάθος', value: stats.totalMisses || 0 }
+    { name: 'Ακριβές Σκορ', value: exactCount },
+    { name: 'Σωστό Αποτέλεσμα', value: correctSignCount },
+    { name: 'Λάθος', value: missCount }
   ];
   const ACCURACY_COLORS = ['#10b981', '#3b82f6', '#ef4444'];
+  const totalAccuracy = accuracyData.reduce((acc, cur) => acc + cur.value, 0);
 
   return (
     <div className="stats-container animate-fade-in">
@@ -62,7 +64,7 @@ export default function Stats({ user }) {
         <div className="stats-header-icon">
           <BarChart2 size={28} />
         </div>
-        <h1 className="stats-title">Στατιστικά Κοινότητας</h1>
+        <h1 className="stats-title">Συνολικά Στατιστικά</h1>
       </div>
 
       {/* Global Averages Section */}
@@ -98,59 +100,80 @@ export default function Stats({ user }) {
       </div>
 
       <div className="stats-grid-2">
-        
+
         {/* Charts Section */}
         <div className="glass chart-card">
-          <h2 className="chart-title">Πρόβλεψη Νικητή (Κοινότητα)</h2>
+          <h2 className="chart-title">Πρόβλεψη Νικητή</h2>
           {championData.length > 0 ? (
-            <div className="chart-container">
-              <ResponsiveContainer width="100%" height={300} minWidth={0} minHeight={0}>
-                <PieChart>
-                  <Pie
-                    data={championData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {championData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <RechartsTooltip formatter={(value) => `${value}%`} contentStyle={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border-color)', color: '#fff' }} />
-                  <Legend verticalAlign="bottom" height={36} />
-                </PieChart>
-              </ResponsiveContainer>
+            <div className="custom-bars-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '16px' }}>
+              {championData.map((entry, index) => (
+                <div key={entry.name} className="custom-bar-item" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Flag teamName={entry.name} width={24} height={16} />
+                      <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{entry.name}</span>
+                    </div>
+                    <span style={{ fontWeight: 700, color: COLORS[index % COLORS.length] }}>{entry.value}%</span>
+                  </div>
+                  <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
+                    <div 
+                      style={{ 
+                        height: '100%', 
+                        width: `${entry.value}%`, 
+                        background: COLORS[index % COLORS.length],
+                        borderRadius: '4px',
+                        transition: 'width 1s ease-out'
+                      }} 
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>Δεν υπάρχουν δεδομένα</div>
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', minHeight: '200px' }}>Δεν υπάρχουν δεδομένα</div>
           )}
         </div>
 
         <div className="glass chart-card">
           <h2 className="chart-title">Συνολικό Ποσοστό Επιτυχίας</h2>
-          <div className="chart-container">
-            <ResponsiveContainer width="100%" height={300} minWidth={0} minHeight={0}>
-              <PieChart>
-                <Pie
-                  data={accuracyData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={100}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {accuracyData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={ACCURACY_COLORS[index % ACCURACY_COLORS.length]} />
-                  ))}
-                </Pie>
-                <RechartsTooltip formatter={(value) => `${value} προβλέψεις`} contentStyle={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border-color)', color: '#fff' }} />
-                <Legend verticalAlign="bottom" height={36} />
-              </PieChart>
-            </ResponsiveContainer>
+          <div className="accuracy-container" style={{ marginTop: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
+            {totalAccuracy > 0 ? (
+              <>
+                <div style={{ display: 'flex', width: '100%', height: '16px', borderRadius: '8px', overflow: 'hidden', marginBottom: '24px' }}>
+                  {accuracyData.map((entry, index) => {
+                    if (entry.value === 0) return null;
+                    const pct = (entry.value / totalAccuracy) * 100;
+                    return (
+                      <div 
+                        key={entry.name} 
+                        style={{ 
+                          width: `${pct}%`, 
+                          height: '100%', 
+                          backgroundColor: ACCURACY_COLORS[index % ACCURACY_COLORS.length],
+                          transition: 'width 1s ease-out'
+                        }} 
+                        title={`${entry.name}: ${entry.value}`}
+                      />
+                    );
+                  })}
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
+                  {accuracyData.map((entry, index) => {
+                    const pct = totalAccuracy > 0 ? ((entry.value / totalAccuracy) * 100).toFixed(1) : 0;
+                    return (
+                      <div key={entry.name} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ width: '14px', height: '14px', borderRadius: '50%', backgroundColor: ACCURACY_COLORS[index % ACCURACY_COLORS.length] }}></div>
+                        <span style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>
+                          {entry.name} <strong style={{ color: 'var(--text-primary)', marginLeft: '4px' }}>{entry.value}</strong> <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>({pct}%)</span>
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', minHeight: '200px' }}>Δεν υπάρχουν δεδομένα</div>
+            )}
           </div>
         </div>
 
@@ -158,7 +181,7 @@ export default function Stats({ user }) {
 
       {/* Superlatives Section */}
       <div className="stats-grid-3">
-        
+
         {/* Match Superlatives */}
         <div className="glass superlative-card">
           <h2 className="superlative-title" style={{ color: '#818cf8' }}>
@@ -228,9 +251,9 @@ export default function Stats({ user }) {
                 </div>
               </div>
             )}
-            
+
             {!stats.theOracle && !stats.mrConsistent && (
-               <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Η κατάταξη μορφοποιείται...</p>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Η κατάταξη μορφοποιείται...</p>
             )}
           </div>
         </div>
@@ -272,7 +295,7 @@ export default function Stats({ user }) {
                           <span>{match.awayTeam}</span>
                         </div>
                         <div className="matrix-match-meta">
-                          {new Date(match.kickoffTime).toLocaleDateString('el-GR', { day: '2-digit', month: '2-digit' })} • 
+                          {new Date(match.kickoffTime).toLocaleDateString('el-GR', { day: '2-digit', month: '2-digit' })} •
                           <span style={{ color: match.status === 'FINISHED' ? 'var(--success)' : 'var(--warning)' }}>
                             {match.status === 'FINISHED' ? 'Τελικό' : 'Σε εξέλιξη'}
                           </span>
@@ -281,20 +304,29 @@ export default function Stats({ user }) {
                     </td>
                     {stats.predictionMatrix.players.map(player => {
                       const pred = match.predictions[player.id];
-                      
+
                       if (!pred) {
                         return <td key={player.id}><span style={{ color: 'var(--text-muted)' }}>-</span></td>;
                       }
 
                       let ptsClass = 'pts-pending';
                       let isExact = false;
-                      if (pred.pointsEarned != null) {
-                        if (pred.pointsEarned >= 5) {
-                          ptsClass = 'pts-exact';
-                          isExact = true;
+                      if (pred.pointsEarned != null && match.status === 'FINISHED') {
+                        let isCorrectSign = false;
+                        if (match.homeScore != null && match.awayScore != null) {
+                          if (pred.homeScore === match.homeScore && pred.awayScore === match.awayScore) {
+                            isExact = true;
+                          }
+                          isCorrectSign = Math.sign(match.homeScore - match.awayScore) === Math.sign(pred.homeScore - pred.awayScore);
                         }
-                        else if (pred.pointsEarned > 0) ptsClass = 'pts-correct';
-                        else ptsClass = 'pts-miss';
+
+                        if (isExact) {
+                          ptsClass = 'pts-exact';
+                        } else if (isCorrectSign) {
+                          ptsClass = 'pts-correct';
+                        } else {
+                          ptsClass = 'pts-miss';
+                        }
                       }
 
                       return (
