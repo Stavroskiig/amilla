@@ -55,6 +55,12 @@ public class MatchEntity {
     @Column(name = "away_odds")
     private Double awayOdds;
 
+    @Column(name = "home_advance_odds")
+    private Double homeAdvanceOdds;
+
+    @Column(name = "away_advance_odds")
+    private Double awayAdvanceOdds;
+
     @Column(name = "exact_score_odds_json", columnDefinition = "TEXT")
     private String exactScoreOddsJson;
 }

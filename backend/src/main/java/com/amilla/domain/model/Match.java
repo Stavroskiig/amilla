@@ -28,5 +28,7 @@ public class Match {
     private Double homeOdds;
     private Double drawOdds;
     private Double awayOdds;
+    private Double homeAdvanceOdds;
+    private Double awayAdvanceOdds;
     private String exactScoreOddsJson; // JSON representation of exact score odds map
 }

@@ -9,6 +9,7 @@ export default function LongTerm({ user }) {
   const [championTeam, setChampionTeam] = useState('');
   const [savedChampionTeam, setSavedChampionTeam] = useState('');
   const [submittedAt, setSubmittedAt] = useState(null);
+  const [championOdds, setChampionOdds] = useState(null);
   const [locked, setLocked] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -43,6 +44,7 @@ export default function LongTerm({ user }) {
         setChampionTeam(infoData.pred.predictedChampionTeam);
         setSavedChampionTeam(infoData.pred.predictedChampionTeam);
         setSubmittedAt(infoData.pred.submittedAt);
+        setChampionOdds(infoData.pred.championOdds);
       }
 
       const matches = infoData.matches;
@@ -87,6 +89,7 @@ export default function LongTerm({ user }) {
       onSuccess: (data) => {
         setSavedChampionTeam(data.predictedChampionTeam);
         setSubmittedAt(data.submittedAt);
+        setChampionOdds(data.championOdds);
         setSuccess(true);
         setTimeout(() => setSuccess(false), 3000);
       },
@@ -101,7 +104,7 @@ export default function LongTerm({ user }) {
       return (
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
           <HelpCircle size={16} style={{ color: '#ffffff' }} />
-          <span>10 πόντοι (Πρώιμη) / 5 πόντοι (Κατά τη διάρκεια ομίλων)</span>
+          <span>Απόδοση × 20 (Πρώιμη) / Απόδοση × 10 (Κατά τη διάρκεια ομίλων)</span>
         </span>
       );
     }
@@ -114,7 +117,7 @@ export default function LongTerm({ user }) {
       return (
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
           <Zap size={16} style={{ color: '#ffffff' }} />
-          <span>Βρείτε τον πρωταθλητή τώρα, κερδίζετε 10 πόντους!</span>
+          <span>Βρείτε τον πρωταθλητή τώρα, κερδίζετε Απόδοση × 20 πόντους!</span>
         </span>
       );
     }
@@ -123,7 +126,7 @@ export default function LongTerm({ user }) {
       return (
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
           <AlertTriangle size={16} style={{ color: '#ffffff' }} />
-          <span>Επιτρέπεται αλλαγή, αλλά με κόστος 5 πόντους.</span>
+          <span>Επιτρέπεται αλλαγή, αλλά με κέρδος Απόδοση × 10 πόντους.</span>
         </span>
       );
     }
@@ -172,8 +175,8 @@ export default function LongTerm({ user }) {
             <span>Κανόνες Βαθμολογίας Πρωταθλητή</span>
           </h4>
           <ul style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '6px', color: 'var(--text-muted)' }}>
-            <li>Υποβολή <strong>πριν τη σέντρα του 1ου αγώνα</strong>: <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>+10 Πόντοι</span></li>
-            <li>Υποβολή/Αλλαγή <strong>κατά τη φάση των ομίλων</strong>: <span style={{ color: 'var(--warning)', fontWeight: 'bold' }}>+5 Πόντοι</span></li>
+            <li>Υποβολή <strong>πριν τη σέντρα του 1ου αγώνα</strong>: <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>Απόδοση × 20 Πόντοι</span></li>
+            <li>Υποβολή/Αλλαγή <strong>κατά τη φάση των ομίλων</strong>: <span style={{ color: 'var(--warning)', fontWeight: 'bold' }}>Απόδοση × 10 Πόντοι</span></li>
             <li>Μετά το τέλος των ομίλων, η πρόβλεψη κλειδώνει.</li>
           </ul>
         </div>
@@ -352,6 +355,11 @@ export default function LongTerm({ user }) {
                 {submittedAt && (
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                     Υποβλήθηκε: {new Date(submittedAt).toLocaleString('el-GR', { timeZone: 'Europe/Athens', hour12: false })}
+                    {championOdds && (
+                      <span style={{ marginLeft: '10px', color: 'var(--success)', fontWeight: 'bold' }}>
+                        (Απόδοση: {championOdds.toFixed(2)})
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
@@ -406,6 +414,11 @@ export default function LongTerm({ user }) {
                     <span style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--primary)' }}>
                       {uppercaseNoAccents(p.predictedChampionTeam)}
                     </span>
+                    {p.championOdds && (
+                      <span style={{ fontSize: '0.9rem', color: 'var(--warning)', fontWeight: 700, marginLeft: 'auto' }}>
+                        @{p.championOdds.toFixed(2)}
+                      </span>
+                    )}
                   </div>
                   {p.submittedAt && (
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '6px' }}>

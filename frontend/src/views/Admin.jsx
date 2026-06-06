@@ -29,6 +29,7 @@ export default function Admin() {
   // Scoring state
   const [matchScores, setMatchScores] = useState({});
   const [syncing, setSyncing] = useState(false);
+  const [syncingOdds, setSyncingOdds] = useState(false);
   const [recalculating, setRecalculating] = useState(false);
   const [savingMatchId, setSavingMatchId] = useState(null);
 
@@ -314,6 +315,29 @@ export default function Admin() {
     }
   };
 
+  const handleSyncOdds = async () => {
+    setSyncingOdds(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('/api/admin/odds/sync', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        alert('Η συγχρονισμός αποδόσεων ολοκληρώθηκε επιτυχώς!');
+        fetchAdminData();
+        queryClient.invalidateQueries();
+      } else {
+        alert('Σφάλμα κατά τον συγχρονισμό αποδόσεων');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Προέκυψε σφάλμα επικοινωνίας');
+    } finally {
+      setSyncingOdds(false);
+    }
+  };
+
   const handleRecalculate = async () => {
     setRecalculating(true);
     try {
@@ -442,6 +466,11 @@ export default function Admin() {
         <button className="btn btn-primary" onClick={handleSeed} disabled={syncing}>
           <RefreshCw size={18} className={syncing ? 'animate-spin' : ''} />
           <span>{syncing ? 'Εισαγωγή...' : 'Εισαγωγή από matches-seed.json'}</span>
+        </button>
+
+        <button className="btn btn-primary" onClick={handleSyncOdds} disabled={syncingOdds} style={{ backgroundColor: 'var(--accent-color)' }}>
+          <RefreshCw size={18} className={syncingOdds ? 'animate-spin' : ''} />
+          <span>{syncingOdds ? 'Συγχρονισμός...' : 'Συγχρονισμός Αποδόσεων (Sync Odds)'}</span>
         </button>
 
         <button className="btn btn-secondary" onClick={handleRecalculate} disabled={recalculating}>

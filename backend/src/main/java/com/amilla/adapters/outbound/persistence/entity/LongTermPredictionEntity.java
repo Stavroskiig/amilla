@@ -29,4 +29,7 @@ public class LongTermPredictionEntity {
 
     @Column(name = "submitted_at", nullable = false)
     private Instant submittedAt;
+
+    @Column(name = "champion_odds")
+    private Double championOdds;
 }

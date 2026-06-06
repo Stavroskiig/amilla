@@ -74,6 +74,8 @@ public class MatchPersistenceAdapter implements MatchRepositoryPort {
                 .homeOdds(entity.getHomeOdds())
                 .drawOdds(entity.getDrawOdds())
                 .awayOdds(entity.getAwayOdds())
+                .homeAdvanceOdds(entity.getHomeAdvanceOdds())
+                .awayAdvanceOdds(entity.getAwayAdvanceOdds())
                 .exactScoreOddsJson(entity.getExactScoreOddsJson())
                 .build();
     }
@@ -93,6 +95,8 @@ public class MatchPersistenceAdapter implements MatchRepositoryPort {
                 .homeOdds(domain.getHomeOdds())
                 .drawOdds(domain.getDrawOdds())
                 .awayOdds(domain.getAwayOdds())
+                .homeAdvanceOdds(domain.getHomeAdvanceOdds())
+                .awayAdvanceOdds(domain.getAwayAdvanceOdds())
                 .exactScoreOddsJson(domain.getExactScoreOddsJson())
                 .build();
     }

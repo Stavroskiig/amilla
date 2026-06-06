@@ -1,4 +1,5 @@
 import React from 'react';
+import { Flag } from '../Countries';
 
 export default function OthersPredictionsList({ match, othersPredictions, currentUserId, isKnockout }) {
   if (!othersPredictions || othersPredictions.length === 0) {
@@ -50,10 +51,17 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
                 background: 'rgba(99,102,241,0.1)',
                 padding: '2px 8px',
                 borderRadius: '4px',
-                fontSize: '0.9rem'
+                fontSize: '0.9rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
               }}>
-                {p.predictedHomeScore} - {p.predictedAwayScore}
-                {isKnockout && p.predictedQualifier && ` (${p.predictedQualifier.substring(0, 3)}.)`}
+                <span>{p.predictedHomeScore} - {p.predictedAwayScore}</span>
+                {isKnockout && p.predictedQualifier && (
+                  <span style={{ display: 'flex', alignItems: 'center', marginLeft: '2px' }} title={p.predictedQualifier}>
+                    (<Flag teamName={p.predictedQualifier} width={18} height={12} />)
+                  </span>
+                )}
               </span>
             </div>
           ))}

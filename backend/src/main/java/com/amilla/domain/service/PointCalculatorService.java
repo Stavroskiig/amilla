@@ -13,15 +13,11 @@ import java.time.Instant;
 public class PointCalculatorService {
 
     private static final int ODDS_TO_POINTS_MULTIPLIER = 10;
-    private static final int POINTS_QUALIFIER_BONUS = 10;
-
-    private static final int POINTS_LONG_TERM_EARLY = 50;
-    private static final int POINTS_LONG_TERM_LATE = 25;
 
     /**
      * Calculates the points earned for a single match prediction.
      *
-     * @param match The settled match entity.
+     * @param match      The settled match entity.
      * @param prediction The user's prediction.
      * @return Calculated points.
      */
@@ -41,7 +37,7 @@ public class PointCalculatorService {
         if (actualHome == predHome && actualAway == predAway) {
             double odds = getExactScoreOdds(match, predHome, predAway);
             points += (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * odds);
-        } 
+        }
         // 2. Check Sign Match (Outcome 1X2)
         else if (Integer.signum(actualHome - actualAway) == Integer.signum(predHome - predAway)) {
             double odds = getSignOdds(match, actualHome - actualAway);
@@ -51,7 +47,8 @@ public class PointCalculatorService {
         // 3. Check Qualifier Bonus (Knock-out stage only)
         if (!"GROUP".equalsIgnoreCase(match.getMatchStage()) && match.getQualifiedTeam() != null) {
             if (match.getQualifiedTeam().equalsIgnoreCase(prediction.getPredictedQualifier())) {
-                points += POINTS_QUALIFIER_BONUS;
+                double advanceOdds = getAdvanceOdds(match, prediction.getPredictedQualifier());
+                points += (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
             }
         }
 
@@ -63,22 +60,25 @@ public class PointCalculatorService {
             return 15.0; // Realistic Fallback for rare scores
         }
         try {
-            // Simple parsing to avoid adding Jackson dependency if it's not strictly necessary in domain
+            // Simple parsing to avoid adding Jackson dependency if it's not strictly
+            // necessary in domain
             // format is roughly {"1-0":8.5,"0-1":12.0}
             String key = "\"" + homeScore + "-" + awayScore + "\":";
             int idx = match.getExactScoreOddsJson().indexOf(key);
             if (idx != -1) {
                 int start = idx + key.length();
                 int end = match.getExactScoreOddsJson().indexOf(",", start);
-                if (end == -1) end = match.getExactScoreOddsJson().indexOf("}", start);
+                if (end == -1)
+                    end = match.getExactScoreOddsJson().indexOf("}", start);
                 if (end != -1) {
-                    return Double.parseDouble(match.getExactScoreOddsJson().substring(start, end).trim());
+                    String valueStr = match.getExactScoreOddsJson().substring(start, end).replace("\"", "").trim();
+                    return Double.parseDouble(valueStr);
                 }
             }
         } catch (Exception e) {
             // Fallback
         }
-        return 15.0; // Realistic Fallback for rare scores
+        return 1000.00; // Realistic Fallback for rare scores
     }
 
     private double getSignOdds(Match match, int goalDiff) {
@@ -89,20 +89,30 @@ public class PointCalculatorService {
         } else if (goalDiff < 0 && match.getAwayOdds() != null) {
             return match.getAwayOdds();
         }
+        return 2.0; // Fallback
+    }
+
+    private double getAdvanceOdds(Match match, String predictedQualifier) {
+        if (predictedQualifier != null && predictedQualifier.equalsIgnoreCase(match.getHomeTeam()) && match.getHomeAdvanceOdds() != null) {
+            return match.getHomeAdvanceOdds();
+        } else if (predictedQualifier != null && predictedQualifier.equalsIgnoreCase(match.getAwayTeam()) && match.getAwayAdvanceOdds() != null) {
+            return match.getAwayAdvanceOdds();
+        }
         return 1.0; // Fallback
     }
 
     /**
      * Calculates the points earned for a long-term champion prediction.
      *
-     * @param actualChampion The team that won the tournament.
-     * @param prediction The long-term prediction.
+     * @param actualChampion      The team that won the tournament.
+     * @param prediction          The long-term prediction.
      * @param openingMatchKickoff The kickoff time of the tournament's first match.
-     * @param groupStageEnd The time when the group stage officially ended.
-     * @return Calculated points (10 if submitted before opening match, 5 if submitted during group stage, 0 otherwise).
+     * @param groupStageEnd       The time when the group stage officially ended.
+     * @return Calculated points (10 if submitted before opening match, 5 if
+     *         submitted during group stage, 0 otherwise).
      */
-    public int calculateLongTermPoints(String actualChampion, LongTermPrediction prediction, 
-                                       Instant openingMatchKickoff, Instant groupStageEnd) {
+    public int calculateLongTermPoints(String actualChampion, LongTermPrediction prediction,
+            Instant openingMatchKickoff, Instant groupStageEnd) {
         if (actualChampion == null || prediction == null) {
             return 0;
         }
@@ -116,10 +126,12 @@ public class PointCalculatorService {
             return 0;
         }
 
+        double odds = prediction.getChampionOdds() != null ? prediction.getChampionOdds() : 1.0; // Fallback
+
         if (submittedAt.isBefore(openingMatchKickoff)) {
-            return POINTS_LONG_TERM_EARLY; // Submitted before kickoff of opening match
+            return (int) Math.round(20 * odds); // Submitted before kickoff of opening match
         } else if (submittedAt.isBefore(groupStageEnd)) {
-            return POINTS_LONG_TERM_LATE;  // Submitted during group stage
+            return (int) Math.round(10 * odds); // Submitted during group stage
         }
 
         return 0; // Submitted after group stage ends (disallowed, but safety fallback)

@@ -51,6 +51,7 @@ public class LongTermPredictionPersistenceAdapter implements LongTermPredictionR
                 .userId(entity.getUserId())
                 .predictedChampionTeam(entity.getPredictedChampionTeam())
                 .submittedAt(entity.getSubmittedAt())
+                .championOdds(entity.getChampionOdds())
                 .build();
     }
 
@@ -61,6 +62,7 @@ public class LongTermPredictionPersistenceAdapter implements LongTermPredictionR
                 .userId(domain.getUserId())
                 .predictedChampionTeam(domain.getPredictedChampionTeam())
                 .submittedAt(domain.getSubmittedAt())
+                .championOdds(domain.getChampionOdds())
                 .build();
     }
 }

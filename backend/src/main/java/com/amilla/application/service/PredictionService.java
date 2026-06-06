@@ -77,10 +77,25 @@ public class PredictionService implements SubmitPredictionUseCase {
 
         predictionDomainService.validateLongTermPredictionAllowed(groupStageEnd, Instant.now());
 
+        Double odds = null;
+        try {
+            org.springframework.core.io.ClassPathResource resource = new org.springframework.core.io.ClassPathResource("champion-odds-seed.json");
+            if (resource.exists()) {
+                try (java.io.InputStream is = resource.getInputStream()) {
+                    com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                    java.util.Map<String, Double> championOddsMap = mapper.readValue(is, new com.fasterxml.jackson.core.type.TypeReference<java.util.Map<String, Double>>() {});
+                    odds = championOddsMap.get(championTeam);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to read champion odds: " + e.getMessage());
+        }
+
         LongTermPrediction prediction = LongTermPrediction.builder()
                 .id(UUID.randomUUID())
                 .userId(userId)
                 .predictedChampionTeam(championTeam)
+                .championOdds(odds)
                 .submittedAt(Instant.now())
                 .build();
 

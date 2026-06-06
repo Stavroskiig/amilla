@@ -43,6 +43,8 @@ com\amilla\adapters\inbound\web\dto\LoginRequest.class
 com\amilla\adapters\inbound\web\dto\MatchCreateRequest.class
 com\amilla\domain\model\UserRankHistory.class
 com\amilla\domain\service\PointCalculatorService.class
+com\amilla\application\service\OddsSyncService.class
+com\amilla\application\service\StatsService.class
 com\amilla\ports\outbound\FootballApiPort.class
 com\amilla\adapters\outbound\persistence\entity\UserRankHistoryEntity$UserRankHistoryEntityBuilder.class
 com\amilla\ports\inbound\SubmitPredictionUseCase.class
@@ -86,3 +88,4 @@ com\amilla\domain\service\PredictionDomainService.class
 com\amilla\adapters\inbound\web\dto\GlobalStatsDto$PredictionCellDto.class
 com\amilla\adapters\inbound\web\dto\UserRankHistoryDto$UserRankHistoryDtoBuilder.class
 com\amilla\adapters\outbound\persistence\entity\LongTermPredictionEntity$LongTermPredictionEntityBuilder.class
+com\amilla\application\service\OddsSyncService$1.class

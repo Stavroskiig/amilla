@@ -20,15 +20,23 @@ public class AdminController {
 
     private final ManageMatchUseCase manageMatchUseCase;
     private final UserRepositoryPort userRepository;
+    private final com.amilla.application.service.OddsSyncService oddsSyncService;
 
-    public AdminController(ManageMatchUseCase manageMatchUseCase, UserRepositoryPort userRepository) {
+    public AdminController(ManageMatchUseCase manageMatchUseCase, UserRepositoryPort userRepository, com.amilla.application.service.OddsSyncService oddsSyncService) {
         this.manageMatchUseCase = manageMatchUseCase;
         this.userRepository = userRepository;
+        this.oddsSyncService = oddsSyncService;
     }
 
     @PostMapping("/matches/sync")
     public ResponseEntity<Void> syncMatches() {
         manageMatchUseCase.syncMatchesWithExternalApi();
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/odds/sync")
+    public ResponseEntity<Void> syncOdds() {
+        oddsSyncService.syncOdds();
         return ResponseEntity.ok().build();
     }
 

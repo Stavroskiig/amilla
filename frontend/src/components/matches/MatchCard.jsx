@@ -123,9 +123,9 @@ export default function MatchCard({
   };
 
   return (
-    <div className="glass-card" style={{ padding: '0px' }}>
+    <div className="glass-card" style={{ padding: '0px', overflow: 'visible' }}>
       {/* Match Card Header Banner */}
-      <div className="match-card-header">
+      <div className="match-card-header" style={{ borderTopLeftRadius: 'calc(var(--radius-lg) - 1px)', borderTopRightRadius: 'calc(var(--radius-lg) - 1px)' }}>
         <div className="match-stage-wrapper">
           <span className="badge badge-scheduled match-stage-badge" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {getStageLabel(match.matchStage)}
@@ -292,13 +292,19 @@ export default function MatchCard({
             padding: '10px 24px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            borderBottomLeftRadius: 'calc(var(--radius-lg) - 1px)',
+            borderBottomRightRadius: 'calc(var(--radius-lg) - 1px)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
               <span>Η πρόβλεψή σας: </span>
-              <strong style={{ color: '#ffffff' }}>
-                {matchPred.savedHome} - {matchPred.savedAway}
-                {isKnockout && matchPred.savedQualifier && ` (Πρόκριση: ${matchPred.savedQualifier})`}
+              <strong style={{ color: '#ffffff', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span>{matchPred.savedHome} - {matchPred.savedAway}</span>
+                {isKnockout && matchPred.savedQualifier && (
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: '2px' }} title={matchPred.savedQualifier}>
+                    (<Flag teamName={matchPred.savedQualifier} width={18} height={12} />)
+                  </span>
+                )}
               </strong>
             </div>
 
@@ -324,7 +330,9 @@ export default function MatchCard({
             padding: '10px 24px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            borderBottomLeftRadius: 'calc(var(--radius-lg) - 1px)',
+            borderBottomRightRadius: 'calc(var(--radius-lg) - 1px)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
               <span>Δεν υποβλήθηκε πρόβλεψη</span>
