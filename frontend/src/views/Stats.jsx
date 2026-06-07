@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar } from '../components/Avatars';
-import { Flag } from '../components/Countries';
+import { Flag, getTeamShortName } from '../components/Countries';
 import { TrendingUp, Award, BarChart2, Zap, Target, Flame } from 'lucide-react';
 import './Stats.css';
 
@@ -288,11 +288,17 @@ export default function Stats({ user }) {
                     <td>
                       <div className="matrix-match-cell">
                         <div className="matrix-match-teams">
-                          <span>{match.homeTeam}</span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }} title={match.homeTeam}>
+                            <span>{getTeamShortName(match.homeTeam)}</span>
+                            <Flag teamName={match.homeTeam} width={18} height={13.5} />
+                          </div>
                           <span className="matrix-match-score">
                             {match.homeScore != null ? `${match.homeScore} - ${match.awayScore}` : 'vs'}
                           </span>
-                          <span>{match.awayTeam}</span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }} title={match.awayTeam}>
+                            <Flag teamName={match.awayTeam} width={18} height={13.5} />
+                            <span>{getTeamShortName(match.awayTeam)}</span>
+                          </div>
                         </div>
                         <div className="matrix-match-meta">
                           {new Date(match.kickoffTime).toLocaleDateString('el-GR', { day: '2-digit', month: '2-digit' })} •

@@ -52,6 +52,69 @@ export const countryToFlagCode = {
 // Dynamically generate sorted array of country names for selection lists
 export const COUNTRIES = Object.keys(countryToFlagCode).sort((a, b) => a.localeCompare(b, 'el'));
 
+export const countryToThreeLetter = {
+  'Αίγυπτος': 'ΑΙΓ',
+  'Αγγλία': 'ΑΓΓ',
+  'Ακτή Ελεφαντοστού': 'ΑΚΤ',
+  'Αλγερία': 'ΑΛΓ',
+  'Αργεντινή': 'ΑΡΓ',
+  'Αυστρία': 'ΑΥΣ',
+  'Αυστραλία': 'ΑΥΛ',
+  'Αϊτή': 'ΑΙΤ',
+  'Βέλγιο': 'ΒΕΛ',
+  'Βοσνία και Ερζεγοβίνη': 'ΒΟΣ',
+  'Βραζιλία': 'ΒΡΑ',
+  'Γαλλία': 'ΓΑΛ',
+  'Γερμανία': 'ΓΕΡ',
+  'Γκάνα': 'ΓΚΑ',
+  'Ελβετία': 'ΕΛΒ',
+  'Ιαπωνία': 'ΙΑΠ',
+  'Ιορδανία': 'ΙΟΡ',
+  'Ιράν': 'ΙΡΑ',
+  'Ισπανία': 'ΙΣΠ',
+  'Καναδάς': 'ΚΑΝ',
+  'Κατάρ': 'ΚΑΤ',
+  'Κολομβία': 'ΚΟΛ',
+  'Κουρασάο': 'ΚΟΥ',
+  'Κροατία': 'ΚΡΟ',
+  'Μαρόκο': 'ΜΑΡ',
+  'Μεξικό': 'ΜΕΞ',
+  'Νέα Ζηλανδία': 'Ν.Ζ',
+  'Νορβηγία': 'ΝΟΡ',
+  'Νότια Αφρική': 'Ν.Α',
+  'Νότια Κορέα': 'Ν.Κ',
+  'Ολλανδία': 'ΟΛΛ',
+  'Ουζμπεκιστάν': 'ΟΥΖ',
+  'Ουρουγουάη': 'ΟΥΡ',
+  'Παναμάς': 'ΠΑΝ',
+  'Παραγουάη': 'ΠΑΡ',
+  'Πορτογαλία': 'ΠΟΡ',
+  'Πράσινο Ακρωτήριο': 'Π.Α',
+  'Σαουδική Αραβία': 'Σ.Α',
+  'Σενεγάλη': 'ΣΕΝ',
+  'Σκωτία': 'ΣΚΩ',
+  'Σουηδία': 'ΣΟΥ',
+  'Τουρκία': 'ΤΟΥ',
+  'Τσεχία': 'ΤΣΕ',
+  'Τυνησία': 'ΤΥΝ',
+  'Ηνωμένες Πολιτείες Αμερικής': 'ΗΠΑ',
+  'ΗΠΑ': 'ΗΠΑ'
+};
+
+// Greek uppercase without accents utility (retaining diaeresis)
+export const uppercaseNoAccents = (text) => {
+  if (!text) return '';
+  return text
+    .normalize('NFD')
+    .replace(/[\u0300-\u0307\u0309-\u036f]/g, '')
+    .toUpperCase()
+    .normalize('NFC');
+};
+
+export const getTeamShortName = (teamName) => {
+  return countryToThreeLetter[teamName] || uppercaseNoAccents(teamName).substring(0, 3);
+};
+
 export function Flag({ teamName, width = 24, height = 16, style = {}, className = '' }) {
   const code = countryToFlagCode[teamName];
   if (!code) return null;
@@ -94,12 +157,4 @@ export const getStageLabel = (stage) => {
   }
 };
 
-// Greek uppercase without accents utility (retaining diaeresis)
-export const uppercaseNoAccents = (text) => {
-  if (!text) return '';
-  return text
-    .normalize('NFD')
-    .replace(/[\u0300-\u0307\u0309-\u036f]/g, '')
-    .toUpperCase()
-    .normalize('NFC');
-};
+
