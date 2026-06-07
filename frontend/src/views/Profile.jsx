@@ -33,7 +33,7 @@ export default function Profile({ user, setUser }) {
     );
   }
 
-  const { predictions, matches, rankHistory } = data;
+  const { predictions, matches, rankHistory, longTermPred } = data;
 
   // Stats Calculations
   const totalPredicted = predictions.length;
@@ -53,14 +53,27 @@ export default function Profile({ user, setUser }) {
   let matchPointsEarned = 0;
 
   finishedPredictions.forEach(pred => {
-    const points = pred.pointsEarned;
-    matchPointsEarned += points;
+    matchPointsEarned += pred.pointsEarned || 0;
 
-    if (points === 5 || points === 6) {
+    const match = matches.find(m => m.id === pred.matchId);
+    if (!match || match.homeScore90 == null || match.awayScore90 == null) return;
+
+    const actualHome = match.homeScore90;
+    const actualAway = match.awayScore90;
+    const predHome = pred.predictedHomeScore;
+    const predAway = pred.predictedAwayScore;
+
+    const gotExactScore = actualHome === predHome && actualAway === predAway;
+    const gotSign = Math.sign(actualHome - actualAway) === Math.sign(predHome - predAway);
+    
+    const isKnockout = match.matchStage !== 'GROUP';
+    const correctlyPredictedQualifier = isKnockout && match.qualifiedTeam && match.qualifiedTeam.toLowerCase() === (pred.predictedQualifier || '').toLowerCase();
+
+    if (gotExactScore) {
       exactScoresCount++;
-    } else if (points === 2 || points === 3) {
+    } else if (gotSign) {
       correctOutcomesCount++;
-    } else if (points === 1) {
+    } else if (correctlyPredictedQualifier) {
       qualifierOnlyCount++;
     } else {
       missesCount++;
@@ -81,6 +94,10 @@ export default function Profile({ user, setUser }) {
   const pctOutcome = completedPredictedCount > 0 ? (correctOutcomesCount / completedPredictedCount) * 100 : 0;
   const pctQualifier = completedPredictedCount > 0 ? (qualifierOnlyCount / completedPredictedCount) * 100 : 0;
   const pctMiss = completedPredictedCount > 0 ? (missesCount / completedPredictedCount) * 100 : 0;
+
+  // Longterm points
+  const longtermPointsEarned = longTermPred?.pointsEarned || 0;
+  const hasLongtermWin = longtermPointsEarned > 0;
 
   return (
     <div className="animate-fade-in" style={{ maxWidth: '1000px', margin: '0 auto', paddingBottom: '40px' }}>
@@ -193,7 +210,7 @@ export default function Profile({ user, setUser }) {
           <span>Ανάλυση Αποτελεσμάτων</span>
         </h3>
 
-        {completedPredictedCount === 0 ? (
+        {completedPredictedCount === 0 && !hasLongtermWin ? (
           <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '20px 0' }}>
             Δεν υπάρχουν ακόμα δεδομένα από ολοκληρωμένους αγώνες.
           </p>
@@ -249,7 +266,6 @@ export default function Profile({ user, setUser }) {
                     {exactScoresCount} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>({Math.round(pctExact)}%)</span>
                   </div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Ακριβές Σκορ</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--success)', fontWeight: 600 }}>+5 Πόντοι</div>
                 </div>
               </div>
 
@@ -261,7 +277,6 @@ export default function Profile({ user, setUser }) {
                     {correctOutcomesCount} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>({Math.round(pctOutcome)}%)</span>
                   </div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Σημείο (1X2)</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--warning)', fontWeight: 600 }}>+2 Πόντοι</div>
                 </div>
               </div>
 
@@ -273,7 +288,6 @@ export default function Profile({ user, setUser }) {
                     {qualifierOnlyCount} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>({Math.round(pctQualifier)}%)</span>
                   </div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Μόνο Πρόκριση</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--secondary)', fontWeight: 600 }}>+1 Πόντος</div>
                 </div>
               </div>
 
@@ -285,9 +299,22 @@ export default function Profile({ user, setUser }) {
                     {missesCount} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>({Math.round(pctMiss)}%)</span>
                   </div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Αστοχίες</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--danger)', fontWeight: 600 }}>0 Πόντοι</div>
                 </div>
               </div>
+              
+              {/* Longterm Winner */}
+              {hasLongtermWin && (
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                  <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#eab308', marginTop: '4px', flexShrink: 0 }} />
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '1rem', color: '#ffffff' }}>
+                      1 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}></span>
+                    </div>
+                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Νικητής Διοργάνωσης</div>
+                    <div style={{ fontSize: '0.75rem', color: '#eab308', fontWeight: 600 }}>+{longtermPointsEarned} Πόντοι</div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
