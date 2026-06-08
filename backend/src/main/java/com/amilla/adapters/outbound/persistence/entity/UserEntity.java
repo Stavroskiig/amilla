@@ -56,4 +56,8 @@ public class UserEntity {
     @Builder.Default
     @Column(name = "correct_outcomes")
     private Integer correctOutcomes = 0;
+
+    @Builder.Default
+    @Column(name = "recent_points")
+    private Integer recentPoints = 0;
 }

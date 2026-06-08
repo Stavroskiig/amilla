@@ -144,6 +144,7 @@ public class MatchService implements ManageMatchUseCase {
             user.setCorrectOutcomes(0);
             user.setLongestStreak(0);
             user.setCurrentStreak(0);
+            user.setRecentPoints(0);
         }
 
         List<Match> finishedMatches = matchRepository.findAll().stream()
@@ -160,7 +161,15 @@ public class MatchService implements ManageMatchUseCase {
         // We will build history step-by-step chronologically
         for (int mIdx = 0; mIdx < totalFinished; mIdx++) {
             Match match = finishedMatches.get(mIdx);
-            applyMatchPointsToUsers(match, predictions, users);
+            boolean isLastMatch = (mIdx == totalFinished - 1);
+            
+            if (isLastMatch) {
+                for (User u : users) {
+                    u.setRecentPoints(0);
+                }
+            }
+            
+            applyMatchPointsToUsers(match, predictions, users, isLastMatch);
 
             // If this is the final match, apply long-term prediction points before saving the final rank snapshot
             if ("FINAL".equalsIgnoreCase(match.getMatchStage())) {
@@ -221,7 +230,7 @@ public class MatchService implements ManageMatchUseCase {
         log.info("Recalculation complete.");
     }
 
-    private void applyMatchPointsToUsers(Match match, List<Prediction> predictions, List<User> users) {
+    private void applyMatchPointsToUsers(Match match, List<Prediction> predictions, List<User> users, boolean isLastMatch) {
         List<Prediction> matchPreds = predictions.stream()
                 .filter(p -> p.getMatchId().equals(match.getId()))
                 .collect(Collectors.toList());
@@ -237,6 +246,9 @@ public class MatchService implements ManageMatchUseCase {
                     .findFirst()
                     .ifPresent(u -> {
                         u.setTotalPoints(u.getTotalPoints() + pts);
+                        if (isLastMatch) {
+                            u.setRecentPoints((u.getRecentPoints() != null ? u.getRecentPoints() : 0) + pts);
+                        }
                         
                         int actualHome = match.getHomeScore90() != null ? match.getHomeScore90() : 0;
                         int actualAway = match.getAwayScore90() != null ? match.getAwayScore90() : 0;
@@ -353,11 +365,12 @@ public class MatchService implements ManageMatchUseCase {
     private void settleMatchPoints(Match match) {
         List<Prediction> predictions = predictionRepository.findByMatchId(match.getId());
 
-        // Save current rank before settling this match as previousRank
+        // Save current rank before settling this match as previousRank, and reset recentPoints
         List<User> usersBefore = userRepository.findAllOrderByPointsDesc();
         for (int i = 0; i < usersBefore.size(); i++) {
             User u = usersBefore.get(i);
             u.setPreviousRank(i + 1);
+            u.setRecentPoints(0);
             userRepository.save(u);
         }
 
@@ -369,6 +382,7 @@ public class MatchService implements ManageMatchUseCase {
             // Update user points
             userRepository.findById(pred.getUserId()).ifPresent(user -> {
                 user.setTotalPoints(user.getTotalPoints() + pts);
+                user.setRecentPoints((user.getRecentPoints() != null ? user.getRecentPoints() : 0) + pts);
                 
                 int actualHome = match.getHomeScore90() != null ? match.getHomeScore90() : 0;
                 int actualAway = match.getAwayScore90() != null ? match.getAwayScore90() : 0;

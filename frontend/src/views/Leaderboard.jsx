@@ -86,7 +86,7 @@ export default function Leaderboard({ currentUser }) {
               }}>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
-                <th className="hide-on-mobile" style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΡΟΛΟΣ</th>
+                <th className="hide-on-mobile" style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>ΑΚΡΙΒΗ ΣΚΟΡ</th>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'right' }}>
                   <span className="hide-on-mobile">ΣΥΝΟΛΙΚΟΙ ΠΟΝΤΟΙ</span>
                   <span className="show-on-mobile">ΠΟΝΤΟΙ</span>
@@ -215,21 +215,45 @@ export default function Leaderboard({ currentUser }) {
                         </div>
                       </td>
 
-                      {/* Role */}
-                      <td className="hide-on-mobile" style={{ padding: '18px 24px' }}>
-                        <span style={{
-                          fontSize: '0.8rem',
-                          color: user.role === 'ROLE_ADMIN' ? 'var(--secondary)' : 'var(--text-muted)',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.05em'
-                        }}>
-                          {user.role === 'ROLE_ADMIN' ? 'Admin' : 'ΠΑΙΚΤΗΣ'}
-                        </span>
+                      {/* Exact Hits */}
+                      <td className="hide-on-mobile" style={{ padding: '18px 24px', textAlign: 'center' }}>
+                        <div style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '50%',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          color: 'var(--text-main)',
+                          fontWeight: '600',
+                          fontSize: '0.9rem'
+                        }} title="Ακριβή σκορ">
+                          {user.exactHits || 0}
+                        </div>
                       </td>
 
                       {/* Points */}
                       <td style={{ padding: '18px 24px', textAlign: 'right', fontSize: '1.1rem', fontWeight: 700, color: isSelf ? '#818cf8' : '#ffffff' }}>
-                        {user.totalPoints}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
+                          {user.recentPoints > 0 && (
+                            <span 
+                              title={`Κέρδισε ${user.recentPoints} πόντους στον τελευταίο αγώνα`}
+                              style={{ 
+                                fontSize: '0.75rem', 
+                                color: '#10b981', 
+                                background: 'rgba(16, 185, 129, 0.15)', 
+                                padding: '2px 6px', 
+                                borderRadius: '10px',
+                                fontWeight: 800
+                              }}
+                              className="animate-fade-in"
+                            >
+                              +{user.recentPoints}
+                            </span>
+                          )}
+                          <span>{user.totalPoints}</span>
+                        </div>
                       </td>
                     </tr>
                   );
