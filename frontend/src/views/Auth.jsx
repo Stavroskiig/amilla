@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Compass, LogIn, UserPlus, Mail, Lock, User as UserIcon, Key } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 export default function Auth({ onLoginSuccess }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -39,7 +40,7 @@ export default function Auth({ onLoginSuccess }) {
     try {
       if (isLogin) {
         // Login flow
-        const res = await fetch('/api/auth/login', {
+        const res = await fetch(API_URL + '/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
@@ -52,7 +53,7 @@ export default function Auth({ onLoginSuccess }) {
         navigate('/matches');
       } else {
         // Register flow
-        const res = await fetch('/api/auth/register', {
+        const res = await fetch(API_URL + '/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, email, password, groupCode }),
@@ -61,7 +62,7 @@ export default function Auth({ onLoginSuccess }) {
         if (!res.ok) throw new Error(data.error || 'Σφάλμα εγγραφής');
 
         // Automatically log in after registration
-        const loginRes = await fetch('/api/auth/login', {
+        const loginRes = await fetch(API_URL + '/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),

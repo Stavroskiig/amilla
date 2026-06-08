@@ -4,6 +4,9 @@ import { Flag, getTeamShortName } from '../components/Countries';
 import { TrendingUp, Award, BarChart2, Zap, Target, Flame } from 'lucide-react';
 import './Stats.css';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
+
 export default function Stats({ user }) {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,7 +17,7 @@ export default function Stats({ user }) {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch('/api/stats/global', {
+      const res = await fetch(API_URL + '/api/stats/global', {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
       if (res.ok) {

@@ -3,6 +3,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Shield, RefreshCw, Calculator, Save, User as UserIcon, Calendar, Check, AlertCircle, Trash2, Plus, Upload, FileJson } from 'lucide-react';
 import { COUNTRIES, Flag, getStageLabel } from '../components/Countries';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
+
 const KNOCKOUT_PLACEHOLDERS = [
   'Νικητής Ομίλου Α', 'Δεύτερος Ομίλου Α',
   'Νικητής Ομίλου Β', 'Δεύτερος Ομίλου Β',
@@ -77,7 +80,7 @@ export default function Admin() {
     setClearing(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('/api/admin/matches', {
+      const res = await fetch(API_URL + '/api/admin/matches', {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -102,7 +105,7 @@ export default function Admin() {
     }
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`/api/admin/matches/${matchId}`, {
+      const res = await fetch(`${API_URL}/api/admin/matches/${matchId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -140,7 +143,7 @@ export default function Admin() {
         kickoffTimeStr += '+03:00';
       }
       const kickoffTime = new Date(kickoffTimeStr).toISOString();
-      const res = await fetch('/api/admin/matches', {
+      const res = await fetch(API_URL + '/api/admin/matches', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -217,7 +220,7 @@ export default function Admin() {
       });
 
       const token = localStorage.getItem('token');
-      const res = await fetch('/api/admin/matches/bulk', {
+      const res = await fetch(API_URL + '/api/admin/matches/bulk', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -264,7 +267,7 @@ export default function Admin() {
       const token = localStorage.getItem('token');
 
       // 1. Fetch matches
-      const matchRes = await fetch('/api/matches', {
+      const matchRes = await fetch(API_URL + '/api/matches', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const matchesData = await matchRes.json();
@@ -284,7 +287,7 @@ export default function Admin() {
       }
 
       // 2. Fetch users for override dropdown
-      const userRes = await fetch('/api/admin/users', {
+      const userRes = await fetch(API_URL + '/api/admin/users', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const usersData = await userRes.json();
@@ -300,7 +303,7 @@ export default function Admin() {
     setSyncing(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('/api/admin/matches/seed', {
+      const res = await fetch(API_URL + '/api/admin/matches/seed', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -323,7 +326,7 @@ export default function Admin() {
     setSyncingOdds(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('/api/admin/odds/sync', {
+      const res = await fetch(API_URL + '/api/admin/odds/sync', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -346,7 +349,7 @@ export default function Admin() {
     setRecalculating(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('/api/admin/points/recalculate', {
+      const res = await fetch(API_URL + '/api/admin/points/recalculate', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -382,7 +385,7 @@ export default function Admin() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`/api/admin/matches/${matchId}/score`, {
+      const res = await fetch(`${API_URL}/api/admin/matches/${matchId}/score`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -421,7 +424,7 @@ export default function Admin() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('/api/admin/predictions/override', {
+      const res = await fetch(API_URL + '/api/admin/predictions/override', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
   return {
@@ -14,10 +16,10 @@ export const useProfileStats = (userId) => {
     queryFn: async () => {
       const headers = getAuthHeaders();
       const [predRes, matchRes, ltRes, historyRes] = await Promise.all([
-        fetch('/api/predictions/my', { headers }),
-        fetch('/api/matches', { headers }),
-        fetch('/api/predictions/longterm', { headers }),
-        fetch(`/api/leaderboard/history/user/${userId}`, { headers })
+        fetch(API_URL + '/api/predictions/my', { headers }),
+        fetch(API_URL + '/api/matches', { headers }),
+        fetch(API_URL + '/api/predictions/longterm', { headers }),
+        fetch(`${API_URL}/api/leaderboard/history/user/${userId}`, { headers })
       ]);
 
       const predictions = predRes.ok ? await predRes.json().catch(() => []) : [];
@@ -35,7 +37,7 @@ export const useMatches = () => {
   return useQuery({
     queryKey: ['matches'],
     queryFn: async () => {
-      const res = await fetch('/api/matches', { headers: getAuthHeaders() });
+      const res = await fetch(API_URL + '/api/matches', { headers: getAuthHeaders() });
       if (!res.ok) throw new Error('Σφάλμα φόρτωσης αγώνων');
       return res.json();
     }
@@ -46,7 +48,7 @@ export const useMyPredictions = () => {
   return useQuery({
     queryKey: ['myPredictions'],
     queryFn: async () => {
-      const res = await fetch('/api/predictions/my', { headers: getAuthHeaders() });
+      const res = await fetch(API_URL + '/api/predictions/my', { headers: getAuthHeaders() });
       if (!res.ok) throw new Error('Σφάλμα φόρτωσης προβλέψεων');
       const predsList = await res.json();
       const predsData = {};
@@ -70,7 +72,7 @@ export const useSubmitMatchPrediction = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ matchId, home, away, qualifier }) => {
-      const res = await fetch('/api/predictions/match', {
+      const res = await fetch(API_URL + '/api/predictions/match', {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify({
@@ -97,8 +99,8 @@ export const useLongTermInfo = () => {
     queryFn: async () => {
       const headers = getAuthHeaders();
       const [predRes, matchRes] = await Promise.all([
-        fetch('/api/predictions/longterm', { headers }),
-        fetch('/api/matches', { headers })
+        fetch(API_URL + '/api/predictions/longterm', { headers }),
+        fetch(API_URL + '/api/matches', { headers })
       ]);
 
       let pred = null;
@@ -120,7 +122,7 @@ export const useAllLongTermPredictions = (enabled = true) => {
   return useQuery({
     queryKey: ['allLongTermPredictions'],
     queryFn: async () => {
-      const res = await fetch('/api/predictions/longterm/all', { headers: getAuthHeaders() });
+      const res = await fetch(API_URL + '/api/predictions/longterm/all', { headers: getAuthHeaders() });
       if (!res.ok) throw new Error('Σφάλμα φόρτωσης προβλέψεων πρωταθλητή');
       return res.json();
     },
@@ -133,7 +135,7 @@ export const useSubmitLongTermPrediction = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ championTeam }) => {
-      const res = await fetch('/api/predictions/longterm', {
+      const res = await fetch(API_URL + '/api/predictions/longterm', {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify({ championTeam })
@@ -153,7 +155,7 @@ export const useUpdateAvatar = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ avatar }) => {
-      const res = await fetch('/api/auth/avatar', {
+      const res = await fetch(API_URL + '/api/auth/avatar', {
         method: 'PUT',
         headers: getAuthHeaders(),
         body: JSON.stringify({ avatar })

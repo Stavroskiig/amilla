@@ -10,6 +10,9 @@ import Profile from './views/Profile';
 import Stats from './views/Stats';
 import Rules from './views/Rules';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
+
 function AppContent({ user, setUser, onLogout }) {
   const location = useLocation();
   const showNavbar = location.pathname !== '/auth';
@@ -81,7 +84,7 @@ export default function App() {
     }
 
     try {
-      const res = await fetch('/api/auth/me', {
+      const res = await fetch(API_URL + '/api/auth/me', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {

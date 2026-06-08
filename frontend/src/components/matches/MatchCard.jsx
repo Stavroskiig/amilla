@@ -7,6 +7,9 @@ import OthersPredictionsList from './OthersPredictionsList';
 // import removed
 import { useSubmitMatchPrediction } from '../../hooks/useApi';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
+
 export default function MatchCard({
   match,
   predictionData,
@@ -124,7 +127,7 @@ export default function MatchCard({
     }
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`/api/predictions/match/${match.id}/others`, {
+      const res = await fetch(`${API_URL}/api/predictions/match/${match.id}/others`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Trophy, Award, Search, TrendingUp, TrendingDown, Flame } from 'lucide-react';
 import { Avatar } from '../components/Avatars';
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
+
 export default function Leaderboard({ currentUser }) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,7 +17,7 @@ export default function Leaderboard({ currentUser }) {
   const fetchLeaderboard = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('/api/leaderboard', {
+      const res = await fetch(API_URL + '/api/leaderboard', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
