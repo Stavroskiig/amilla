@@ -24,13 +24,14 @@ export default function LongTerm({ user }) {
 
   // Greek normalization utility for accent-insensitive search
   const normalizeGreek = (text) => {
-    return text
+    if (!text) return '';
+    return String(text)
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase();
   };
 
-  const filteredCountries = searchQuery === ''
+  const filteredCountries = !searchQuery
     ? COUNTRIES
     : COUNTRIES.filter((country) => {
       const normalizedCountry = normalizeGreek(country);
@@ -80,12 +81,12 @@ export default function LongTerm({ user }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    if (!championTeam.trim()) return;
+    if (!(championTeam || '').trim()) return;
 
     setErrorMsg('');
     setSuccess(false);
 
-    submitPrediction({ championTeam: championTeam.trim() }, {
+    submitPrediction({ championTeam: (championTeam || '').trim() }, {
       onSuccess: (data) => {
         setSavedChampionTeam(data.predictedChampionTeam);
         setSubmittedAt(data.submittedAt);
@@ -368,7 +369,7 @@ export default function LongTerm({ user }) {
             {!locked && (
               <button
                 type="submit"
-                disabled={submitting || !championTeam.trim() || uppercaseNoAccents(championTeam.trim()) === uppercaseNoAccents(savedChampionTeam)}
+                disabled={submitting || !(championTeam || '').trim() || uppercaseNoAccents((championTeam || '').trim()) === uppercaseNoAccents(savedChampionTeam || '')}
                 className="btn btn-primary"
                 style={{ width: '100%', padding: '14px', marginTop: '10px' }}
               >
