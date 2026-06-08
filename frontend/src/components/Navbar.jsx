@@ -57,6 +57,14 @@ export default function Navbar({ user, onLogout }) {
             <span>Στατιστικά</span>
           </NavLink>
 
+          <NavLink
+            to="/rules"
+            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          >
+            <Info size={18} />
+            <span>Οδηγίες</span>
+          </NavLink>
+
           {isAdmin && (
             <NavLink
               to="/admin"
@@ -69,14 +77,6 @@ export default function Navbar({ user, onLogout }) {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <NavLink 
-            to="/rules" 
-            title="Οδηγίες" 
-            style={{ display: 'flex', alignItems: 'center', color: '#ffffff', textDecoration: 'none' }}
-          >
-            <Info size={20} />
-          </NavLink>
-
           <NavLink to="/profile" className="user-badge" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
             <Avatar id={user.avatar} size={20} />
             <span className="hide-on-mobile">{user.username}</span>
@@ -130,13 +130,12 @@ export default function Navbar({ user, onLogout }) {
         </NavLink>
 
         <NavLink
-          to="/profile"
+          to="/rules"
           className={({ isActive }) => `mobile-bottom-link ${isActive ? 'active' : ''}`}
         >
-          <User size={20} />
-          <span>Προφίλ</span>
+          <Info size={20} />
+          <span>Οδηγίες</span>
         </NavLink>
-
         {isAdmin && (
           <NavLink
             to="/admin"
