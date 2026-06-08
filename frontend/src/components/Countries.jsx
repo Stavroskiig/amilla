@@ -45,7 +45,6 @@ export const countryToFlagCode = {
   'Τουρκία': 'tr',
   'Τσεχία': 'cz',
   'Τυνησία': 'tn',
-  'Ηνωμένες Πολιτείες Αμερικής': 'us',
   'ΗΠΑ': 'us'
 };
 
@@ -97,7 +96,6 @@ export const countryToThreeLetter = {
   'Τουρκία': 'ΤΟΥ',
   'Τσεχία': 'ΤΣΕ',
   'Τυνησία': 'ΤΥΝ',
-  'Ηνωμένες Πολιτείες Αμερικής': 'ΗΠΑ',
   'ΗΠΑ': 'ΗΠΑ'
 };
 
@@ -124,6 +122,7 @@ export function Flag({ teamName, width = 24, height = 16, style = {}, className 
       src={`https://flagcdn.com/w40/${code}.png`}
       srcSet={`https://flagcdn.com/w80/${code}.png 2x`}
       alt={teamName}
+      loading="lazy"
       className={className}
       style={{
         width: `${width}px`,

@@ -20,10 +20,10 @@ export const useProfileStats = (userId) => {
         fetch(`/api/leaderboard/history/user/${userId}`, { headers })
       ]);
 
-      const predictions = predRes.ok ? await predRes.json() : [];
-      const matches = matchRes.ok ? await matchRes.json() : [];
-      const longTermPred = ltRes.ok ? await ltRes.json() : null;
-      const rankHistory = historyRes.ok ? await historyRes.json() : [];
+      const predictions = predRes.ok ? await predRes.json().catch(() => []) : [];
+      const matches = matchRes.ok ? await matchRes.json().catch(() => []) : [];
+      const longTermPred = ltRes.ok ? await ltRes.json().catch(() => null) : null;
+      const rankHistory = historyRes.ok ? await historyRes.json().catch(() => []) : [];
 
       return { predictions, matches, longTermPred, rankHistory };
     },
@@ -103,7 +103,7 @@ export const useLongTermInfo = () => {
 
       let pred = null;
       if (predRes.ok) {
-        pred = await predRes.json();
+        pred = await predRes.json().catch(() => null);
       }
 
       let matches = [];

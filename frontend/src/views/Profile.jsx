@@ -17,7 +17,7 @@ export default function Profile({ user, setUser }) {
 
   const { data, isLoading, isError } = useProfileStats(user?.id);
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return (
       <div className="glass-card" style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
         Φόρτωση στατιστικών...

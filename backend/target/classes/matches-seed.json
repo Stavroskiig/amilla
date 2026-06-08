@@ -22,7 +22,7 @@
   },
   {
     "id": "wc26-04",
-    "homeTeam": "Ηνωμένες Πολιτείες Αμερικής",
+    "homeTeam": "ΗΠΑ",
     "awayTeam": "Παραγουάη",
     "matchStage": "GROUP",
     "kickoffTime": "2026-06-13T04:00:00+03:00"
@@ -197,7 +197,7 @@
   },
   {
     "id": "wc26-29",
-    "homeTeam": "Ηνωμένες Πολιτείες Αμερικής",
+    "homeTeam": "ΗΠΑ",
     "awayTeam": "Αυστραλία",
     "matchStage": "GROUP",
     "kickoffTime": "2026-06-19T22:00:00+03:00"
@@ -408,7 +408,7 @@
   {
     "id": "wc26-59",
     "homeTeam": "Τουρκία",
-    "awayTeam": "Ηνωμένες Πολιτείες Αμερικής",
+    "awayTeam": "ΗΠΑ",
     "matchStage": "GROUP",
     "kickoffTime": "2026-06-26T05:00:00+03:00"
   },
