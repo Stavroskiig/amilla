@@ -72,25 +72,20 @@ public class PointCalculatorService {
         return scorePoints + advancePoints;
     }
 
+    private static final com.fasterxml.jackson.databind.ObjectMapper MAPPER = new com.fasterxml.jackson.databind.ObjectMapper();
+
     private double getExactScoreOdds(Match match, int homeScore, int awayScore) {
         if (match.getExactScoreOddsJson() == null || match.getExactScoreOddsJson().isEmpty()) {
             return 15.0; // Realistic Fallback for rare scores
         }
         try {
-            // Simple parsing to avoid adding Jackson dependency if it's not strictly
-            // necessary in domain
-            // format is roughly {"1-0":8.5,"0-1":12.0}
-            String key = "\"" + homeScore + "-" + awayScore + "\":";
-            int idx = match.getExactScoreOddsJson().indexOf(key);
-            if (idx != -1) {
-                int start = idx + key.length();
-                int end = match.getExactScoreOddsJson().indexOf(",", start);
-                if (end == -1)
-                    end = match.getExactScoreOddsJson().indexOf("}", start);
-                if (end != -1) {
-                    String valueStr = match.getExactScoreOddsJson().substring(start, end).replace("\"", "").trim();
-                    return Double.parseDouble(valueStr);
-                }
+            java.util.Map<String, Double> oddsMap = MAPPER.readValue(
+                    match.getExactScoreOddsJson(),
+                    new com.fasterxml.jackson.core.type.TypeReference<java.util.Map<String, Double>>() {}
+            );
+            String key = homeScore + "-" + awayScore;
+            if (oddsMap.containsKey(key)) {
+                return oddsMap.get(key);
             }
         } catch (Exception e) {
             // Fallback

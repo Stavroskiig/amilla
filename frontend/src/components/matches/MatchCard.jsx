@@ -4,7 +4,7 @@ import { Flag, getStageLabel } from '../Countries';
 import MatchCountdown from './MatchCountdown';
 import PredictionInput from './PredictionInput';
 import OthersPredictionsList from './OthersPredictionsList';
-import { getAthensDate } from '../../utils/dateUtils';
+// import removed
 import { useSubmitMatchPrediction } from '../../hooks/useApi';
 
 export default function MatchCard({
@@ -24,15 +24,15 @@ export default function MatchCard({
   const isKnockout = match.matchStage !== 'GROUP';
 
   const isMatchLocked = (() => {
-    const kickoff = getAthensDate(new Date(match.kickoffTime));
-    const lockTime = new Date(kickoff.getTime() - 5 * 60000);
-    return getAthensDate(new Date()) > lockTime;
+    const kickoff = new Date(match.kickoffTime).getTime();
+    const lockTime = kickoff - 5 * 60000;
+    return Date.now() > lockTime;
   })();
 
   const isPredictionTooFar = (() => {
-    const kickoff = getAthensDate(new Date(match.kickoffTime));
-    const openTime = new Date(kickoff.getTime() - 24 * 60 * 60 * 1000);
-    return getAthensDate(new Date()) < openTime;
+    const kickoff = new Date(match.kickoffTime).getTime();
+    const openTime = kickoff - 24 * 60 * 60 * 1000;
+    return Date.now() < openTime;
   })();
 
   const matchPred = predictionData || { home: '', away: '', qualifier: '', savedHome: null, savedAway: null, savedQualifier: null, pointsEarned: 0 };

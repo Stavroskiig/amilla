@@ -91,13 +91,15 @@ public class PredictionService implements SubmitPredictionUseCase {
             System.err.println("Failed to read champion odds: " + e.getMessage());
         }
 
-        LongTermPrediction prediction = LongTermPrediction.builder()
-                .id(UUID.randomUUID())
-                .userId(userId)
-                .predictedChampionTeam(championTeam)
-                .championOdds(odds)
-                .submittedAt(Instant.now())
-                .build();
+        LongTermPrediction prediction = longTermPredictionRepository.findByUserId(userId)
+                .orElse(LongTermPrediction.builder()
+                        .id(UUID.randomUUID())
+                        .userId(userId)
+                        .build());
+
+        prediction.setPredictedChampionTeam(championTeam);
+        prediction.setChampionOdds(odds);
+        prediction.setSubmittedAt(Instant.now());
 
         return longTermPredictionRepository.save(prediction);
     }

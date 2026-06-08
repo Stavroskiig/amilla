@@ -77,9 +77,9 @@ export default function Navbar({ user, onLogout }) {
             <Info size={20} />
           </NavLink>
 
-          <NavLink to="/profile" className="user-badge">
+          <NavLink to="/profile" className="user-badge" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
             <Avatar id={user.avatar} size={20} />
-            <span>{user.username}</span>
+            <span className="hide-on-mobile">{user.username}</span>
             <span style={{ fontWeight: 'bold', color: '#6366f1' }}>{user.totalPoints ?? 0} pts</span>
           </NavLink>
 

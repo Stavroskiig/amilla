@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Award, Check, AlertTriangle, Lock, HelpCircle, ChevronDown, Search, Zap } from 'lucide-react';
 import { Combobox, ComboboxInput, ComboboxButton, ComboboxOptions, ComboboxOption } from '@headlessui/react';
 import { COUNTRIES, Flag, uppercaseNoAccents } from '../components/Countries';
-import { getAthensDate } from '../utils/dateUtils';
+// import removed
 import { useLongTermInfo, useAllLongTermPredictions, useSubmitLongTermPrediction } from '../hooks/useApi';
 
 export default function LongTerm({ user }) {
@@ -71,7 +71,7 @@ export default function LongTerm({ user }) {
         }
         setGroupStageEndTime(groupEnd);
 
-        if (getAthensDate(new Date()) > getAthensDate(groupEnd)) {
+        if (Date.now() > groupEnd.getTime()) {
           setLocked(true);
         }
       }
@@ -109,9 +109,9 @@ export default function LongTerm({ user }) {
       );
     }
 
-    const now = getAthensDate(new Date());
-    const opening = getAthensDate(openingMatchTime);
-    const groupEnd = getAthensDate(groupStageEndTime);
+    const now = Date.now();
+    const opening = openingMatchTime.getTime();
+    const groupEnd = groupStageEndTime.getTime();
 
     if (opening && now < opening) {
       return (
