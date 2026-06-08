@@ -108,7 +108,7 @@ export default function Stats({ user }) {
             <div className="custom-bars-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '16px' }}>
               {championData.map((entry, index) => (
                 <div key={entry.name} className="custom-bar-item" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <Flag teamName={entry.name} width={24} height={16} />
                       <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{entry.name}</span>
@@ -116,14 +116,14 @@ export default function Stats({ user }) {
                     <span style={{ fontWeight: 700, color: COLORS[index % COLORS.length] }}>{entry.value}%</span>
                   </div>
                   <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
-                    <div 
-                      style={{ 
-                        height: '100%', 
-                        width: `${entry.value}%`, 
+                    <div
+                      style={{
+                        height: '100%',
+                        width: `${entry.value}%`,
                         background: COLORS[index % COLORS.length],
                         borderRadius: '4px',
                         transition: 'width 1s ease-out'
-                      }} 
+                      }}
                     />
                   </div>
                 </div>
@@ -144,14 +144,14 @@ export default function Stats({ user }) {
                     if (entry.value === 0) return null;
                     const pct = (entry.value / totalAccuracy) * 100;
                     return (
-                      <div 
-                        key={entry.name} 
-                        style={{ 
-                          width: `${pct}%`, 
-                          height: '100%', 
+                      <div
+                        key={entry.name}
+                        style={{
+                          width: `${pct}%`,
+                          height: '100%',
                           backgroundColor: ACCURACY_COLORS[index % ACCURACY_COLORS.length],
                           transition: 'width 1s ease-out'
-                        }} 
+                        }}
                         title={`${entry.name}: ${entry.value}`}
                       />
                     );
@@ -185,7 +185,7 @@ export default function Stats({ user }) {
         {/* Match Superlatives */}
         <div className="glass superlative-card">
           <h2 className="superlative-title" style={{ color: '#818cf8' }}>
-            <Target size={20} /> Πιο Προβλέψιμος Αγώνας
+            <Target size={20} /> Πιο Εύκολη Πρόβλεψη
           </h2>
           {stats.mostPredictableMatch ? (
             <div className="superlative-box" style={{ border: '1px solid rgba(99,102,241,0.2)' }}>
@@ -203,7 +203,7 @@ export default function Stats({ user }) {
 
         <div className="glass superlative-card">
           <h2 className="superlative-title" style={{ color: '#f472b6' }}>
-            <Flame size={20} /> Η Μεγαλύτερη Έκπληξη
+            <Flame size={20} /> Πιο Δύσκολη Πρόβλεψη
           </h2>
           {stats.biggestUpset ? (
             <div className="superlative-box" style={{ border: '1px solid rgba(244,114,182,0.2)' }}>
@@ -230,7 +230,7 @@ export default function Stats({ user }) {
               <div className="hof-item">
                 <Avatar id={stats.theOracle.avatar} size={40} />
                 <div className="hof-info">
-                  <p className="hof-role">The Oracle</p>
+                  <p className="hof-role">Ο ΠΡΟΦΗΤΗΣ</p>
                   <p className="hof-name">{stats.theOracle.username}</p>
                 </div>
                 <div className="hof-stat" style={{ color: 'var(--success)', background: 'var(--success-glow)' }}>
@@ -243,7 +243,7 @@ export default function Stats({ user }) {
               <div className="hof-item">
                 <Avatar id={stats.mrConsistent.avatar} size={40} />
                 <div className="hof-info">
-                  <p className="hof-role">Mr. Consistent</p>
+                  <p className="hof-role">Ο ΣΤΑΘΕΡΟΣ</p>
                   <p className="hof-name">{stats.mrConsistent.username}</p>
                 </div>
                 <div className="hof-stat" style={{ color: '#60a5fa', background: 'rgba(59, 130, 246, 0.1)' }}>

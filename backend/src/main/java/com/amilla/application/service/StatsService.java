@@ -179,7 +179,7 @@ public class StatsService {
                         List<Prediction> matchPreds = predsByMatch.getOrDefault(m.getId(), Collections.emptyList());
 
                         double sumPts = matchPreds.stream().mapToInt(Prediction::getPointsEarned).sum();
-                        double avgPts = sumPts / (double) totalUsers;
+                        double avgPts = matchPreds.isEmpty() ? 0.0 : sumPts / (double) matchPreds.size();
 
                         GlobalStatsDto.MatchStatDto dto = GlobalStatsDto.MatchStatDto.builder()
                                         .matchId(m.getId())
@@ -221,7 +221,7 @@ public class StatsService {
                         stats.setTheOracle(GlobalStatsDto.UserStatDto.builder()
                                         .username(oracle.getUsername())
                                         .avatar(oracle.getAvatar())
-                                        .statValue(oracle.getExactHits() + " exact hits")
+                                        .statValue(oracle.getExactHits() + (oracle.getExactHits() == 1 ? " ακριβές σκορ" : " ακριβή σκορ"))
                                         .build());
                 }
 
@@ -234,7 +234,7 @@ public class StatsService {
                         stats.setMrConsistent(GlobalStatsDto.UserStatDto.builder()
                                         .username(consistent.getUsername())
                                         .avatar(consistent.getAvatar())
-                                        .statValue(consistent.getLongestStreak() + " correct in a row")
+                                        .statValue(consistent.getLongestStreak() + (consistent.getLongestStreak() == 1 ? " σερί επιτυχία" : " σερί επιτυχίες"))
                                         .build());
                 }
 
@@ -246,7 +246,7 @@ public class StatsService {
                         stats.setHighestScorer(GlobalStatsDto.UserStatDto.builder()
                                         .username(highestScorer.getUsername())
                                         .avatar(highestScorer.getAvatar())
-                                        .statValue(highestScorer.getTotalPoints() + " pts")
+                                        .statValue(highestScorer.getTotalPoints() + (highestScorer.getTotalPoints() == 1 ? " πόντος" : " πόντοι"))
                                         .build());
                 }
         }
