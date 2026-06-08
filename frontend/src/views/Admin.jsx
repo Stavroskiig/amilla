@@ -25,7 +25,7 @@ export default function Admin() {
   const queryClient = useQueryClient();
   const [matches, setMatches] = useState([]);
   const [users, setUsers] = useState([]);
-  
+
   // Scoring state
   const [matchScores, setMatchScores] = useState({});
   const [syncing, setSyncing] = useState(false);
@@ -61,6 +61,10 @@ export default function Admin() {
   const [jsonSuccess, setJsonSuccess] = useState(false);
   const [jsonError, setJsonError] = useState('');
   const [clearing, setClearing] = useState(false);
+
+  // Filters
+  const [filterStage, setFilterStage] = useState('ALL');
+  const [filterStatus, setFilterStatus] = useState('ALL');
 
   useEffect(() => {
     fetchAdminData();
@@ -258,7 +262,7 @@ export default function Admin() {
   const fetchAdminData = async () => {
     try {
       const token = localStorage.getItem('token');
-      
+
       // 1. Fetch matches
       const matchRes = await fetch('/api/matches', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -470,18 +474,18 @@ export default function Admin() {
 
         <button className="btn btn-primary" onClick={handleSyncOdds} disabled={syncingOdds} style={{ backgroundColor: 'var(--accent-color)' }}>
           <RefreshCw size={18} className={syncingOdds ? 'animate-spin' : ''} />
-          <span>{syncingOdds ? 'Συγχρονισμός...' : 'Συγχρονισμός Αποδόσεων (Sync Odds)'}</span>
+          <span>{syncingOdds ? 'Συγχρονισμός...' : 'Sync Odds'}</span>
         </button>
 
         <button className="btn btn-secondary" onClick={handleRecalculate} disabled={recalculating}>
           <Calculator size={18} />
-          <span>{recalculating ? 'Υπολογισμός...' : 'Επανυπολογισμός Πόντων (Scratch)'}</span>
+          <span>{recalculating ? 'Υπολογισμός...' : 'Sync Points'}</span>
         </button>
 
-        <button 
-          className="btn btn-secondary" 
-          onClick={handleClearAllMatches} 
-          disabled={clearing} 
+        <button
+          className="btn btn-secondary"
+          onClick={handleClearAllMatches}
+          disabled={clearing}
           style={{ borderColor: 'rgba(239, 68, 68, 0.3)', color: '#ef4444', marginLeft: 'auto' }}
         >
           <Trash2 size={18} />
@@ -497,61 +501,129 @@ export default function Admin() {
       }}>
         {/* Left Column: Match Scoring Panel */}
         <div className="glass-card" style={{ padding: '24px' }}>
-          <h2 style={{ fontSize: '1.4rem', marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
-            Αποτελέσματα Αγώνων
-          </h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px', flexWrap: 'wrap', gap: '10px' }}>
+            <h2 style={{ fontSize: '1.4rem', margin: 0 }}>
+              Αποτελέσματα Αγώνων
+            </h2>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <select
+                value={filterStage}
+                onChange={(e) => setFilterStage(e.target.value)}
+                style={{
+                  background: 'rgba(10, 11, 16, 0.7)',
+                  border: '1px solid var(--border-color)',
+                  color: '#ffffff',
+                  padding: '8px 12px',
+                  borderRadius: 'var(--radius-sm)'
+                }}
+              >
+                <option value="ALL">Όλες οι Φάσεις</option>
+                <option value="GROUP">Φάση Ομίλων</option>
+                <option value="ROUND_OF_32">Φάση των 32</option>
+                <option value="ROUND_OF_16">Φάση των 16</option>
+                <option value="QUARTER_FINAL">Προημιτελικά</option>
+                <option value="SEMI_FINAL">Ημιτελικά</option>
+                <option value="THIRD_PLACE">Μικρός Τελικός</option>
+                <option value="FINAL">Τελικός</option>
+              </select>
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                style={{
+                  background: 'rgba(10, 11, 16, 0.7)',
+                  border: '1px solid var(--border-color)',
+                  color: '#ffffff',
+                  padding: '8px 12px',
+                  borderRadius: 'var(--radius-sm)'
+                }}
+              >
+                <option value="ALL">Όλα τα Status</option>
+                <option value="SCHEDULED">Προγραμματισμένα</option>
+                <option value="LIVE">Live</option>
+                <option value="FINISHED">Ολοκληρωμένα</option>
+              </select>
+            </div>
+          </div>
           {matches.length === 0 ? (
             <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '20px 0' }}>Δεν υπάρχουν αγώνες. Προσθέστε αγώνες χειροκίνητα ή μέσω JSON.</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              {matches.map(match => {
-                const score = matchScores[match.id] || { home: '', away: '', qualifier: '', status: 'SCHEDULED' };
-                const isKnockout = match.matchStage !== 'GROUP';
+              {(() => {
+                const filteredMatches = matches.filter(m =>
+                  (filterStage === 'ALL' || m.matchStage === filterStage) &&
+                  (filterStatus === 'ALL' || m.status === filterStatus)
+                );
 
-                return (
-                  <div key={match.id} style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    flexWrap: 'wrap',
-                    gap: '16px',
-                    paddingBottom: '16px',
-                    borderBottom: '1px solid var(--border-color)'
-                  }}>
-                    <div style={{ flex: '1', minWidth: '200px' }}>
-                      <div style={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                        <Flag teamName={match.homeTeam} />
-                        <span>{match.homeTeam}</span>
-                        <span style={{ color: 'var(--text-muted)', fontWeight: 'normal' }}>vs</span>
-                        <Flag teamName={match.awayTeam} />
-                        <span>{match.awayTeam}</span>
+                if (filteredMatches.length === 0) {
+                  return <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '20px 0' }}>Δεν βρέθηκαν αγώνες με αυτά τα κριτήρια.</p>;
+                }
+
+                return filteredMatches.map(match => {
+                  const score = matchScores[match.id] || { home: '', away: '', qualifier: '', status: 'SCHEDULED' };
+                  const isKnockout = match.matchStage !== 'GROUP';
+
+                  return (
+                    <div key={match.id} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flexWrap: 'wrap',
+                      gap: '16px',
+                      paddingBottom: '16px',
+                      borderBottom: '1px solid var(--border-color)'
+                    }}>
+                      <div style={{ flex: '1', minWidth: '200px' }}>
+                        <div style={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                          <Flag teamName={match.homeTeam} />
+                          <span>{match.homeTeam}</span>
+                          <span style={{ color: 'var(--text-muted)', fontWeight: 'normal' }}>vs</span>
+                          <Flag teamName={match.awayTeam} />
+                          <span>{match.awayTeam}</span>
+                        </div>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                          {getStageLabel(match.matchStage)} • {new Date(match.kickoffTime).toLocaleString('el-GR', { timeZone: 'Europe/Athens', hour12: false })}
+                        </div>
                       </div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                        {getStageLabel(match.matchStage)} • {new Date(match.kickoffTime).toLocaleString('el-GR', { timeZone: 'Europe/Athens', hour12: false })}
-                      </div>
-                    </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                      {/* Score entry */}
-                      <input
-                        type="number"
-                        className="score-box"
-                        value={score.home}
-                        onChange={(e) => handleScoreChange(match.id, 'home', e.target.value)}
-                      />
-                      <span>-</span>
-                      <input
-                        type="number"
-                        className="score-box"
-                        value={score.away}
-                        onChange={(e) => handleScoreChange(match.id, 'away', e.target.value)}
-                      />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                        {/* Score entry */}
+                        <input
+                          type="number"
+                          className="score-box"
+                          value={score.home}
+                          onChange={(e) => handleScoreChange(match.id, 'home', e.target.value)}
+                        />
+                        <span>-</span>
+                        <input
+                          type="number"
+                          className="score-box"
+                          value={score.away}
+                          onChange={(e) => handleScoreChange(match.id, 'away', e.target.value)}
+                        />
 
-                      {/* Qualifier dropdown for knockouts */}
-                      {isKnockout && (
+                        {/* Qualifier dropdown for knockouts */}
+                        {isKnockout && (
+                          <select
+                            value={score.qualifier}
+                            onChange={(e) => handleScoreChange(match.id, 'qualifier', e.target.value)}
+                            style={{
+                              background: 'rgba(10, 11, 16, 0.7)',
+                              border: '1px solid var(--border-color)',
+                              color: '#ffffff',
+                              padding: '10px',
+                              borderRadius: 'var(--radius-sm)'
+                            }}
+                          >
+                            <option value="">Πρόκριση...</option>
+                            <option value={match.homeTeam}>{match.homeTeam}</option>
+                            <option value={match.awayTeam}>{match.awayTeam}</option>
+                          </select>
+                        )}
+
+                        {/* Status dropdown */}
                         <select
-                          value={score.qualifier}
-                          onChange={(e) => handleScoreChange(match.id, 'qualifier', e.target.value)}
+                          value={score.status}
+                          onChange={(e) => handleScoreChange(match.id, 'status', e.target.value)}
                           style={{
                             background: 'rgba(10, 11, 16, 0.7)',
                             border: '1px solid var(--border-color)',
@@ -560,58 +632,41 @@ export default function Admin() {
                             borderRadius: 'var(--radius-sm)'
                           }}
                         >
-                          <option value="">Πρόκριση...</option>
-                          <option value={match.homeTeam}>{match.homeTeam}</option>
-                          <option value={match.awayTeam}>{match.awayTeam}</option>
+                          <option value="SCHEDULED">SCHEDULED</option>
+                          <option value="LIVE">LIVE</option>
+                          <option value="FINISHED">FINISHED</option>
                         </select>
-                      )}
 
-                      {/* Status dropdown */}
-                      <select
-                        value={score.status}
-                        onChange={(e) => handleScoreChange(match.id, 'status', e.target.value)}
-                        style={{
-                          background: 'rgba(10, 11, 16, 0.7)',
-                          border: '1px solid var(--border-color)',
-                          color: '#ffffff',
-                          padding: '10px',
-                          borderRadius: 'var(--radius-sm)'
-                        }}
-                      >
-                        <option value="SCHEDULED">SCHEDULED</option>
-                        <option value="LIVE">LIVE</option>
-                        <option value="FINISHED">FINISHED</option>
-                      </select>
+                        <button
+                          className="btn btn-primary"
+                          disabled={savingMatchId === match.id}
+                          onClick={() => saveScore(match.id)}
+                          style={{ padding: '10px', minWidth: '40px' }}
+                          title="Αποθήκευση Σκορ"
+                        >
+                          <Save size={16} />
+                        </button>
 
-                      <button
-                        className="btn btn-primary"
-                        disabled={savingMatchId === match.id}
-                        onClick={() => saveScore(match.id)}
-                        style={{ padding: '10px', minWidth: '40px' }}
-                        title="Αποθήκευση Σκορ"
-                      >
-                        <Save size={16} />
-                      </button>
-
-                      <button
-                        className="btn btn-secondary"
-                        onClick={() => handleDeleteMatch(match.id)}
-                        style={{ padding: '10px', minWidth: '40px', borderColor: 'rgba(239, 68, 68, 0.25)', color: '#ef4444' }}
-                        title="Διαγραφή Αγώνα"
-                      >
-                        <Trash2 size={16} />
-                      </button>
+                        <button
+                          className="btn btn-secondary"
+                          onClick={() => handleDeleteMatch(match.id)}
+                          style={{ padding: '10px', minWidth: '40px', borderColor: 'rgba(239, 68, 68, 0.25)', color: '#ef4444' }}
+                          title="Διαγραφή Αγώνα"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                });
+              })()}
             </div>
           )}
         </div>
 
         {/* Right Column: Creation & Override Tools */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-          
+
           {/* Section: Create Single Match */}
           <div className="glass-card" style={{ padding: '24px' }}>
             <h2 style={{ fontSize: '1.4rem', marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
@@ -913,7 +968,7 @@ export default function Admin() {
 
             <form onSubmit={handleOverrideSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                
+
                 {/* Select User */}
                 <div className="form-group" style={{ flex: '1', minWidth: '200px' }}>
                   <label className="form-label">Επιλογή Παίκτη</label>
@@ -1010,7 +1065,7 @@ export default function Admin() {
               </div>
             </form>
           </div>
-          
+
         </div>
       </div>
     </div>
