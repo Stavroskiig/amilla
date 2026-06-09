@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar } from '../components/Avatars';
-import { Flag, getTeamShortName } from '../components/Countries';
+import { Flag, getTeamShortName, getTeamColor } from '../components/Countries';
 import { TrendingUp, Award, BarChart2, Zap, Target, Flame } from 'lucide-react';
 import './Stats.css';
 
@@ -116,14 +116,14 @@ export default function Stats({ user }) {
                       <Flag teamName={entry.name} width={24} height={16} />
                       <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{entry.name}</span>
                     </div>
-                    <span style={{ fontWeight: 700, color: COLORS[index % COLORS.length] }}>{entry.value}%</span>
+                    <span style={{ fontWeight: 700, color: getTeamColor(entry.name) }}>{entry.value}%</span>
                   </div>
                   <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
                     <div
                       style={{
                         height: '100%',
                         width: `${entry.value}%`,
-                        background: COLORS[index % COLORS.length],
+                        background: getTeamColor(entry.name),
                         borderRadius: '4px',
                         transition: 'width 1s ease-out'
                       }}
