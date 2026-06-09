@@ -76,7 +76,7 @@ export default function Leaderboard({ currentUser }) {
           Φόρτωση κατάταξης...
         </div>
       ) : (
-        <div className="glass-card" style={{ padding: '0px', overflowX: 'auto' }}>
+        <div className="glass-card hide-scrollbar" style={{ padding: '0px', overflowX: 'auto' }}>
           <table className="leaderboard-table" style={{
             width: '100%',
             borderCollapse: 'collapse',
@@ -89,7 +89,10 @@ export default function Leaderboard({ currentUser }) {
               }}>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
-                <th className="hide-on-mobile" style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>ΑΚΡΙΒΗ ΣΚΟΡ</th>
+                <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
+                  <span className="hide-on-mobile">ΑΚΡΙΒΗ ΣΚΟΡ</span>
+                  <span className="show-on-mobile" title="Ακριβή Σκορ">ΑΚΡΙΒΗ</span>
+                </th>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'right' }}>
                   <span className="hide-on-mobile">ΣΥΝΟΛΙΚΟΙ ΠΟΝΤΟΙ</span>
                   <span className="show-on-mobile">ΠΟΝΤΟΙ</span>
@@ -219,7 +222,7 @@ export default function Leaderboard({ currentUser }) {
                       </td>
 
                       {/* Exact Hits */}
-                      <td className="hide-on-mobile" style={{ padding: '18px 24px', textAlign: 'center' }}>
+                      <td style={{ padding: '18px 24px', textAlign: 'center' }}>
                         <div style={{
                           display: 'inline-flex',
                           alignItems: 'center',
