@@ -28,12 +28,6 @@ public class AdminController {
         this.oddsSyncService = oddsSyncService;
     }
 
-    @PostMapping("/matches/sync")
-    public ResponseEntity<Void> syncMatches() {
-        manageMatchUseCase.syncMatchesWithExternalApi();
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping("/odds/sync")
     public ResponseEntity<Void> syncOdds() {
         oddsSyncService.syncOdds();

@@ -35,7 +35,6 @@ public class MatchService implements ManageMatchUseCase {
     private final PredictionRepositoryPort predictionRepository;
     private final LongTermPredictionRepositoryPort longTermPredictionRepository;
     private final UserRepositoryPort userRepository;
-    private final FootballApiPort footballApi;
     private final PointCalculatorService pointCalculatorService;
     private final UserRankHistoryRepositoryPort userRankHistoryRepository;
 
@@ -44,14 +43,12 @@ public class MatchService implements ManageMatchUseCase {
             PredictionRepositoryPort predictionRepository,
             LongTermPredictionRepositoryPort longTermPredictionRepository,
             UserRepositoryPort userRepository,
-            FootballApiPort footballApi,
             PointCalculatorService pointCalculatorService,
             UserRankHistoryRepositoryPort userRankHistoryRepository) {
         this.matchRepository = matchRepository;
         this.predictionRepository = predictionRepository;
         this.longTermPredictionRepository = longTermPredictionRepository;
         this.userRepository = userRepository;
-        this.footballApi = footballApi;
         this.pointCalculatorService = pointCalculatorService;
         this.userRankHistoryRepository = userRankHistoryRepository;
     }
@@ -89,48 +86,6 @@ public class MatchService implements ManageMatchUseCase {
         }
 
         return savedMatch;
-    }
-
-    @Override
-    public void syncMatchesWithExternalApi() {
-        log.info("Triggered external matches sync...");
-        List<Match> externalMatches = footballApi.fetchFixturesAndResults();
-        if (externalMatches.isEmpty()) {
-            log.warn("No matches returned from external API.");
-            return;
-        }
-
-        for (Match ext : externalMatches) {
-            Optional<Match> localOpt = matchRepository.findById(ext.getId());
-            if (localOpt.isEmpty()) {
-                matchRepository.save(ext);
-                log.info("Synced new match: {} vs {}", ext.getHomeTeam(), ext.getAwayTeam());
-            } else {
-                Match local = localOpt.get();
-                boolean wasFinished = "FINISHED".equalsIgnoreCase(local.getStatus());
-                boolean becomingFinished = "FINISHED".equalsIgnoreCase(ext.getStatus());
-
-                // Update only if not already finished manually or scores match
-                local.setKickoffTime(ext.getKickoffTime());
-                local.setHomeTeam(ext.getHomeTeam());
-                local.setAwayTeam(ext.getAwayTeam());
-                local.setMatchStage(ext.getMatchStage());
-                
-                if (!wasFinished) {
-                    local.setHomeScore90(ext.getHomeScore90());
-                    local.setAwayScore90(ext.getAwayScore90());
-                    local.setQualifiedTeam(ext.getQualifiedTeam());
-                    local.setStatus(ext.getStatus());
-                    
-                    Match saved = matchRepository.save(local);
-                    
-                    if (becomingFinished) {
-                        log.info("Match {} finished on sync. Settling points.", local.getId());
-                        settleMatchPoints(saved);
-                    }
-                }
-            }
-        }
     }
 
     @Override

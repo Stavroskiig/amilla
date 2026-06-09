@@ -20,7 +20,6 @@ C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\PredictionController.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\PushSubscriptionController.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\inbound\web\StatsController.java
-C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\footballapi\FootballApiAdapter.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\entity\LongTermPredictionEntity.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\entity\MatchEntity.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\adapters\outbound\persistence\entity\PredictionEntity.java
@@ -67,7 +66,6 @@ C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\in
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\inbound\SubmitPredictionUseCase.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\inbound\ViewLeaderboardUseCase.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\inbound\ViewRankHistoryUseCase.java
-C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\FootballApiPort.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\LongTermPredictionRepositoryPort.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\MatchRepositoryPort.java
 C:\Users\stavr\Documents\GitHub\amilla\backend\src\main\java\com\amilla\ports\outbound\PredictionRepositoryPort.java

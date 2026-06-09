@@ -1,5 +1,4 @@
 com\amilla\adapters\inbound\web\dto\GlobalStatsDto$PredictionMatrixDto$PredictionMatrixDtoBuilder.class
-com\amilla\adapters\outbound\footballapi\FootballApiAdapter.class
 com\amilla\application\service\PredictionService.class
 com\amilla\adapters\inbound\web\dto\RegisterRequest.class
 com\amilla\adapters\inbound\web\dto\GlobalStatsDto$PredictionMatrixDto.class
@@ -80,7 +79,6 @@ com\amilla\adapters\inbound\web\dto\MatchCreateRequest.class
 com\amilla\domain\model\UserRankHistory.class
 com\amilla\domain\service\PointCalculatorService.class
 com\amilla\application\service\OddsSyncService.class
-com\amilla\ports\outbound\FootballApiPort.class
 com\amilla\ports\inbound\ManageMatchUseCase.class
 com\amilla\adapters\inbound\web\dto\GlobalStatsDto$MatchStatDto.class
 com\amilla\adapters\inbound\web\AuthController.class
