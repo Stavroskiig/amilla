@@ -6,11 +6,8 @@ import com.amilla.domain.model.PushSubscription;
 import com.amilla.domain.model.User;
 import com.amilla.ports.outbound.PushSubscriptionRepositoryPort;
 import com.amilla.ports.outbound.UserRepositoryPort;
-import com.amilla.domain.service.PushNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -23,7 +20,6 @@ public class PushSubscriptionController {
     private final PushSubscriptionRepositoryPort subscriptionRepository;
     private final UserRepositoryPort userRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final PushNotificationService pushNotificationService;
 
     @PostMapping("/subscribe")
     public ResponseEntity<?> subscribe(@RequestHeader("Authorization") String token, 

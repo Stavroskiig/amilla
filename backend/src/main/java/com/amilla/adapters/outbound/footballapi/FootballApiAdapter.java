@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@SuppressWarnings("null")
 public class FootballApiAdapter implements FootballApiPort {
 
     private static final Logger log = LoggerFactory.getLogger(FootballApiAdapter.class);

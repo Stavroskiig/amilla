@@ -275,13 +275,6 @@ public class StatsService {
                                                 .orElse(0.0);
                 stats.setAveragePointsPerPrediction(Math.round(avgPoints * 100.0) / 100.0);
 
-                long totalExact = users.stream().mapToLong(u -> u.getExactHits() != null ? u.getExactHits() : 0).sum();
-                long totalCorrect = users.stream()
-                                .mapToLong(u -> u.getCorrectOutcomes() != null ? u.getCorrectOutcomes() : 0)
-                                .sum();
-
-                long totalFinishedPreds = finishedPreds.size();
-
                 long exactF = finishedPreds.stream().filter(p -> {
                         Match m = finishedMatchesMap.get(p.getMatchId());
                         return m != null && m.getHomeScore90() != null && m.getAwayScore90() != null &&

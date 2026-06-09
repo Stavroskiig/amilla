@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
+@SuppressWarnings("null")
 public class MatchPersistenceAdapter implements MatchRepositoryPort {
 
     private final MatchJpaRepository repository;

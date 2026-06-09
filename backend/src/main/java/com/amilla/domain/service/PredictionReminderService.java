@@ -16,8 +16,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +34,6 @@ public class PredictionReminderService {
         log.info("Running scheduled task: sendRemindersForUpcomingMatches");
 
         Instant now = Instant.now();
-        Instant twoHoursFromNow = now.plus(2, ChronoUnit.HOURS);
 
         // Find matches starting in exactly 2 hours (we use a window between now and 2 hours)
         // To avoid spamming, we might want to check matches starting between 90 to 120 mins from now.

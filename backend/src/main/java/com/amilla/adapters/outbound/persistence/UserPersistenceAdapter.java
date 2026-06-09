@@ -12,6 +12,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
+@SuppressWarnings("null")
 public class UserPersistenceAdapter implements UserRepositoryPort {
 
     private final UserJpaRepository repository;

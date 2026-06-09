@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 public class PushSubscriptionPersistenceAdapter implements PushSubscriptionRepositoryPort {
 
     private final PushSubscriptionRepository repository;

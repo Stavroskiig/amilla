@@ -26,8 +26,6 @@ public class PointCalculatorService {
             return 0;
         }
 
-        int points = 0;
-
         int actualHome = match.getHomeScore90();
         int actualAway = match.getAwayScore90();
         int predHome = prediction.getPredictedHomeScore();

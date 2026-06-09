@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.UUID;
 
 @Component
+@SuppressWarnings("null")
 public class UserRankHistoryPersistenceAdapter implements UserRankHistoryRepositoryPort {
 
     private final UserRankHistoryJpaRepository repository;
