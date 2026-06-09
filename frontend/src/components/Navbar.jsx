@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Trophy, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart, Info } from 'lucide-react';
+import { Trophy, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart, Info, Bell } from 'lucide-react';
 
 import { Avatar } from './Avatars';
 
@@ -10,6 +10,25 @@ export default function Navbar({ user, onLogout }) {
   const handleLogoutClick = () => {
     onLogout();
     navigate('/auth');
+  };
+
+  const [notifPerm, setNotifPerm] = React.useState(
+    'Notification' in window ? Notification.permission : 'denied'
+  );
+
+  const handleSubscribe = async () => {
+    if (!('Notification' in window)) {
+      alert('Οι ειδοποιήσεις δεν υποστηρίζονται. Αν είστε σε iPhone/iPad, προσθέστε την εφαρμογή στην Αρχική Οθόνη (Add to Home Screen).');
+      return;
+    }
+    if (Notification.permission === 'denied') {
+      alert('Έχετε μπλοκάρει τις ειδοποιήσεις. Παρακαλώ ελέγξτε τις ρυθμίσεις του browser σας.');
+      return;
+    }
+    import('../utils/pushNotifications').then(async (module) => {
+      await module.subscribeToPushNotifications();
+      setNotifPerm(Notification.permission);
+    });
   };
 
   if (!user) return null;
@@ -82,6 +101,17 @@ export default function Navbar({ user, onLogout }) {
             <span className="hide-on-mobile">{user.username}</span>
             <span style={{ fontWeight: 'bold', color: '#6366f1' }}>{user.totalPoints ?? 0} pts</span>
           </NavLink>
+
+          {(notifPerm === 'default' || notifPerm === 'denied') && (
+            <button
+              onClick={handleSubscribe}
+              className="btn btn-secondary"
+              style={{ padding: '8px 12px', fontSize: '0.85rem', opacity: notifPerm === 'denied' ? 0.6 : 1 }}
+              title="Ενεργοποίηση ειδοποιήσεων"
+            >
+              <Bell size={16} />
+            </button>
+          )}
 
           <button
             onClick={handleLogoutClick}

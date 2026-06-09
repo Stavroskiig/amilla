@@ -78,3 +78,57 @@ self.addEventListener('fetch', (event) => {
       })
   );
 });
+
+// Push Event: handle incoming push notifications
+self.addEventListener('push', (event) => {
+  console.log('[Service Worker] Push Received.');
+
+  let payload = {
+    title: 'Amilla Predictions',
+    body: 'You have a new update.'
+  };
+
+  if (event.data) {
+    try {
+      payload = event.data.json();
+    } catch (e) {
+      payload.body = event.data.text();
+    }
+  }
+
+  const title = payload.title || 'Amilla Predictions';
+  const options = {
+    body: payload.body,
+    icon: '/icon-192.png',
+    badge: '/icon-192.png',
+    vibrate: [200, 100, 200, 100, 200, 100, 200],
+    data: {
+      url: '/' // URL to open on click
+    }
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+// Notification Click Event: open app
+self.addEventListener('notificationclick', (event) => {
+  console.log('[Service Worker] Notification click Received.');
+
+  event.notification.close();
+
+  const urlToOpen = new URL(event.notification.data.url, self.location.origin).href;
+
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      for (let i = 0; i < windowClients.length; i++) {
+        const client = windowClients[i];
+        if (client.url === urlToOpen && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(urlToOpen);
+      }
+    })
+  );
+});

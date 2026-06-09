@@ -6,6 +6,7 @@ import com.amilla.domain.model.Match;
 import com.amilla.ports.outbound.MatchRepositoryPort;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,6 +58,13 @@ public class MatchPersistenceAdapter implements MatchRepositoryPort {
     @Override
     public void deleteAll() {
         repository.deleteAll();
+    }
+
+    @Override
+    public List<Match> findUpcomingMatches(Instant start, Instant end) {
+        return repository.findByKickoffTimeBetween(start, end).stream()
+                .map(this::toDomain)
+                .collect(Collectors.toList());
     }
 
     private Match toDomain(MatchEntity entity) {
