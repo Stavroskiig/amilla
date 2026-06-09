@@ -1,8 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL || '';
 
-// This is the public VAPID key generated from the backend
-// In a real app, you might fetch this from an API or environment variable
-const PUBLIC_VAPID_KEY = 'BDKgccK3Ml5uZJdc40KXVr1WX6ijkfu48aFb9ghxghAtvqch51Yn3IQrPz1bSrLsYOMXYkM_HQLWdy0qElbH0sU';
+// Load the public key from the environment variables (Vercel)
+const PUBLIC_VAPID_KEY = import.meta.env.VITE_VAPID_PUBLIC_KEY;
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
