@@ -8,4 +8,5 @@ public class ScoreUpdateRequest {
     private Integer awayScore;
     private String qualifiedTeam;
     private String status; // e.g. "SCHEDULED", "LIVE", "FINISHED"
+    private String tvChannel;
 }

@@ -10,6 +10,7 @@ public interface ManageMatchUseCase {
     List<Match> getAllMatches();
     Match getMatch(String id);
     Match manuallyUpdateMatchScore(String id, Integer homeScore, Integer awayScore, String qualifiedTeam, String status);
+    Match updateMatchTvChannel(String id, String tvChannel);
     void forceRecalculatePoints();
     Prediction adminOverridePrediction(UUID userId, String matchId, int homeScore, int awayScore, String qualifier);
     Match createMatch(Match match);

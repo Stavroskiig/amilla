@@ -89,6 +89,14 @@ public class MatchService implements ManageMatchUseCase {
     }
 
     @Override
+    public Match updateMatchTvChannel(String id, String tvChannel) {
+        Match match = matchRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Match not found: " + id));
+        match.setTvChannel(tvChannel);
+        return matchRepository.save(match);
+    }
+
+    @Override
     public void forceRecalculatePoints() {
         log.info("Recalculating all points from scratch...");
         List<User> users = userRepository.findAll();

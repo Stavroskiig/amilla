@@ -3,6 +3,7 @@ package com.amilla.adapters.inbound.web;
 import com.amilla.adapters.inbound.web.dto.MatchCreateRequest;
 import com.amilla.adapters.inbound.web.dto.PredictionOverrideRequest;
 import com.amilla.adapters.inbound.web.dto.ScoreUpdateRequest;
+import com.amilla.adapters.inbound.web.dto.TvChannelUpdateRequest;
 import com.amilla.domain.model.Match;
 import com.amilla.domain.model.Prediction;
 import com.amilla.domain.model.User;
@@ -51,6 +52,14 @@ public class AdminController {
                 request.getQualifiedTeam(),
                 request.getStatus()
         );
+        return ResponseEntity.ok(match);
+    }
+
+    @PutMapping("/matches/{id}/channel")
+    public ResponseEntity<Match> updateMatchTvChannel(
+            @PathVariable String id,
+            @RequestBody TvChannelUpdateRequest request) {
+        Match match = manageMatchUseCase.updateMatchTvChannel(id, request.getTvChannel());
         return ResponseEntity.ok(match);
     }
 

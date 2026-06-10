@@ -35,6 +35,7 @@ export default function Admin() {
   const [syncingOdds, setSyncingOdds] = useState(false);
   const [recalculating, setRecalculating] = useState(false);
   const [savingMatchId, setSavingMatchId] = useState(null);
+  const [savingChannelId, setSavingChannelId] = useState(null);
 
   // Override state
   const [selectedUserId, setSelectedUserId] = useState('');
@@ -280,7 +281,8 @@ export default function Admin() {
             home: m.homeScore90 !== null ? m.homeScore90 : '',
             away: m.awayScore90 !== null ? m.awayScore90 : '',
             qualifier: m.qualifiedTeam || '',
-            status: m.status
+            status: m.status,
+            tvChannel: m.tvChannel || ''
           };
         });
         setMatchScores(scores);
@@ -411,6 +413,35 @@ export default function Admin() {
       console.error(e);
     } finally {
       setSavingMatchId(null);
+    }
+  };
+
+  const updateTvChannel = async (matchId, newChannel) => {
+    setSavingChannelId(matchId);
+    handleScoreChange(matchId, 'tvChannel', newChannel);
+    
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/admin/matches/${matchId}/channel`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ tvChannel: newChannel === '' ? null : newChannel })
+      });
+
+      if (res.ok) {
+        fetchAdminData();
+        queryClient.invalidateQueries();
+      } else {
+        alert('Σφάλμα αποθήκευσης τηλεοπτικού καναλιού');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Προέκυψε σφάλμα επικοινωνίας');
+    } finally {
+      setSavingChannelId(null);
     }
   };
 
@@ -562,7 +593,7 @@ export default function Admin() {
                 }
 
                 return filteredMatches.map(match => {
-                  const score = matchScores[match.id] || { home: '', away: '', qualifier: '', status: 'SCHEDULED' };
+                  const score = matchScores[match.id] || { home: '', away: '', qualifier: '', status: 'SCHEDULED', tvChannel: '' };
                   const isKnockout = match.matchStage !== 'GROUP';
 
                   return (
@@ -639,6 +670,53 @@ export default function Admin() {
                           <option value="LIVE">LIVE</option>
                           <option value="FINISHED">FINISHED</option>
                         </select>
+
+                        {/* TV Channel dropdown */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <select
+                            value={score.tvChannel || ''}
+                            onChange={(e) => updateTvChannel(match.id, e.target.value)}
+                            disabled={savingChannelId === match.id}
+                            style={{
+                              background: 'rgba(10, 11, 16, 0.7)',
+                              border: '1px solid var(--border-color)',
+                              color: '#ffffff',
+                              padding: '10px',
+                              borderRadius: 'var(--radius-sm)'
+                            }}
+                          >
+                            <option value="">No TV</option>
+                            <option value="ert1">ΕΡΤ 1</option>
+                            <option value="ert2">ΕΡΤ 2</option>
+                            <option value="ert3">ΕΡΤ 3</option>
+                            <option value="ertsports">ΕΡΤ SPORTS</option>
+                          </select>
+                          
+                          {savingChannelId === match.id ? (
+                            <RefreshCw size={18} className="animate-spin text-indigo-400" />
+                          ) : (
+                            score.tvChannel && (
+                              <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                background: 'rgba(255, 255, 255, 0.05)',
+                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                borderRadius: 'var(--radius-sm)',
+                                padding: '4px 8px',
+                                minWidth: '40px',
+                                height: '40px'
+                              }}>
+                                <img 
+                                  src={`/assets/channels/${score.tvChannel}.png`} 
+                                  alt={score.tvChannel}
+                                  style={{ height: '20px', width: 'auto', objectFit: 'contain' }}
+                                  onError={(e) => { e.target.style.display = 'none'; }}
+                                />
+                              </div>
+                            )
+                          )}
+                        </div>
 
                         <button
                           className="btn btn-primary"
