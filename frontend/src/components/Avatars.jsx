@@ -1,16 +1,16 @@
 import React from 'react';
-import { 
-  Trophy, 
-  Sparkles, 
-  Glasses, 
-  Siren, 
-  Clover, 
-  Banana, 
-  Hammer, 
-  Coffee, 
-  Trash, 
-  Beer, 
-  Cat, 
+import {
+  Trophy,
+  Sparkles,
+  Glasses,
+  Siren,
+  Clover,
+  Banana,
+  Hammer,
+  Coffee,
+  Trash,
+  Beer,
+  Cat,
   Ghost,
   User,
   Lock
@@ -19,12 +19,12 @@ import {
 export const AVATARS = [
   {
     id: 'avatar_1',
-    name: 'Σήκωσέ το',
-    description: 'Για αυτούς που ονειρεύονται το χρυσό κύπελλο.',
+    name: 'Πρωταθλητής',
+    description: 'Για αυτούς που ονειρεύονται το βαρύτιμο τρόπαιο.',
     gradient: 'linear-gradient(135deg, #fbbf24 0%, #d97706 100%)',
     icon: Trophy,
     color: '#ffffff',
-    unlockThreshold: 50
+    unlockThreshold: 500
   },
   {
     id: 'avatar_2',
@@ -33,16 +33,16 @@ export const AVATARS = [
     gradient: 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)',
     icon: Sparkles,
     color: '#ffffff',
-    unlockThreshold: 30
+    unlockThreshold: 200
   },
   {
     id: 'avatar_3',
-    name: 'Άρχοντας του VAR',
+    name: 'VARίστας',
     description: 'Βλέπει και την παραμικρή λεπτομέρεια, ακόμα και στο ριπλέι.',
     gradient: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
     icon: Glasses,
     color: '#ffffff',
-    unlockThreshold: 20
+    unlockThreshold: 100
   },
   {
     id: 'avatar_4',
@@ -51,7 +51,7 @@ export const AVATARS = [
     gradient: 'linear-gradient(135deg, #3b82f6 0%, #ef4444 100%)',
     icon: Siren,
     color: '#ffffff',
-    unlockThreshold: 10
+    unlockThreshold: 50
   },
   {
     id: 'avatar_5',
@@ -64,7 +64,7 @@ export const AVATARS = [
   },
   {
     id: 'avatar_6',
-    name: 'Μπανανόφλουδα',
+    name: 'Γκαφατζής',
     description: 'Ειδικός στις γκέλες και στα απρόβλεπτα στραβοπατήματα.',
     gradient: 'linear-gradient(135deg, #facc15 0%, #ca8a04 100%)',
     icon: Banana,
@@ -74,7 +74,7 @@ export const AVATARS = [
   {
     id: 'avatar_7',
     name: 'Ξυλοκόπος',
-    description: 'Περνάει η μπάλα ή ο παίκτης, ποτέ και τα δύο μαζί.',
+    description: 'Περνάει ή μπάλα ή ο παίκτης, ποτέ και τα δύο μαζί.',
     gradient: 'linear-gradient(135deg, #f43f5e 0%, #be123c 100%)',
     icon: Hammer,
     color: '#ffffff',
@@ -91,7 +91,7 @@ export const AVATARS = [
   },
   {
     id: 'avatar_9',
-    name: 'Στον Κουβά',
+    name: 'Κουβάς',
     description: 'Μόνιμος κάτοικος του κουβά των προβλέψεων.',
     gradient: 'linear-gradient(135deg, #6b7280 0%, #374151 100%)',
     icon: Trash,
@@ -100,7 +100,7 @@ export const AVATARS = [
   },
   {
     id: 'avatar_10',
-    name: 'Τρίτο Ημίχρονο',
+    name: 'Τουρίστας',
     description: 'Παίζει μπάλα μόνο στο μπαρ με μπύρες μετά τον αγώνα.',
     gradient: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
     icon: Beer,
@@ -114,7 +114,7 @@ export const AVATARS = [
     gradient: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)',
     icon: Cat,
     color: '#ffffff',
-    unlockThreshold: 40
+    unlockThreshold: 300
   },
   {
     id: 'avatar_12',
@@ -125,7 +125,7 @@ export const AVATARS = [
     color: '#ffffff',
     unlockThreshold: 0
   }
-];
+].sort((a, b) => a.unlockThreshold - b.unlockThreshold);
 
 export function Avatar({ id, size = 24, style = {}, className = '', isLocked = false }) {
   const avatar = AVATARS.find(a => a.id === id);
@@ -133,7 +133,7 @@ export function Avatar({ id, size = 24, style = {}, className = '', isLocked = f
   if (!avatar) {
     // Fallback avatar
     return (
-      <div 
+      <div
         className={`avatar-fallback ${className}`}
         style={{
           width: `${size}px`,
@@ -155,7 +155,7 @@ export function Avatar({ id, size = 24, style = {}, className = '', isLocked = f
   const IconComponent = avatar.icon;
 
   return (
-    <div 
+    <div
       className={`avatar-badge-wrapper ${className}`}
       style={{
         width: `${size}px`,

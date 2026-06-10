@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { X } from 'lucide-react';
 import { Avatar, AVATARS } from '../Avatars';
 import { useUpdateAvatar } from '../../hooks/useApi';
 
@@ -20,8 +21,9 @@ export default function AvatarSelector({ user, setUser, showAvatarGrid, setShowA
       onSuccess: (updatedUser) => {
         setUser(updatedUser);
         setSuccessMessage('Το avatar ενημερώθηκε επιτυχώς!');
-        setShowAvatarGrid(false);
-        setTimeout(() => setSuccessMessage(''), 3000);
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 3000);
       },
       onError: (err) => {
         setError(err.message);
@@ -38,8 +40,32 @@ export default function AvatarSelector({ user, setUser, showAvatarGrid, setShowA
       maxWidth: '520px',
       border: '1px solid var(--border-color)',
       background: 'rgba(15, 16, 26, 0.95)',
-      boxShadow: 'var(--shadow-lg)'
+      boxShadow: 'var(--shadow-lg)',
+      position: 'relative'
     }}>
+      <button
+        onClick={() => setShowAvatarGrid(false)}
+        style={{
+          position: 'absolute',
+          top: '16px',
+          right: '16px',
+          background: 'transparent',
+          border: 'none',
+          color: 'var(--text-muted)',
+          cursor: 'pointer',
+          padding: '4px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: '50%',
+          transition: 'all 0.2s ease'
+        }}
+        onMouseEnter={(e) => { e.currentTarget.style.color = '#ffffff'; e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
+        onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent'; }}
+      >
+        <X size={20} />
+      </button>
+
       <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '14px', textAlign: 'center' }}>
         Επιλέξτε το Avatar σας
       </h3>
