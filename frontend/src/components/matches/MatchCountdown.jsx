@@ -13,7 +13,7 @@ export default function MatchCountdown({ match }) {
   const getCountdownContent = () => {
     const kickoff = new Date(match.kickoffTime).getTime();
     const diffMs = kickoff - now;
-    if (diffMs < 0) return <span>Σε εξέλιξη / Live</span>;
+    if (diffMs < 0) return <span>Σε εξέλιξη</span>;
 
     const diffMins = Math.floor(diffMs / 60000);
     if (diffMins < 5) return <span>Σέντρα σε &lt; 5 λεπτά!</span>;
