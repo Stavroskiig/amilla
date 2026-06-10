@@ -19,6 +19,7 @@ public class Match {
     private String id;
     private String homeTeam;
     private String awayTeam;
+    private String tvChannel;
     private String matchStage; // e.g. "GROUP", "ROUND_OF_16", "QUARTERS", "SEMIS", "FINAL"
     private Instant kickoffTime;
     private Integer homeScore90;

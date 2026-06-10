@@ -28,6 +28,9 @@ public class MatchEntity {
     @Column(name = "away_team", nullable = false)
     private String awayTeam;
 
+    @Column(name = "tv_channel")
+    private String tvChannel;
+
     @Column(name = "match_stage", nullable = false)
     private String matchStage;
 

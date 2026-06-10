@@ -146,10 +146,20 @@ export default function MatchCard({
     <div className="glass-card" style={{ padding: '0px', overflow: 'visible' }}>
       {/* Match Card Header Banner */}
       <div className="match-card-header" style={{ borderTopLeftRadius: 'calc(var(--radius-lg) - 1px)', borderTopRightRadius: 'calc(var(--radius-lg) - 1px)' }}>
-        <div className="match-stage-wrapper">
+        <div className="match-stage-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span className="badge badge-scheduled match-stage-badge" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {getStageLabel(match.matchStage)}
           </span>
+          {match.tvChannel && (
+            <span className="badge" style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '4px 8px', display: 'flex', alignItems: 'center' }}>
+              <img 
+                src={`/assets/channels/${match.tvChannel}.png`} 
+                alt={match.tvChannel} 
+                style={{ height: '14px', width: 'auto', objectFit: 'contain' }}
+                onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.style.display = 'none'; }}
+              />
+            </span>
+          )}
         </div>
 
         <div className="match-datetime-wrapper">
