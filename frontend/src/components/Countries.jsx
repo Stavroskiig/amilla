@@ -210,7 +210,7 @@ export function Flag({ teamName, width = 24, height = 16, style = {}, className 
 
 export const getStageLabel = (stage) => {
   switch (stage) {
-    case 'GROUP': return 'ΦΑΣΗ ΟΜΙΛΩΝ';
+    case 'GROUP': return 'ΟΜΙΛΟΙ';
     case 'ROUND_OF_32': return 'ΦΑΣΗ ΤΩΝ 32';
     case 'ROUND_OF_16': return 'ΦΑΣΗ ΤΩΝ 16';
     case 'QUARTER_FINAL':

@@ -20,7 +20,7 @@ export default function MatchCard({
   const [othersPredictions, setOthersPredictions] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
   const [success, setSuccess] = useState(false);
-  
+
   const { mutate: submitPrediction, isPending: submitting } = useSubmitMatchPrediction();
 
   const finished = match.status === 'FINISHED';
@@ -48,14 +48,14 @@ export default function MatchCard({
 
   const handleScoreChange = (matchId, team, val) => {
     const cleanVal = val === '' ? '' : Math.max(0, parseInt(val) || 0);
-    
+
     setPredictions(prev => {
       const currentPred = prev[matchId] || {};
       const newHome = team === 'home' ? cleanVal : currentPred.home;
       const newAway = team === 'away' ? cleanVal : currentPred.away;
-      
+
       let newQualifier = currentPred.qualifier;
-      
+
       if (isKnockout) {
         if (newHome !== '' && newAway !== '' && newHome !== newAway) {
           // Winning score, auto-select winner
@@ -152,9 +152,9 @@ export default function MatchCard({
           </span>
           {match.tvChannel && (
             <span className="badge" style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '4px 8px', display: 'flex', alignItems: 'center' }}>
-              <img 
-                src={`/assets/channels/${match.tvChannel}.png`} 
-                alt={match.tvChannel} 
+              <img
+                src={`/assets/channels/${match.tvChannel}.png`}
+                alt={match.tvChannel}
                 style={{ height: '14px', width: 'auto', objectFit: 'contain' }}
                 onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.style.display = 'none'; }}
               />
@@ -377,11 +377,11 @@ export default function MatchCard({
 
       {/* Expanded Area: What others predicted */}
       {expanded && (
-        <OthersPredictionsList 
-          match={match} 
-          othersPredictions={othersPredictions} 
-          currentUserId={currentUserId} 
-          isKnockout={isKnockout} 
+        <OthersPredictionsList
+          match={match}
+          othersPredictions={othersPredictions}
+          currentUserId={currentUserId}
+          isKnockout={isKnockout}
         />
       )}
     </div>
