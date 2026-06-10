@@ -97,6 +97,19 @@ public class MatchService implements ManageMatchUseCase {
     }
 
     @Override
+    public Match updateMatchOdds(String id, Double homeOdds, Double drawOdds, Double awayOdds, Double homeAdvanceOdds, Double awayAdvanceOdds, String exactScoreOddsJson) {
+        Match match = matchRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Match not found: " + id));
+        match.setHomeOdds(homeOdds);
+        match.setDrawOdds(drawOdds);
+        match.setAwayOdds(awayOdds);
+        match.setHomeAdvanceOdds(homeAdvanceOdds);
+        match.setAwayAdvanceOdds(awayAdvanceOdds);
+        match.setExactScoreOddsJson(exactScoreOddsJson);
+        return matchRepository.save(match);
+    }
+
+    @Override
     public void forceRecalculatePoints() {
         log.info("Recalculating all points from scratch...");
         List<User> users = userRepository.findAll();

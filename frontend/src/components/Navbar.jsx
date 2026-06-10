@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Trophy, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart, Info, Bell } from 'lucide-react';
+import { Trophy, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart, Info, Bell, TrendingUp } from 'lucide-react';
 
 import { Avatar } from './Avatars';
 
@@ -34,6 +34,7 @@ export default function Navbar({ user, onLogout }) {
   if (!user) return null;
 
   const isAdmin = user.role === 'ROLE_ADMIN';
+  const hasOddsAccess = isAdmin || user.role === 'ROLE_ODDS_MANAGER';
 
   return (
     <>
@@ -91,6 +92,16 @@ export default function Navbar({ user, onLogout }) {
             >
               <ShieldAlert size={18} />
               <span>Admin</span>
+            </NavLink>
+          )}
+
+          {hasOddsAccess && (
+            <NavLink
+              to="/odds-manager"
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              <TrendingUp size={18} />
+              <span>Αποδόσεις</span>
             </NavLink>
           )}
         </div>
@@ -173,6 +184,15 @@ export default function Navbar({ user, onLogout }) {
           >
             <ShieldAlert size={20} />
             <span>Admin</span>
+          </NavLink>
+        )}
+        {hasOddsAccess && (
+          <NavLink
+            to="/odds-manager"
+            className={({ isActive }) => `mobile-bottom-link ${isActive ? 'active' : ''}`}
+          >
+            <TrendingUp size={20} />
+            <span>Odds</span>
           </NavLink>
         )}
       </div>

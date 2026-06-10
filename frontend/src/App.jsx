@@ -6,6 +6,7 @@ import Matches from './views/Matches';
 import Leaderboard from './views/Leaderboard';
 import LongTerm from './views/LongTerm';
 import Admin from './views/Admin';
+import OddsManager from './views/OddsManager';
 import Profile from './views/Profile';
 import Stats from './views/Stats';
 import Rules from './views/Rules';
@@ -55,6 +56,14 @@ function AppContent({ user, setUser, onLogout }) {
             element={
               user && user.role === 'ROLE_ADMIN' 
                 ? <Admin /> 
+                : <Navigate to="/matches" />
+            } 
+          />
+          <Route 
+            path="/odds-manager" 
+            element={
+              user && (user.role === 'ROLE_ADMIN' || user.role === 'ROLE_ODDS_MANAGER') 
+                ? <OddsManager /> 
                 : <Navigate to="/matches" />
             } 
           />
