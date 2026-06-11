@@ -15,6 +15,10 @@ public class PredictionDomainService {
 
     private static final int LOCK_MINUTES_BEFORE_KICKOFF = 5;
 
+    // Toggle this to true to allow players to see others' predictions before the match is locked.
+    public static boolean ALWAYS_SHOW_PREDICTIONS = true;
+
+
     /**
      * Asserts if a match prediction is currently editable.
      * Throws PredictionsLockedException if it is within 5 minutes of kickoff.
@@ -43,6 +47,8 @@ public class PredictionDomainService {
      * @param now   The current timestamp.
      */
     public void validateOtherPredictionsVisibility(Match match, Instant now) {
+        if (ALWAYS_SHOW_PREDICTIONS) return;
+
         Instant lockTime = match.getKickoffTime().minus(LOCK_MINUTES_BEFORE_KICKOFF, ChronoUnit.MINUTES);
         // Visibility is allowed once we pass the lock time (i.e. now is after lockTime)
         if (now.isBefore(lockTime)) {

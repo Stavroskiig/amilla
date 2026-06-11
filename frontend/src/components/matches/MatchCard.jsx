@@ -9,6 +9,8 @@ import { useSubmitMatchPrediction } from '../../hooks/useApi';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
+// Toggle this to true to allow players to see others' predictions before the match is locked.
+export const ALWAYS_SHOW_PREDICTIONS = true;
 
 export default function MatchCard({
   match,
@@ -258,14 +260,27 @@ export default function MatchCard({
               <span>Κλειδωμένο (24ω)</span>
             </div>
           ) : !isMatchLocked ? (
-            <button
-              className="btn btn-primary"
-              disabled={!hasChanges || !isValidPrediction || submitting}
-              onClick={handleSubmit}
-              style={{ padding: '10px 16px', fontSize: '0.85rem' }}
-            >
-              {submitting ? '...' : success ? <Check size={16} /> : 'Υποβολή'}
-            </button>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button
+                className="btn btn-primary"
+                disabled={!hasChanges || !isValidPrediction || submitting}
+                onClick={handleSubmit}
+                style={{ padding: '10px 16px', fontSize: '0.85rem' }}
+              >
+                {submitting ? '...' : success ? <Check size={16} /> : 'Υποβολή'}
+              </button>
+              {ALWAYS_SHOW_PREDICTIONS && (
+                <button
+                  className="btn btn-secondary"
+                  onClick={toggleExpandMatchOthers}
+                  style={{ padding: '8px 12px', fontSize: '0.85rem' }}
+                  title="Δείτε τι έπαιξαν οι άλλοι"
+                >
+                  <Eye size={16} />
+                  <span style={{ fontSize: '0.8rem', marginLeft: '4px' }}>Προβλέψεις</span>
+                </button>
+              )}
+            </div>
           ) : (
             <div style={{ display: 'flex', gap: '8px' }}>
               <button
