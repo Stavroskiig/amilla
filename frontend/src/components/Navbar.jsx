@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Trophy, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart, Info, Bell, TrendingUp } from 'lucide-react';
+import { BarChartBig, Trophy, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart, Info, Bell, TrendingUp } from 'lucide-react';
 
 import { Avatar } from './Avatars';
 
@@ -57,7 +57,7 @@ export default function Navbar({ user, onLogout }) {
             to="/leaderboard"
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
-            <Trophy size={18} />
+            <BarChartBig size={18} />
             <span>Κατάταξη</span>
           </NavLink>
 
@@ -65,7 +65,7 @@ export default function Navbar({ user, onLogout }) {
             to="/longterm"
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
-            <Award size={18} />
+            <Trophy size={18} />
             <span>Πρωταθλητής</span>
           </NavLink>
 
@@ -150,7 +150,7 @@ export default function Navbar({ user, onLogout }) {
           to="/leaderboard"
           className={({ isActive }) => `mobile-bottom-link ${isActive ? 'active' : ''}`}
         >
-          <Trophy size={20} />
+          <BarChartBig size={20} />
           <span>Κατάταξη</span>
         </NavLink>
 
@@ -158,7 +158,7 @@ export default function Navbar({ user, onLogout }) {
           to="/longterm"
           className={({ isActive }) => `mobile-bottom-link ${isActive ? 'active' : ''}`}
         >
-          <Award size={20} />
+          <Trophy size={20} />
           <span>Πρωταθλητής</span>
         </NavLink>
 
