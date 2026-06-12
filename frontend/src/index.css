@@ -38,6 +38,100 @@
   --radius-xl: 24px;
 }
 
+[data-theme='wc26'] {
+  --bg-main: #ffffff;
+  --bg-surface: rgba(255, 255, 255, 0.9);
+  --bg-card: rgba(255, 255, 255, 0.95);
+  --border-color: rgba(0, 0, 0, 0.1);
+  --border-glow: rgba(44, 60, 230, 0.2);
+  --secondary-glow: rgba(0, 229, 255, 0.4);
+  --input-container-bg: rgba(0, 0, 0, 0.015);
+  --input-container-border: rgba(0, 0, 0, 0.04);
+  --qualifier-bg: rgba(0, 0, 0, 0.02);
+  --locked-box-bg: rgba(0, 0, 0, 0.03);
+  --locked-box-border: rgba(0, 0, 0, 0.08);
+  --load-more-bg: rgba(0, 0, 0, 0.03);
+  --load-more-border: rgba(0, 0, 0, 0.08);
+  --tab-container-bg: rgba(0, 0, 0, 0.03);
+  --channel-badge-bg: rgba(0, 0, 0, 0.03);
+  --channel-badge-border: rgba(0, 0, 0, 0.08);
+  --others-bg: rgba(0, 0, 0, 0.03);
+  --others-border: rgba(0, 0, 0, 0.05);
+  --others-card-bg: #ffffff;
+  --others-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  --others-score-color: var(--primary);
+  --others-score-bg: rgba(44, 60, 230, 0.1);
+  --countdown-color: var(--primary);
+  
+  --rules-bg: rgba(0, 0, 0, 0.02);
+  --danger-bg: rgba(239, 68, 68, 0.08);
+  --danger-text: #dc2626;
+  --success-bg: rgba(16, 185, 129, 0.08);
+  --success-text: #059669;
+  --combo-input-bg: #ffffff;
+  --combo-menu-bg: #ffffff;
+  --saved-pred-bg: rgba(44, 60, 230, 0.05);
+  --saved-pred-border: rgba(44, 60, 230, 0.1);
+  
+  --bar-bg: rgba(0, 0, 0, 0.05);
+  --superlative-bg: rgba(0, 0, 0, 0.03);
+  --pts-correct-bg: rgba(44, 60, 230, 0.1);
+  --pts-correct-color: var(--primary);
+  --success-border: rgba(5, 150, 105, 0.3);
+  
+  --fallback-avatar-bg: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  --fallback-avatar-border: rgba(0, 0, 0, 0.1);
+  --fallback-avatar-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  --fallback-avatar-icon: #94a3b8;
+  
+  --text-secondary: #4b5563;
+  --info-color: #3b82f6;
+  --info-bg: rgba(59, 130, 246, 0.1);
+  --info-border: rgba(59, 130, 246, 0.2);
+  --pink-color: #ec4899;
+  
+  --tooltip-bg: #ffffff;
+  --points-card-bg: linear-gradient(135deg, rgba(44, 60, 230, 0.05) 0%, rgba(255, 255, 255, 0.8) 100%);
+  
+  --input-bg: #ffffff;
+  --success-text: #059669;
+  --success-bg: rgba(5, 150, 105, 0.1);
+  --danger-text: #dc2626;
+  --danger-bg: rgba(220, 38, 38, 0.1);
+  
+  --table-header-bg: rgba(0, 0, 0, 0.02);
+  --self-row-bg: rgba(44, 60, 230, 0.05);
+  --rank-bg: rgba(0, 0, 0, 0.03);
+  --self-text-color: var(--primary);
+  --self-badge-color: var(--primary);
+  --exact-hits-bg: rgba(0, 0, 0, 0.03);
+  --self-points-color: var(--primary);
+  --points-color: #000000;
+  
+  --shadow-sm: 0 2px 8px -1px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 25px -5px rgba(44, 60, 230, 0.15);
+
+  --primary: #2C3CE6; /* Royal Blue */
+  --primary-glow: rgba(44, 60, 230, 0.35);
+  --primary-hover: #1e2abd;
+  
+  --secondary: #6EE1C7; /* Aqua Mint */
+  --secondary-glow: rgba(110, 225, 199, 0.35);
+
+  --text-main: #000000;
+  --text-muted: #4b5563;
+  --text-glow: rgba(0, 0, 0, 0.1);
+
+  --success: #4BBF52; /* Green */
+  --success-glow: rgba(75, 191, 82, 0.15);
+  --warning: #F39882; /* Peach */
+  --danger: #E63B2E; /* Red */
+
+  --shadow-glow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -46,6 +140,14 @@
 
 input, button, textarea, select {
   font-family: inherit;
+}
+
+[data-theme='wc26'] .chart-team-pct {
+  filter: brightness(0.65) contrast(1.2);
+}
+
+[data-theme='wc26'] .chart-team-bar {
+  filter: brightness(0.8) contrast(1.2);
 }
 
 body {
@@ -61,6 +163,134 @@ body {
     radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
     radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
   background-attachment: fixed;
+}
+
+[data-theme='wc26'] body {
+  background-color: #ffffff;
+  background-image: url('./assets/wc26-bg.svg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+@media (max-width: 767px) {
+  [data-theme='wc26'] body {
+    background-image: url('./assets/wc26-bg-mobile.svg');
+    background-size: 100% 100%; /* Use 100% 100% for mobile since it is specifically crafted for 400x800 aspect ratio */
+  }
+}
+
+[data-theme='wc26'] h1, [data-theme='wc26'] h2, [data-theme='wc26'] h3, [data-theme='wc26'] h4, [data-theme='wc26'] h5, [data-theme='wc26'] h6 {
+  color: #000000;
+}
+
+[data-theme='wc26'] .form-input, [data-theme='wc26'] .score-box {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='wc26'] .score-box:focus {
+  background: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(44, 60, 230, 0.2);
+}
+
+[data-theme='wc26'] .btn-secondary {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='wc26'] .btn-secondary:hover {
+  background: #f1f5f9;
+}
+
+[data-theme='wc26'] .nav-link:hover, [data-theme='wc26'] .nav-link.active {
+  color: var(--primary);
+  background: rgba(44, 60, 230, 0.05);
+}
+
+[data-theme='wc26'] .mobile-bottom-nav {
+  background: rgba(255, 255, 255, 0.95);
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+[data-theme='wc26'] .mobile-bottom-link {
+  color: #4b5563;
+}
+
+[data-theme='wc26'] .mobile-bottom-link.active {
+  color: var(--primary);
+}
+
+[data-theme='wc26'] .mobile-bottom-link:hover {
+  color: #000000;
+}
+
+[data-theme='wc26'] .match-card-header {
+  background: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+[data-theme='wc26'] .user-badge {
+  background: rgba(44, 60, 230, 0.1);
+  border-color: rgba(44, 60, 230, 0.2);
+  color: var(--primary);
+}
+
+[data-theme='wc26'] .user-badge:hover {
+  background: rgba(44, 60, 230, 0.15);
+  box-shadow: 0 0 10px rgba(44, 60, 230, 0.1);
+}
+
+[data-theme='wc26'] .avatar-item, 
+[data-theme='wc26'] .avatar-sm {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='wc26'] .avatar-item:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='wc26'] .avatar-item.selected {
+  background: rgba(44, 60, 230, 0.15);
+}
+
+[data-theme='wc26'] .badge-scheduled,
+[data-theme='wc26'] .trend-badge.trend-neutral {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: var(--text-muted);
+}
+
+[data-theme='wc26'] .avatar-preview-lg {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: var(--primary);
+  box-shadow: 0 0 15px rgba(44, 60, 230, 0.15);
+}
+
+[data-theme='wc26'] .btn-accent {
+  color: #000000;
+}
+
+[data-theme='wc26'] .score-box {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #000000;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+[data-theme='wc26'] .score-box:focus {
+  background: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(255, 0, 85, 0.2), inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+[data-theme='wc26'] .score-box:disabled {
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.4);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -551,6 +781,27 @@ input[type=number] {
 
 /* Base Responsive Utilities */
 @media (max-width: 767px) {
+  /* Mobile Navbar Flex Layout */
+  .navbar {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+  }
+  
+  .navbar .show-on-mobile {
+    display: flex !important;
+    justify-content: flex-start;
+  }
+
+  .navbar .nav-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+
+
   /* Hide desktop links */
   .navbar .nav-links {
     display: none !important;
@@ -583,7 +834,7 @@ input[type=number] {
     left: 0;
     right: 0;
     height: 64px;
-    background: rgba(15, 17, 26, 0.95);
+    background: var(--nav-bg, rgba(15, 17, 26, 0.95));
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-top: 1px solid var(--border-color);
@@ -591,7 +842,7 @@ input[type=number] {
     justify-content: space-around;
     align-items: center;
     padding-bottom: env(safe-area-inset-bottom); /* iOS notch safety */
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--nav-shadow, 0 -4px 20px rgba(0, 0, 0, 0.5));
   }
 
   .mobile-bottom-link {
@@ -615,7 +866,7 @@ input[type=number] {
   }
 
   .mobile-bottom-link:hover {
-    color: #ffffff;
+    color: var(--text-main);
   }
 
   /* Matches page responsiveness */

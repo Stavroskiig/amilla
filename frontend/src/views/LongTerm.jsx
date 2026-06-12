@@ -103,8 +103,8 @@ export default function LongTerm({ user }) {
   const getBonusText = () => {
     if (!openingMatchTime) {
       return (
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
-          <HelpCircle size={16} style={{ color: '#ffffff' }} />
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--text-main)' }}>
+          <HelpCircle size={16} style={{ color: 'var(--text-main)' }} />
           <span>Απόδοση × 20 (Πρώιμη) / Απόδοση × 10 (Κατά τη διάρκεια ομίλων)</span>
         </span>
       );
@@ -116,8 +116,8 @@ export default function LongTerm({ user }) {
 
     if (opening && now < opening) {
       return (
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
-          <Zap size={16} style={{ color: '#ffffff' }} />
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--text-main)' }}>
+          <Zap size={16} style={{ color: 'var(--text-main)' }} />
           <span>Βρείτε τον πρωταθλητή τώρα, κερδίζετε Απόδοση × 20 πόντους!</span>
         </span>
       );
@@ -125,16 +125,16 @@ export default function LongTerm({ user }) {
 
     if (groupEnd && now < groupEnd) {
       return (
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
-          <AlertTriangle size={16} style={{ color: '#ffffff' }} />
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--text-main)' }}>
+          <AlertTriangle size={16} style={{ color: 'var(--text-main)' }} />
           <span>Επιτρέπεται αλλαγή, αλλά με κέρδος Απόδοση × 10 πόντους.</span>
         </span>
       );
     }
 
     return (
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#ffffff' }}>
-        <Lock size={16} style={{ color: '#ffffff' }} />
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--text-main)' }}>
+        <Lock size={16} style={{ color: 'var(--text-main)' }} />
         <span>Κλειδωμένο: Οι προβλέψεις έχουν κλείσει.</span>
       </span>
     );
@@ -167,11 +167,11 @@ export default function LongTerm({ user }) {
           padding: '16px 20px',
           borderRadius: 'var(--radius-md)',
           marginBottom: '28px',
-          background: 'rgba(255,255,255,0.01)',
+          background: 'var(--rules-bg, rgba(255,255,255,0.01))',
           fontSize: '0.9rem',
           lineHeight: '1.5'
         }}>
-          <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: '#ffffff' }}>
+          <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: 'var(--text-main)' }}>
             <HelpCircle size={16} className="text-indigo-400" />
             <span>Κανόνες Βαθμολογίας Πρωταθλητή</span>
           </h4>
@@ -187,8 +187,8 @@ export default function LongTerm({ user }) {
             padding: '12px 16px',
             borderRadius: 'var(--radius-sm)',
             borderLeft: '4px solid var(--danger)',
-            background: 'rgba(239, 68, 68, 0.08)',
-            color: '#fca5a5',
+            background: 'var(--danger-bg, rgba(239, 68, 68, 0.08))',
+            color: 'var(--danger-text, #fca5a5)',
             fontSize: '0.85rem',
             marginBottom: '20px'
           }}>
@@ -201,8 +201,8 @@ export default function LongTerm({ user }) {
             padding: '12px 16px',
             borderRadius: 'var(--radius-sm)',
             borderLeft: '4px solid var(--success)',
-            background: 'rgba(16, 185, 129, 0.08)',
-            color: '#a7f3d0',
+            background: 'var(--success-bg, rgba(16, 185, 129, 0.08))',
+            color: 'var(--success-text, #a7f3d0)',
             fontSize: '0.85rem',
             marginBottom: '20px',
             display: 'flex',
@@ -230,11 +230,11 @@ export default function LongTerm({ user }) {
                     placeholder="Αναζήτηση χώρας..."
                     style={{
                       width: '100%',
-                      background: 'rgba(15, 16, 26, 0.8)',
+                      background: 'var(--combo-input-bg, rgba(15, 16, 26, 0.8))',
                       border: '1px solid var(--border-color)',
                       borderRadius: 'var(--radius-md)',
                       padding: '12px 40px 12px 40px',
-                      color: '#ffffff',
+                      color: 'var(--text-main)',
                       fontSize: '1rem',
                       outline: 'none',
                       boxShadow: 'var(--shadow-sm)'
@@ -264,7 +264,7 @@ export default function LongTerm({ user }) {
                       maxHeight: '240px',
                       overflowY: 'auto',
                       borderRadius: 'var(--radius-md)',
-                      background: '#161825',
+                      background: 'var(--combo-menu-bg, #161825)',
                       border: '1px solid var(--border-color)',
                       boxShadow: 'var(--shadow-lg)'
                     }}
@@ -282,7 +282,7 @@ export default function LongTerm({ user }) {
                             gap: '12px',
                             padding: '10px 16px',
                             cursor: 'pointer',
-                            color: '#ffffff'
+                            color: 'var(--text-main)'
                           }}
                           className={({ focus }) => `combobox-option ${focus ? 'bg-indigo-900/40 text-white' : ''}`}
                         >
@@ -341,8 +341,8 @@ export default function LongTerm({ user }) {
                 marginTop: '8px',
                 padding: '16px',
                 borderRadius: 'var(--radius-md)',
-                background: 'rgba(99,102,241,0.05)',
-                border: '1px solid rgba(99,102,241,0.1)',
+                background: 'var(--saved-pred-bg, rgba(99,102,241,0.05))',
+                border: '1px solid var(--saved-pred-border, rgba(99,102,241,0.1))',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -351,7 +351,7 @@ export default function LongTerm({ user }) {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
                   <span>Τρέχουσα αποθηκευμένη πρόβλεψη: </span>
                   <Flag teamName={savedChampionTeam} width={28} height={18} />
-                  <strong style={{ color: '#ffffff' }}>{uppercaseNoAccents(savedChampionTeam)}</strong>
+                  <strong style={{ color: 'var(--text-main)' }}>{uppercaseNoAccents(savedChampionTeam)}</strong>
                 </div>
                 {submittedAt && (
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
@@ -399,16 +399,18 @@ export default function LongTerm({ user }) {
             {othersPredictions
               .filter(p => p.userId !== user.id) // Exclude current user since it's already shown above
               .map((p, idx) => (
-                <div key={idx} className="glass" style={{
+                <div key={idx} style={{
                   padding: '16px',
                   borderRadius: 'var(--radius-md)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '12px',
-                  border: '1px solid rgba(255,255,255,0.03)'
+                  border: '1px solid var(--others-border, rgba(255,255,255,0.03))',
+                  background: 'var(--others-card-bg, rgba(255, 255, 255, 0.05))',
+                  boxShadow: 'var(--others-shadow, none)'
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff' }}>{p.username || 'Παίκτης'}</span>
+                    <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-main)' }}>{p.username || 'Παίκτης'}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', paddingLeft: '4px' }}>
                     <Flag teamName={p.predictedChampionTeam} width={28} height={18} />
@@ -422,7 +424,7 @@ export default function LongTerm({ user }) {
                     )}
                   </div>
                   {p.submittedAt && (
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '6px' }}>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', borderTop: '1px solid var(--border-color)', paddingTop: '6px' }}>
                       Υποβλήθηκε: {new Date(p.submittedAt).toLocaleDateString('el-GR', { day: '2-digit', month: '2-digit' })} {new Date(p.submittedAt).toLocaleTimeString('el-GR', { hour: '2-digit', minute: '2-digit', hour12: false })}
                     </div>
                   )}

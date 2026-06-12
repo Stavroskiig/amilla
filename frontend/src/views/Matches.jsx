@@ -5,10 +5,10 @@ import MatchCard from '../components/matches/MatchCard';
 export default function Matches({ user }) {
   const [filterTab, setFilterTab] = useState('upcoming');
   const [visibleCount, setVisibleCount] = useState(15);
-  
+
   const { data: matches, isLoading: matchesLoading } = useMatches();
   const { data: initialPredictions, isLoading: predsLoading } = useMyPredictions();
-  
+
   const [predictions, setPredictions] = useState({});
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export default function Matches({ user }) {
         {/* Tab Filter Control */}
         <div style={{
           display: 'flex',
-          background: 'rgba(255, 255, 255, 0.02)',
+          background: 'var(--tab-container-bg, rgba(255, 255, 255, 0.02))',
           padding: '4px',
           borderRadius: 'var(--radius-md)',
           border: '1px solid var(--border-color)',
@@ -106,10 +106,10 @@ export default function Matches({ user }) {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {filteredMatches.slice(0, visibleCount).map(match => (
-          <MatchCard 
-            key={match.id} 
-            match={match} 
-            predictionData={predictions[match.id]} 
+          <MatchCard
+            key={match.id}
+            match={match}
+            predictionData={predictions[match.id]}
             currentUserId={user?.id}
             setPredictions={setPredictions}
           />
@@ -124,11 +124,12 @@ export default function Matches({ user }) {
             style={{
               padding: '12px 32px',
               fontSize: '0.95rem',
-              background: 'rgba(255, 255, 255, 0.02)',
-              borderColor: 'rgba(255, 255, 255, 0.08)',
+              background: 'var(--load-more-bg, rgba(255, 255, 255, 0.02))',
+              borderColor: 'var(--load-more-border, rgba(255, 255, 255, 0.08))',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px'
+              gap: '8px',
+              color: 'var(--text-main)'
             }}
           >
             Φόρτωση Περισσότερων Αγώνων

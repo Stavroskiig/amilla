@@ -1,10 +1,11 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { BarChartBig, Trophy, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart, Info, Bell, TrendingUp } from 'lucide-react';
+import { BarChartBig, Trophy, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart, Info, Bell, TrendingUp, Palette } from 'lucide-react';
 
+import wc26Logo from '../assets/wc26-logo.svg';
 import { Avatar } from './Avatars';
 
-export default function Navbar({ user, onLogout }) {
+export default function Navbar({ user, onLogout, theme, toggleTheme }) {
   const navigate = useNavigate();
 
   const handleLogoutClick = () => {
@@ -39,9 +40,36 @@ export default function Navbar({ user, onLogout }) {
   return (
     <>
       <nav className="navbar glass">
-        <div className="nav-logo">
-          <Compass size={24} className="text-indigo-400" />
-          <span>Amilla</span>
+        {/* Mobile-only Profile (Left) */}
+        <div className="show-on-mobile" style={{ display: 'flex', alignItems: 'center' }}>
+          <NavLink to="/profile" className="user-badge" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
+            <Avatar id={user.avatar} size={20} />
+            <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>{user.totalPoints ?? 0} pts</span>
+          </NavLink>
+        </div>
+
+        <div className="nav-logo" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <NavLink to="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: 'inherit' }}>
+            <Compass size={24} style={theme === 'wc26' ? { color: '#000000' } : {}} className={theme !== 'wc26' ? 'text-indigo-400' : ''} />
+            <span className={theme === 'wc26' ? "hide-on-mobile" : ""} style={theme === 'wc26' ? {
+              background: 'linear-gradient(to right, #0f172a, #334155)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              fontWeight: '900', 
+              fontSize: '1.5rem', 
+              letterSpacing: '-0.5px'
+            } : {}}>
+              Amilla
+            </span>
+          </NavLink>
+
+          {theme === 'wc26' && (
+            <>
+              <div className="hide-on-mobile" style={{ width: '2px', height: '28px', background: 'rgba(0,0,0,0.15)', borderRadius: '1px' }} />
+
+              <img src={wc26Logo} alt="WC 2026" style={{ height: '36px', width: 'auto' }} />
+            </>
+          )}
         </div>
 
         <div className="nav-links">
@@ -106,12 +134,14 @@ export default function Navbar({ user, onLogout }) {
           )}
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <NavLink to="/profile" className="user-badge" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
-            <Avatar id={user.avatar} size={20} />
-            <span className="hide-on-mobile">{user.username}</span>
-            <span style={{ fontWeight: 'bold', color: '#6366f1' }}>{user.totalPoints ?? 0} pts</span>
-          </NavLink>
+        <div className="nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="hide-on-mobile">
+            <NavLink to="/profile" className="user-badge" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
+              <Avatar id={user.avatar} size={20} />
+              <span>{user.username}</span>
+              <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>{user.totalPoints ?? 0} pts</span>
+            </NavLink>
+          </div>
 
           {(notifPerm === 'default' || notifPerm === 'denied') && (
             <button
@@ -123,6 +153,15 @@ export default function Navbar({ user, onLogout }) {
               <Bell size={16} />
             </button>
           )}
+
+          <button
+            onClick={toggleTheme}
+            className="btn btn-secondary"
+            style={{ padding: '8px 12px', fontSize: '0.85rem' }}
+            title="Αλλαγή Θέματος (Theme)"
+          >
+            <Palette size={16} />
+          </button>
 
           <button
             onClick={handleLogoutClick}

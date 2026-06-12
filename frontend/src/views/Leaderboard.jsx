@@ -85,7 +85,7 @@ export default function Leaderboard({ currentUser }) {
             <thead>
               <tr style={{
                 borderBottom: '1px solid var(--border-color)',
-                background: 'rgba(255, 255, 255, 0.01)'
+                background: 'var(--table-header-bg, rgba(255, 255, 255, 0.01))'
               }}>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
@@ -109,7 +109,7 @@ export default function Leaderboard({ currentUser }) {
                       key={user.id}
                       style={{
                         borderBottom: '1px solid var(--border-color)',
-                        background: isSelf ? 'rgba(99, 102, 241, 0.08)' : 'transparent',
+                        background: isSelf ? 'var(--self-row-bg, rgba(99, 102, 241, 0.08))' : 'transparent',
                         transition: 'background 0.2s',
                         fontWeight: isSelf ? '600' : '400'
                       }}
@@ -125,7 +125,7 @@ export default function Leaderboard({ currentUser }) {
                             width: '28px',
                             height: '28px',
                             borderRadius: '50%',
-                            background: idx < 3 ? 'rgba(255,255,255,0.03)' : 'transparent',
+                            background: idx < 3 ? 'var(--rank-bg, rgba(255,255,255,0.03))' : 'transparent',
                             color: rank.color,
                             fontWeight: 700,
                             flexShrink: 0
@@ -181,7 +181,7 @@ export default function Leaderboard({ currentUser }) {
                           <Avatar id={user.avatar} size={28} />
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', justifyContent: 'center' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                              <span style={{ fontSize: '1rem', color: isSelf ? '#ffffff' : 'var(--text-main)' }} className="leaderboard-username">
+                              <span style={{ fontSize: '1rem', color: isSelf ? 'var(--self-text-color, #ffffff)' : 'var(--text-main)' }} className="leaderboard-username">
                                 {user.username}
                               </span>
                               {user.currentStreak >= 3 && (
@@ -211,7 +211,7 @@ export default function Leaderboard({ currentUser }) {
                               {isSelf && (
                                 <span className="badge self-badge" style={{
                                   background: 'rgba(99,102,241,0.2)',
-                                  color: '#a5b4fc',
+                                  color: 'var(--self-badge-color, #a5b4fc)',
                                   fontSize: '0.7rem',
                                   padding: '2px 6px',
                                   borderRadius: '10px'
@@ -239,7 +239,7 @@ export default function Leaderboard({ currentUser }) {
                           width: '32px',
                           height: '32px',
                           borderRadius: '50%',
-                          background: 'rgba(255, 255, 255, 0.05)',
+                          background: 'var(--exact-hits-bg, rgba(255, 255, 255, 0.05))',
                           color: 'var(--text-main)',
                           fontWeight: '600',
                           fontSize: '0.9rem'
@@ -249,7 +249,7 @@ export default function Leaderboard({ currentUser }) {
                       </td>
 
                       {/* Points */}
-                      <td style={{ padding: '18px 24px', textAlign: 'center', fontSize: '1.1rem', fontWeight: 700, color: isSelf ? '#818cf8' : '#ffffff' }}>
+                      <td style={{ padding: '18px 24px', textAlign: 'center', fontSize: '1.1rem', fontWeight: 700, color: isSelf ? 'var(--self-points-color, #818cf8)' : 'var(--points-color, #ffffff)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                             {user.recentPoints > 0 && (

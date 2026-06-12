@@ -129,8 +129,8 @@ export default function Profile({ user, setUser }) {
           <div className="glass" style={{
             position: 'absolute',
             top: '20px',
-            background: 'rgba(239, 68, 68, 0.12)',
-            color: '#fca5a5',
+            background: 'var(--danger-bg, rgba(239, 68, 68, 0.12))',
+            color: 'var(--danger-text, #fca5a5)',
             borderLeft: '4px solid var(--danger)',
             padding: '10px 20px',
             borderRadius: 'var(--radius-sm)',
@@ -172,12 +172,12 @@ export default function Profile({ user, setUser }) {
             <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '4px' }}>{user.username}</h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>{user.email}</p>
             <span className="badge" style={{
-              background: 'rgba(99, 102, 241, 0.15)',
-              color: '#a5b4fc',
+              background: 'var(--info-bg, rgba(99, 102, 241, 0.15))',
+              color: 'var(--info-color, #a5b4fc)',
               marginTop: '10px',
               padding: '4px 10px',
               borderRadius: '12px',
-              border: '1px solid rgba(99, 102, 241, 0.3)'
+              border: '1px solid var(--info-border, rgba(99, 102, 241, 0.3))'
             }}>
               {user.role === 'ROLE_ADMIN' ? 'ΔΙΑΧΕΙΡΙΣΤΗΣ' : 'ΠΑΙΚΤΗΣ'}
             </span>
@@ -222,7 +222,7 @@ export default function Profile({ user, setUser }) {
               borderRadius: '12px',
               overflow: 'hidden',
               display: 'flex',
-              background: 'rgba(255,255,255,0.05)',
+              background: 'var(--table-header-bg, rgba(255,255,255,0.05))',
               marginBottom: '28px',
               border: '1px solid var(--border-color)'
             }}>
@@ -262,7 +262,7 @@ export default function Profile({ user, setUser }) {
               <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                 <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: 'var(--success)', marginTop: '4px', flexShrink: 0 }} />
                 <div>
-                  <div style={{ fontWeight: 700, fontSize: '1rem', color: '#ffffff' }}>
+                  <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-main)' }}>
                     {exactScoresCount} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>({Math.round(pctExact)}%)</span>
                   </div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Ακριβές Σκορ</div>
@@ -273,7 +273,7 @@ export default function Profile({ user, setUser }) {
               <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                 <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: 'var(--warning)', marginTop: '4px', flexShrink: 0 }} />
                 <div>
-                  <div style={{ fontWeight: 700, fontSize: '1rem', color: '#ffffff' }}>
+                  <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-main)' }}>
                     {correctOutcomesCount} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>({Math.round(pctOutcome)}%)</span>
                   </div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Σημείο (1X2)</div>
@@ -284,7 +284,7 @@ export default function Profile({ user, setUser }) {
               <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                 <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: 'var(--secondary)', marginTop: '4px', flexShrink: 0 }} />
                 <div>
-                  <div style={{ fontWeight: 700, fontSize: '1rem', color: '#ffffff' }}>
+                  <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-main)' }}>
                     {qualifierOnlyCount} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>({Math.round(pctQualifier)}%)</span>
                   </div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Μόνο Πρόκριση</div>
@@ -295,7 +295,7 @@ export default function Profile({ user, setUser }) {
               <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                 <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: 'var(--danger)', marginTop: '4px', flexShrink: 0 }} />
                 <div>
-                  <div style={{ fontWeight: 700, fontSize: '1rem', color: '#ffffff' }}>
+                  <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-main)' }}>
                     {missesCount} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>({Math.round(pctMiss)}%)</span>
                   </div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Αστοχίες</div>
@@ -307,7 +307,7 @@ export default function Profile({ user, setUser }) {
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                   <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: '#eab308', marginTop: '4px', flexShrink: 0 }} />
                   <div>
-                    <div style={{ fontWeight: 700, fontSize: '1rem', color: '#ffffff' }}>
+                    <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-main)' }}>
                       1 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}></span>
                     </div>
                     <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Νικητής Διοργάνωσης</div>

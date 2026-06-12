@@ -544,9 +544,9 @@ export default function Admin() {
                 value={filterStage}
                 onChange={(e) => setFilterStage(e.target.value)}
                 style={{
-                  background: 'rgba(10, 11, 16, 0.7)',
+                  background: 'var(--input-bg, rgba(10, 11, 16, 0.7))',
                   border: '1px solid var(--border-color)',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   padding: '8px 12px',
                   borderRadius: 'var(--radius-sm)'
                 }}
@@ -564,9 +564,9 @@ export default function Admin() {
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
                 style={{
-                  background: 'rgba(10, 11, 16, 0.7)',
+                  background: 'var(--input-bg, rgba(10, 11, 16, 0.7))',
                   border: '1px solid var(--border-color)',
-                  color: '#ffffff',
+                  color: 'var(--text-main)',
                   padding: '8px 12px',
                   borderRadius: 'var(--radius-sm)'
                 }}
@@ -641,9 +641,9 @@ export default function Admin() {
                             value={score.qualifier}
                             onChange={(e) => handleScoreChange(match.id, 'qualifier', e.target.value)}
                             style={{
-                              background: 'rgba(10, 11, 16, 0.7)',
-                              border: '1px solid var(--border-color)',
-                              color: '#ffffff',
+                            background: 'var(--input-bg, rgba(10, 11, 16, 0.7))',
+                            border: '1px solid var(--border-color)',
+                            color: 'var(--text-main)',
                               padding: '10px',
                               borderRadius: 'var(--radius-sm)'
                             }}
@@ -659,9 +659,9 @@ export default function Admin() {
                           value={score.status}
                           onChange={(e) => handleScoreChange(match.id, 'status', e.target.value)}
                           style={{
-                            background: 'rgba(10, 11, 16, 0.7)',
+                            background: 'var(--input-bg, rgba(10, 11, 16, 0.7))',
                             border: '1px solid var(--border-color)',
-                            color: '#ffffff',
+                            color: 'var(--text-main)',
                             padding: '10px',
                             borderRadius: 'var(--radius-sm)'
                           }}
@@ -678,9 +678,9 @@ export default function Admin() {
                             onChange={(e) => updateTvChannel(match.id, e.target.value)}
                             disabled={savingChannelId === match.id}
                             style={{
-                              background: 'rgba(10, 11, 16, 0.7)',
+                              background: 'var(--input-bg, rgba(10, 11, 16, 0.7))',
                               border: '1px solid var(--border-color)',
-                              color: '#ffffff',
+                              color: 'var(--text-main)',
                               padding: '10px',
                               borderRadius: 'var(--radius-sm)'
                             }}
@@ -700,8 +700,8 @@ export default function Admin() {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                background: 'rgba(255, 255, 255, 0.05)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                background: 'var(--table-header-bg, rgba(255, 255, 255, 0.05))',
+                                border: '1px solid var(--border-color)',
                                 borderRadius: 'var(--radius-sm)',
                                 padding: '4px 8px',
                                 minWidth: '40px',
@@ -759,8 +759,8 @@ export default function Admin() {
                 padding: '12px 16px',
                 borderRadius: 'var(--radius-sm)',
                 borderLeft: '4px solid var(--success)',
-                background: 'rgba(16, 185, 129, 0.08)',
-                color: '#a7f3d0',
+                background: 'var(--success-bg, rgba(16, 185, 129, 0.08))',
+                color: 'var(--success-text, #a7f3d0)',
                 fontSize: '0.85rem',
                 marginBottom: '20px',
                 display: 'flex',
@@ -777,8 +777,8 @@ export default function Admin() {
                 padding: '12px 16px',
                 borderRadius: 'var(--radius-sm)',
                 borderLeft: '4px solid var(--danger)',
-                background: 'rgba(239, 68, 68, 0.08)',
-                color: '#fca5a5',
+                background: 'var(--danger-bg, rgba(239, 68, 68, 0.08))',
+                color: 'var(--danger-text, #fca5a5)',
                 fontSize: '0.85rem',
                 marginBottom: '20px',
                 display: 'flex',
@@ -798,7 +798,7 @@ export default function Admin() {
                     className="form-input"
                     value={singleHomeTeamSelect}
                     onChange={(e) => setSingleHomeTeamSelect(e.target.value)}
-                    style={{ background: 'rgba(10, 11, 16, 0.7)' }}
+                    style={{ background: 'var(--input-bg, rgba(10, 11, 16, 0.7))' }}
                   >
                     <option value="">Επιλέξτε ομάδα...</option>
                     {COUNTRIES.map(c => (
@@ -829,7 +829,7 @@ export default function Admin() {
                     className="form-input"
                     value={singleAwayTeamSelect}
                     onChange={(e) => setSingleAwayTeamSelect(e.target.value)}
-                    style={{ background: 'rgba(10, 11, 16, 0.7)' }}
+                    style={{ background: 'var(--input-bg, rgba(10, 11, 16, 0.7))' }}
                   >
                     <option value="">Επιλέξτε ομάδα...</option>
                     {COUNTRIES.map(c => (
@@ -863,7 +863,7 @@ export default function Admin() {
                     className="form-input"
                     value={singleStage}
                     onChange={(e) => setSingleStage(e.target.value)}
-                    style={{ background: 'rgba(10, 11, 16, 0.7)' }}
+                    style={{ background: 'var(--input-bg, rgba(10, 11, 16, 0.7))' }}
                   >
                     <option value="GROUP">ΦΑΣΗ ΟΜΙΛΩΝ (GROUP)</option>
                     <option value="ROUND_OF_32">ΦΑΣΗ ΤΩΝ 32 (ROUND_OF_32)</option>
@@ -924,8 +924,8 @@ export default function Admin() {
                 padding: '12px 16px',
                 borderRadius: 'var(--radius-sm)',
                 borderLeft: '4px solid var(--success)',
-                background: 'rgba(16, 185, 129, 0.08)',
-                color: '#a7f3d0',
+                background: 'var(--success-bg, rgba(16, 185, 129, 0.08))',
+                color: 'var(--success-text, #a7f3d0)',
                 fontSize: '0.85rem',
                 marginBottom: '20px',
                 display: 'flex',
@@ -942,8 +942,8 @@ export default function Admin() {
                 padding: '12px 16px',
                 borderRadius: 'var(--radius-sm)',
                 borderLeft: '4px solid var(--danger)',
-                background: 'rgba(239, 68, 68, 0.08)',
-                color: '#fca5a5',
+                background: 'var(--danger-bg, rgba(239, 68, 68, 0.08))',
+                color: 'var(--danger-text, #fca5a5)',
                 fontSize: '0.85rem',
                 marginBottom: '20px',
                 display: 'flex',
@@ -987,7 +987,7 @@ export default function Admin() {
                   style={{
                     fontFamily: 'monospace',
                     fontSize: '0.85rem',
-                    background: 'rgba(15, 16, 26, 0.8)',
+                    background: 'var(--input-bg, rgba(15, 16, 26, 0.8))',
                     resize: 'vertical'
                   }}
                 />
@@ -1034,8 +1034,8 @@ export default function Admin() {
                 padding: '12px 16px',
                 borderRadius: 'var(--radius-sm)',
                 borderLeft: '4px solid var(--danger)',
-                background: 'rgba(239, 68, 68, 0.08)',
-                color: '#fca5a5',
+                background: 'var(--danger-bg, rgba(239, 68, 68, 0.08))',
+                color: 'var(--danger-text, #fca5a5)',
                 fontSize: '0.85rem',
                 marginBottom: '20px',
                 display: 'flex',
@@ -1058,9 +1058,9 @@ export default function Admin() {
                     value={selectedUserId}
                     onChange={(e) => setSelectedUserId(e.target.value)}
                     style={{
-                      background: 'rgba(10, 11, 16, 0.7)',
+                      background: 'var(--input-bg, rgba(10, 11, 16, 0.7))',
                       border: '1px solid var(--border-color)',
-                      color: '#ffffff',
+                      color: 'var(--text-main)',
                       padding: '12px',
                       borderRadius: 'var(--radius-md)',
                       fontSize: '0.95rem'
@@ -1081,9 +1081,9 @@ export default function Admin() {
                     value={selectedMatchId}
                     onChange={(e) => setSelectedMatchId(e.target.value)}
                     style={{
-                      background: 'rgba(10, 11, 16, 0.7)',
+                      background: 'var(--input-bg, rgba(10, 11, 16, 0.7))',
                       border: '1px solid var(--border-color)',
-                      color: '#ffffff',
+                      color: 'var(--text-main)',
                       padding: '12px',
                       borderRadius: 'var(--radius-md)',
                       fontSize: '0.95rem'

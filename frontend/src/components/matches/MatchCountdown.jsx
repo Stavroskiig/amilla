@@ -63,7 +63,7 @@ export default function MatchCountdown({ match }) {
 
   return (
     <div className="match-status-wrapper" style={{
-      color: finished ? 'var(--success)' : isLocked ? 'var(--danger)' : '#a5b4fc',
+      color: finished ? 'var(--success)' : isLocked ? 'var(--danger)' : 'var(--countdown-color, #a5b4fc)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'flex-end'

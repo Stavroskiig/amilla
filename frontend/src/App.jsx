@@ -14,13 +14,13 @@ import Rules from './views/Rules';
 const API_URL = import.meta.env.VITE_API_URL || '';
 
 
-function AppContent({ user, setUser, onLogout }) {
+function AppContent({ user, setUser, onLogout, theme, toggleTheme }) {
   const location = useLocation();
   const showNavbar = location.pathname !== '/auth';
 
   return (
     <div className="app-container">
-      {showNavbar && <Navbar user={user} onLogout={onLogout} />}
+      {showNavbar && <Navbar user={user} onLogout={onLogout} theme={theme} toggleTheme={toggleTheme} />}
       <main className="main-content">
         <Routes>
           <Route 
@@ -80,6 +80,17 @@ function AppContent({ user, setUser, onLogout }) {
 export default function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'default');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'default' ? 'wc26' : 'default';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
 
   useEffect(() => {
     checkLoggedInUser();
@@ -135,7 +146,7 @@ export default function App() {
 
   return (
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <AppContent user={user} setUser={setUser} onLogout={handleLogout} />
+      <AppContent user={user} setUser={setUser} onLogout={handleLogout} theme={theme} toggleTheme={toggleTheme} />
     </Router>
   );
 }

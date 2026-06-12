@@ -25,7 +25,7 @@
 .stats-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .stats-grid-4 {
@@ -62,7 +62,7 @@
 .stat-value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-main);
   margin-top: 4px;
 }
 
@@ -94,7 +94,7 @@
 .chart-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-main);
   margin-bottom: 16px;
   width: 100%;
 }
@@ -138,7 +138,7 @@
 }
 
 .superlative-box {
-  background: rgba(26, 27, 38, 0.5);
+  background: var(--superlative-bg, rgba(26, 27, 38, 0.5));
   padding: 16px;
   border-radius: var(--radius-md);
 }
@@ -164,7 +164,7 @@
   text-align: center;
   color: var(--text-muted);
   margin-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border-color);
   padding-top: 8px;
 }
 
@@ -178,7 +178,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(26, 27, 38, 0.5);
+  background: var(--superlative-bg, rgba(26, 27, 38, 0.5));
   padding: 12px;
   border-radius: var(--radius-md);
 }
@@ -221,7 +221,7 @@
 .matrix-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-main);
   margin-bottom: 20px;
   display: flex;
   align-items: center;
@@ -231,7 +231,7 @@
 .matrix-table-wrapper {
   overflow-x: auto;
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-color);
 }
 
 .matrix-table {
@@ -241,20 +241,20 @@
 }
 
 .matrix-table th {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--table-header-bg, rgba(255, 255, 255, 0.03));
   padding: 12px;
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-muted);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
   white-space: nowrap;
 }
 
 .matrix-table td {
   padding: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  border-right: 1px solid rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
   vertical-align: middle;
 }
 
@@ -276,7 +276,7 @@
   align-items: center;
   gap: 8px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .matrix-match-score {
@@ -310,7 +310,7 @@
 .matrix-pred-cell {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .matrix-pred-pts {
@@ -328,8 +328,8 @@
 }
 
 .pts-correct {
-  background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
+  background: var(--pts-correct-bg, rgba(59, 130, 246, 0.15));
+  color: var(--pts-correct-color, #60a5fa);
 }
 
 .pts-miss {
@@ -338,15 +338,15 @@
 }
 
 .pts-pending {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--table-header-bg, rgba(255, 255, 255, 0.05));
   color: var(--text-muted);
 }
 
 .cell-exact-hit {
-  background: rgba(16, 185, 129, 0.1);
+  background: var(--success-bg, rgba(16, 185, 129, 0.1));
   border-radius: var(--radius-md);
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 12px var(--success-bg, rgba(16, 185, 129, 0.2));
+  border: 1px solid var(--success-border, rgba(16, 185, 129, 0.3));
   padding: 8px 4px;
 }
 

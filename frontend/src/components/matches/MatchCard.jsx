@@ -153,7 +153,7 @@ export default function MatchCard({
             {getStageLabel(match.matchStage)}
           </span>
           {match.tvChannel && (
-            <span className="badge" style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '4px 8px', display: 'flex', alignItems: 'center' }}>
+            <span className="badge" style={{ background: 'var(--channel-badge-bg, rgba(255, 255, 255, 0.05))', border: '1px solid var(--channel-badge-border, rgba(255, 255, 255, 0.1))', padding: '4px 8px', display: 'flex', alignItems: 'center' }}>
               <img
                 src={`/assets/channels/${match.tvChannel}.png`}
                 alt={match.tvChannel}
@@ -201,8 +201,8 @@ export default function MatchCard({
                 borderRadius: 'var(--radius-sm)',
                 fontSize: '1.5rem',
                 fontWeight: 800,
-                background: 'rgba(0, 0, 0, 0.4)',
-                border: '1px solid rgba(255,255,255,0.1)',
+                background: 'var(--finished-score-bg, rgba(0, 0, 0, 0.4))',
+                border: 'var(--finished-score-border, 1px solid rgba(255,255,255,0.1))',
                 whiteSpace: 'nowrap',
                 flexShrink: 0
               }}>
@@ -251,10 +251,10 @@ export default function MatchCard({
               gap: '6px',
               color: 'var(--text-muted)',
               fontSize: '0.85rem',
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: 'var(--locked-box-bg, rgba(255, 255, 255, 0.02))',
               padding: '8px 12px',
               borderRadius: 'var(--radius-sm)',
-              border: '1px solid rgba(255, 255, 255, 0.05)'
+              border: '1px solid var(--locked-box-border, rgba(255, 255, 255, 0.05))'
             }}>
               <Clock size={15} style={{ color: 'var(--text-muted)' }} />
               <span>Κλειδωμένο (24ω)</span>
@@ -293,7 +293,7 @@ export default function MatchCard({
                 <span style={{ fontSize: '0.8rem', marginLeft: '4px' }}>Προβλέψεις</span>
               </button>
 
-              <div className="glass" style={{
+              <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -302,7 +302,8 @@ export default function MatchCard({
                 borderRadius: 'var(--radius-sm)',
                 color: 'var(--danger)',
                 border: '1px solid rgba(239, 68, 68, 0.2)',
-                background: 'rgba(239, 68, 68, 0.05)'
+                background: 'rgba(239, 68, 68, 0.05)',
+                boxShadow: 'none'
               }}>
                 <Lock size={16} />
               </div>

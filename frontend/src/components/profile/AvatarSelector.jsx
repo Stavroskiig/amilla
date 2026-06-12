@@ -39,7 +39,7 @@ export default function AvatarSelector({ user, setUser, showAvatarGrid, setShowA
       width: '100%',
       maxWidth: '520px',
       border: '1px solid var(--border-color)',
-      background: 'rgba(15, 16, 26, 0.95)',
+      background: 'var(--tooltip-bg, rgba(15, 16, 26, 0.95))',
       boxShadow: 'var(--shadow-lg)',
       position: 'relative'
     }}>
@@ -60,7 +60,7 @@ export default function AvatarSelector({ user, setUser, showAvatarGrid, setShowA
           borderRadius: '50%',
           transition: 'all 0.2s ease'
         }}
-        onMouseEnter={(e) => { e.currentTarget.style.color = '#ffffff'; e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
+        onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--text-main)'; e.currentTarget.style.background = 'var(--table-header-bg, rgba(255,255,255,0.1))'; }}
         onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent'; }}
       >
         <X size={20} />
@@ -98,9 +98,9 @@ export default function AvatarSelector({ user, setUser, showAvatarGrid, setShowA
           <div style={{
             marginTop: '20px',
             padding: '12px 16px',
-            background: 'rgba(255, 255, 255, 0.02)',
+            background: 'var(--table-header-bg, rgba(255, 255, 255, 0.02))',
             borderRadius: 'var(--radius-sm)',
-            border: '1px solid rgba(255, 255, 255, 0.05)',
+            border: '1px solid var(--border-color)',
             textAlign: 'center',
             minHeight: '74px',
             display: 'flex',
@@ -108,7 +108,7 @@ export default function AvatarSelector({ user, setUser, showAvatarGrid, setShowA
             justifyContent: 'center',
             transition: 'all 0.2s ease'
           }}>
-            <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.95rem', marginBottom: '4px' }}>
+            <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.95rem', marginBottom: '4px' }}>
               {activeAvatar.name}
               {isLocked && <span style={{ color: 'var(--warning)', marginLeft: '8px', fontSize: '0.8rem' }}>(Ξεκλειδώνει: {activeAvatar.unlockThreshold} pts)</span>}
             </div>

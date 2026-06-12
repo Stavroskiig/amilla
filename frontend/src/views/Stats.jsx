@@ -114,12 +114,13 @@ export default function Stats({ user }) {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <Flag teamName={entry.name} width={24} height={16} />
-                      <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{entry.name}</span>
+                      <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{entry.name}</span>
                     </div>
-                    <span style={{ fontWeight: 700, color: getTeamColor(entry.name) }}>{entry.value}%</span>
+                    <span className="chart-team-pct" style={{ fontWeight: 700, color: getTeamColor(entry.name) }}>{entry.value}%</span>
                   </div>
-                  <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ width: '100%', height: '8px', background: 'var(--bar-bg, rgba(255,255,255,0.05))', borderRadius: '4px', overflow: 'hidden' }}>
                     <div
+                      className="chart-team-bar"
                       style={{
                         height: '100%',
                         width: `${entry.value}%`,
@@ -167,7 +168,7 @@ export default function Stats({ user }) {
                       <div key={entry.name} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <div style={{ width: '14px', height: '14px', borderRadius: '50%', backgroundColor: ACCURACY_COLORS[index % ACCURACY_COLORS.length] }}></div>
                         <span style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                          {entry.name} <strong style={{ color: 'var(--text-primary)', marginLeft: '4px' }}>{entry.value}</strong> <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>({pct}%)</span>
+                          {entry.name} <strong style={{ color: 'var(--text-main)', marginLeft: '4px' }}>{entry.value}</strong> <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>({pct}%)</span>
                         </span>
                       </div>
                     );

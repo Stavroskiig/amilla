@@ -139,15 +139,16 @@ export function Avatar({ id, size = 24, style = {}, className = '', isLocked = f
           width: `${size}px`,
           height: `${size}px`,
           borderRadius: '50%',
-          background: 'rgba(255, 255, 255, 0.1)',
+          background: 'var(--fallback-avatar-bg, linear-gradient(135deg, #475569 0%, #334155 100%))',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          border: '1px solid rgba(255, 255, 255, 0.15)',
+          border: '1px solid var(--fallback-avatar-border, rgba(255, 255, 255, 0.1))',
+          boxShadow: 'var(--fallback-avatar-shadow, 0 2px 8px rgba(0, 0, 0, 0.2))',
           ...style
         }}
       >
-        <User size={size * 0.6} color="var(--text-muted)" />
+        <User size={size * 0.6} color="var(--fallback-avatar-icon, #cbd5e1)" />
       </div>
     );
   }

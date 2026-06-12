@@ -99,10 +99,10 @@ function ExactScoreModal({ match, currentOddsJson, onSave, onClose, isEditable =
           {scores.length === 0 && <p style={{ color: 'var(--text-muted)' }}>Δεν έχουν προστεθεί ακριβή σκορ.</p>}
           {scores.map((item, idx) => (
             <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <input type="text" value={item.score} disabled style={{ width: '80px', minWidth: '60px', padding: '8px', borderRadius: '4px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', color: 'white', textAlign: 'center' }} />
-              <input type="number" step="0.01" value={item.odds} onChange={(e) => handleOddsChange(idx, e.target.value)} disabled={!isEditable} style={{ flex: 1, minWidth: 0, padding: '8px', borderRadius: '4px', background: 'rgba(255,255,255,0.1)', border: '1px solid var(--border-color)', color: 'white', opacity: isEditable ? 1 : 0.7 }} />
+              <input type="text" value={item.score} disabled style={{ width: '80px', minWidth: '60px', padding: '8px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.05))', border: '1px solid var(--border-color)', color: 'var(--text-main)', textAlign: 'center' }} />
+              <input type="number" step="0.01" value={item.odds} onChange={(e) => handleOddsChange(idx, e.target.value)} disabled={!isEditable} style={{ flex: 1, minWidth: 0, padding: '8px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.1))', border: '1px solid var(--border-color)', color: 'var(--text-main)', opacity: isEditable ? 1 : 0.7 }} />
               {isEditable && (
-                <button className="btn btn-secondary" onClick={() => handleRemove(idx)} style={{ padding: '8px', background: 'rgba(239,68,68,0.2)', color: '#ef4444', border: 'none' }}>
+                <button className="btn btn-secondary" onClick={() => handleRemove(idx)} style={{ padding: '8px', background: 'var(--danger-bg, rgba(239,68,68,0.2))', color: 'var(--danger-text, #ef4444)', border: 'none' }}>
                   <X size={16} />
                 </button>
               )}
@@ -111,9 +111,9 @@ function ExactScoreModal({ match, currentOddsJson, onSave, onClose, isEditable =
         </div>
 
         {isEditable && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px', background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '8px' }}>
-            <input type="text" placeholder="Σκορ" value={newScore} onChange={e => setNewScore(e.target.value)} style={{ width: '80px', minWidth: '60px', padding: '8px', borderRadius: '4px', background: 'rgba(255,255,255,0.1)', border: '1px solid var(--border-color)', color: 'white', textAlign: 'center' }} />
-            <input type="number" step="0.01" placeholder="Απόδοση" value={newOdds} onChange={e => setNewOdds(e.target.value)} style={{ flex: 1, minWidth: 0, padding: '8px', borderRadius: '4px', background: 'rgba(255,255,255,0.1)', border: '1px solid var(--border-color)', color: 'white' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px', background: 'var(--table-header-bg, rgba(255,255,255,0.03))', padding: '12px', borderRadius: '8px' }}>
+            <input type="text" placeholder="Σκορ" value={newScore} onChange={e => setNewScore(e.target.value)} style={{ width: '80px', minWidth: '60px', padding: '8px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.1))', border: '1px solid var(--border-color)', color: 'var(--text-main)', textAlign: 'center' }} />
+            <input type="number" step="0.01" placeholder="Απόδοση" value={newOdds} onChange={e => setNewOdds(e.target.value)} style={{ flex: 1, minWidth: 0, padding: '8px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.1))', border: '1px solid var(--border-color)', color: 'var(--text-main)' }} />
             <button className="btn btn-primary" onClick={handleAdd} style={{ padding: '8px' }}>
               <Plus size={16} />
             </button>
@@ -121,7 +121,7 @@ function ExactScoreModal({ match, currentOddsJson, onSave, onClose, isEditable =
         )}
 
         {error && (
-          <div style={{ color: '#ef4444', fontSize: '0.85rem', marginBottom: '16px', padding: '8px', background: 'rgba(239,68,68,0.1)', borderRadius: '4px', border: '1px solid rgba(239,68,68,0.2)' }}>
+          <div style={{ color: 'var(--danger-text, #ef4444)', fontSize: '0.85rem', marginBottom: '16px', padding: '8px', background: 'var(--danger-bg, rgba(239,68,68,0.1))', borderRadius: '4px', border: '1px solid var(--danger-border, rgba(239,68,68,0.2))' }}>
             {error}
           </div>
         )}
@@ -249,9 +249,9 @@ export default function OddsManager() {
             value={filterStage}
             onChange={(e) => setFilterStage(e.target.value)}
             style={{
-              background: 'rgba(10, 11, 16, 0.7)',
+              background: 'var(--input-bg, rgba(10, 11, 16, 0.7))',
               border: '1px solid var(--border-color)',
-              color: '#ffffff',
+              color: 'var(--text-main)',
               padding: '8px 12px',
               borderRadius: 'var(--radius-sm)'
             }}
@@ -301,15 +301,15 @@ export default function OddsManager() {
                     <div style={{ display: 'flex', alignItems: 'flex-end', gap: '12px', flexWrap: 'wrap' }}>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
                         <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>1</span>
-                        <input type="number" step="0.01" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'rgba(255,255,255,0.1)', border: '1px solid var(--border-color)', color: 'white', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.homeOdds} onChange={(e) => handleOddsChange(match.id, 'homeOdds', e.target.value)} />
+                        <input type="number" step="0.01" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.1))', border: '1px solid var(--border-color)', color: 'var(--text-main)', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.homeOdds} onChange={(e) => handleOddsChange(match.id, 'homeOdds', e.target.value)} />
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
                         <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>X</span>
-                        <input type="number" step="0.01" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'rgba(255,255,255,0.1)', border: '1px solid var(--border-color)', color: 'white', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.drawOdds} onChange={(e) => handleOddsChange(match.id, 'drawOdds', e.target.value)} />
+                        <input type="number" step="0.01" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.1))', border: '1px solid var(--border-color)', color: 'var(--text-main)', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.drawOdds} onChange={(e) => handleOddsChange(match.id, 'drawOdds', e.target.value)} />
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
                         <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>2</span>
-                        <input type="number" step="0.01" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'rgba(255,255,255,0.1)', border: '1px solid var(--border-color)', color: 'white', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.awayOdds} onChange={(e) => handleOddsChange(match.id, 'awayOdds', e.target.value)} />
+                        <input type="number" step="0.01" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.1))', border: '1px solid var(--border-color)', color: 'var(--text-main)', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.awayOdds} onChange={(e) => handleOddsChange(match.id, 'awayOdds', e.target.value)} />
                       </div>
 
                       {isKnockout && (
@@ -317,11 +317,11 @@ export default function OddsManager() {
                           <div style={{ width: '1px', height: '30px', background: 'var(--border-color)', margin: '0 8px', marginBottom: '2px' }} />
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
                             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Πρόκρ 1</span>
-                            <input type="number" step="0.01" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'rgba(255,255,255,0.1)', border: '1px solid var(--border-color)', color: 'white', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.homeAdvanceOdds} onChange={(e) => handleOddsChange(match.id, 'homeAdvanceOdds', e.target.value)} />
+                            <input type="number" step="0.01" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.1))', border: '1px solid var(--border-color)', color: 'var(--text-main)', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.homeAdvanceOdds} onChange={(e) => handleOddsChange(match.id, 'homeAdvanceOdds', e.target.value)} />
                           </div>
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
                             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Πρόκρ 2</span>
-                            <input type="number" step="0.01" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'rgba(255,255,255,0.1)', border: '1px solid var(--border-color)', color: 'white', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.awayAdvanceOdds} onChange={(e) => handleOddsChange(match.id, 'awayAdvanceOdds', e.target.value)} />
+                            <input type="number" step="0.01" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.1))', border: '1px solid var(--border-color)', color: 'var(--text-main)', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.awayAdvanceOdds} onChange={(e) => handleOddsChange(match.id, 'awayAdvanceOdds', e.target.value)} />
                           </div>
                         </>
                       )}

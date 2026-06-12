@@ -74,7 +74,7 @@ export default function HistoryChart({ history }) {
         {/* Tab Selector */}
         <div style={{
           display: 'flex',
-          background: 'rgba(255,255,255,0.03)',
+          background: 'var(--table-header-bg, rgba(255,255,255,0.03))',
           padding: '4px',
           borderRadius: '8px',
           border: '1px solid var(--border-color)'
@@ -166,7 +166,7 @@ export default function HistoryChart({ history }) {
                     y1={y}
                     x2={viewBoxWidth - paddingRight}
                     y2={y}
-                    stroke="rgba(255,255,255,0.04)"
+                    stroke="var(--border-color, rgba(255,255,255,0.04))"
                     strokeDasharray="4 4"
                   />
                   <text
@@ -191,7 +191,7 @@ export default function HistoryChart({ history }) {
             y1={paddingTop + chartHeight}
             x2={viewBoxWidth - paddingRight}
             y2={paddingTop + chartHeight}
-            stroke="rgba(255,255,255,0.1)"
+            stroke="var(--border-color, rgba(255,255,255,0.1))"
           />
 
           {/* Filled Area */}
@@ -227,7 +227,7 @@ export default function HistoryChart({ history }) {
                   cx={pt.x}
                   cy={pt.y}
                   r={isHovered ? 6 : 4}
-                  fill={isHovered ? '#ffffff' : 'var(--primary)'}
+                  fill={isHovered ? 'var(--text-main)' : 'var(--primary)'}
                   stroke="var(--bg-main)"
                   strokeWidth="2"
                   style={{ transition: 'r 0.15s, fill 0.15s' }}
@@ -283,7 +283,7 @@ export default function HistoryChart({ history }) {
             left: `${(hoveredPoint.x / viewBoxWidth) * 100}%`,
             top: `${(hoveredPoint.y / viewBoxHeight) * 100 - 10}%`,
             transform: 'translate(-50%, -100%)',
-            background: 'rgba(15, 16, 26, 0.95)',
+            background: 'var(--tooltip-bg, rgba(15, 16, 26, 0.95))',
             border: '1px solid var(--primary)',
             borderRadius: '8px',
             padding: '10px 14px',
@@ -292,7 +292,7 @@ export default function HistoryChart({ history }) {
             minWidth: '160px',
             boxShadow: 'var(--shadow-lg), var(--shadow-glow)',
             backdropFilter: 'blur(10px)',
-            color: '#ffffff',
+            color: 'var(--text-main)',
             transition: 'left 0.1s ease, top 0.1s ease'
           }}>
             <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase' }}>

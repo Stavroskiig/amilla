@@ -22,10 +22,10 @@ export default function PredictionInput({
       alignItems: 'center',
       gap: '16px',
       justifyContent: 'center',
-      background: 'rgba(0,0,0,0.2)',
+      background: 'var(--input-container-bg, rgba(0,0,0,0.2))',
       padding: '12px 20px',
       borderRadius: 'var(--radius-md)',
-      border: '1px solid rgba(255,255,255,0.03)'
+      border: '1px solid var(--input-container-border, rgba(255,255,255,0.03))'
     }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: 600 }}>ΠΡΟΒΛΕΨΗ</span>
@@ -53,11 +53,11 @@ export default function PredictionInput({
       {isKnockout && (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: 600 }}>ΠΡΟΚΡΙΣΗ</span>
-          <div style={{ 
+          <div className="qualifier-container" style={{ 
             display: 'flex', 
             alignItems: 'center', 
             gap: '8px', 
-            background: 'rgba(10, 11, 16, 0.7)', 
+            background: 'var(--qualifier-bg, rgba(10, 11, 16, 0.7))', 
             padding: '4px', 
             borderRadius: 'var(--radius-sm)', 
             border: '1px solid var(--border-color)' 

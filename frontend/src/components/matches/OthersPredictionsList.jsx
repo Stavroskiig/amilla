@@ -5,7 +5,7 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
   if (!othersPredictions || othersPredictions.length === 0) {
     return (
       <div style={{
-        background: 'rgba(10,11,16,0.4)',
+        background: 'var(--others-bg, rgba(10,11,16,0.4))',
         borderTop: '1px solid var(--border-color)',
         padding: '20px 24px'
       }}>
@@ -21,7 +21,7 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
 
   return (
     <div style={{
-      background: 'rgba(10,11,16,0.4)',
+      background: 'var(--others-bg, rgba(10,11,16,0.4))',
       borderTop: '1px solid var(--border-color)',
       padding: '20px 24px'
     }}>
@@ -36,19 +36,21 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
         {othersPredictions
           .filter(p => p.userId !== currentUserId)
           .map((p, idx) => (
-            <div key={idx} className="glass" style={{
+            <div key={idx} style={{
               padding: '10px 14px',
               borderRadius: 'var(--radius-sm)',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              border: '1px solid rgba(255,255,255,0.03)'
+              border: '1px solid var(--others-border, rgba(255,255,255,0.03))',
+              background: 'var(--others-card-bg, rgba(255, 255, 255, 0.05))',
+              boxShadow: 'var(--others-shadow, none)'
             }}>
               <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>{p.username || 'Χρήστης'}</span>
               <span style={{
                 fontWeight: 700,
-                color: '#a5b4fc',
-                background: 'rgba(99,102,241,0.1)',
+                color: 'var(--others-score-color, #a5b4fc)',
+                background: 'var(--others-score-bg, rgba(99,102,241,0.1))',
                 padding: '2px 8px',
                 borderRadius: '4px',
                 fontSize: '0.9rem',
