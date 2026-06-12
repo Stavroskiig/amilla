@@ -657,17 +657,17 @@ input[type=number] {
 
   .leaderboard-table th, 
   .leaderboard-table td {
-    padding: 12px 8px !important;
+    padding: 12px 6px !important;
   }
 
   .leaderboard-table th:first-child,
   .leaderboard-table td:first-child {
-    padding-left: 16px !important;
+    padding-left: 10px !important;
   }
 
   .leaderboard-table th:last-child,
   .leaderboard-table td:last-child {
-    padding-right: 16px !important;
+    padding-right: 10px !important;
   }
 
   .hide-on-mobile {
@@ -694,7 +694,7 @@ input[type=number] {
   }
 
   .leaderboard-username {
-    max-width: 85px !important;
+    max-width: 70px !important;
     font-size: 0.9rem !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, Award, Search, TrendingUp, TrendingDown, Flame } from 'lucide-react';
+import { Trophy, Award, Search, TrendingUp, TrendingDown, Flame, Target } from 'lucide-react';
 import { Avatar } from '../components/Avatars';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
@@ -89,11 +89,10 @@ export default function Leaderboard({ currentUser }) {
               }}>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
                 <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
-                <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
-                  <span className="hide-on-mobile">ΑΚΡΙΒΗ ΣΚΟΡ</span>
-                  <span className="show-on-mobile" title="Ακριβή Σκορ">ΑΚΡΙΒΗ</span>
+                <th className="hide-on-mobile" style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
+                  ΑΚΡΙΒΗ ΣΚΟΡ
                 </th>
-                <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'right' }}>
+                <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
                   <span className="hide-on-mobile">ΣΥΝΟΛΙΚΟΙ ΠΟΝΤΟΙ</span>
                   <span className="show-on-mobile">ΠΟΝΤΟΙ</span>
                 </th>
@@ -180,49 +179,59 @@ export default function Leaderboard({ currentUser }) {
                       <td style={{ padding: '18px 24px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }} className="leaderboard-player-cell">
                           <Avatar id={user.avatar} size={28} />
-                          <span style={{ fontSize: '1rem', color: isSelf ? '#ffffff' : 'var(--text-main)' }} className="leaderboard-username">
-                            {user.username}
-                          </span>
-                          {user.currentStreak >= 3 && (
-                            <span
-                              title={`Καυτός! ${user.currentStreak} συνεχόμενες σωστές προβλέψεις`}
-                              style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '3px',
-                                background: 'rgba(249, 115, 22, 0.15)',
-                                color: '#f97316',
-                                border: '1px solid rgba(249, 115, 22, 0.3)',
-                                padding: '2px 8px',
-                                borderRadius: '12px',
-                                fontSize: '0.75rem',
-                                fontWeight: 800,
-                                boxShadow: '0 0 10px rgba(249, 115, 22, 0.25)',
-                                animation: 'pulse 1.5s infinite',
-                                fontFamily: 'var(--font-heading)'
-                              }}
-                              className="streak-badge"
-                            >
-                              <Flame size={12} fill="#f97316" />
-                              <span>{user.currentStreak}</span>
-                            </span>
-                          )}
-                          {isSelf && (
-                            <span className="badge self-badge" style={{
-                              background: 'rgba(99,102,241,0.2)',
-                              color: '#a5b4fc',
-                              fontSize: '0.7rem',
-                              padding: '2px 6px',
-                              borderRadius: '10px'
-                            }}>
-                              ΕΣΥ
-                            </span>
-                          )}
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', justifyContent: 'center' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <span style={{ fontSize: '1rem', color: isSelf ? '#ffffff' : 'var(--text-main)' }} className="leaderboard-username">
+                                {user.username}
+                              </span>
+                              {user.currentStreak >= 3 && (
+                                <span
+                                  title={`Καυτός! ${user.currentStreak} συνεχόμενες σωστές προβλέψεις`}
+                                  style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '3px',
+                                    background: 'rgba(249, 115, 22, 0.15)',
+                                    color: '#f97316',
+                                    border: '1px solid rgba(249, 115, 22, 0.3)',
+                                    padding: '2px 8px',
+                                    borderRadius: '12px',
+                                    fontSize: '0.75rem',
+                                    fontWeight: 800,
+                                    boxShadow: '0 0 10px rgba(249, 115, 22, 0.25)',
+                                    animation: 'pulse 1.5s infinite',
+                                    fontFamily: 'var(--font-heading)'
+                                  }}
+                                  className="streak-badge"
+                                >
+                                  <Flame size={12} fill="#f97316" />
+                                  <span>{user.currentStreak}</span>
+                                </span>
+                              )}
+                              {isSelf && (
+                                <span className="badge self-badge" style={{
+                                  background: 'rgba(99,102,241,0.2)',
+                                  color: '#a5b4fc',
+                                  fontSize: '0.7rem',
+                                  padding: '2px 6px',
+                                  borderRadius: '10px'
+                                }}>
+                                  ΕΣΥ
+                                </span>
+                              )}
+                            </div>
+                            <div className="show-on-mobile" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                <Target size={12} color="#06b6d4" />
+                                Ακριβή: <span style={{ color: 'var(--text-main)', fontWeight: '700' }}>{user.exactHits || 0}</span>
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </td>
 
                       {/* Exact Hits */}
-                      <td style={{ padding: '18px 24px', textAlign: 'center' }}>
+                      <td className="hide-on-mobile" style={{ padding: '18px 24px', textAlign: 'center' }}>
                         <div style={{
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -240,8 +249,8 @@ export default function Leaderboard({ currentUser }) {
                       </td>
 
                       {/* Points */}
-                      <td style={{ padding: '18px 24px', textAlign: 'right', fontSize: '1.1rem', fontWeight: 700, color: isSelf ? '#818cf8' : '#ffffff' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
+                      <td style={{ padding: '18px 24px', textAlign: 'center', fontSize: '1.1rem', fontWeight: 700, color: isSelf ? '#818cf8' : '#ffffff' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                           {user.recentPoints > 0 && (
                             <span 
                               title={`Κέρδισε ${user.recentPoints} πόντους στον τελευταίο αγώνα`}
