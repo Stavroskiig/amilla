@@ -250,24 +250,29 @@ export default function Leaderboard({ currentUser }) {
 
                       {/* Points */}
                       <td style={{ padding: '18px 24px', textAlign: 'center', fontSize: '1.1rem', fontWeight: 700, color: isSelf ? '#818cf8' : '#ffffff' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                          {user.recentPoints > 0 && (
-                            <span 
-                              title={`Κέρδισε ${user.recentPoints} πόντους στον τελευταίο αγώνα`}
-                              style={{ 
-                                fontSize: '0.75rem', 
-                                color: '#10b981', 
-                                background: 'rgba(16, 185, 129, 0.15)', 
-                                padding: '2px 6px', 
-                                borderRadius: '10px',
-                                fontWeight: 800
-                              }}
-                              className="animate-fade-in"
-                            >
-                              +{user.recentPoints}
-                            </span>
-                          )}
-                          <span>{user.totalPoints}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                            {user.recentPoints > 0 && (
+                              <span 
+                                title={`Κέρδισε ${user.recentPoints} πόντους στον τελευταίο αγώνα`}
+                                style={{ 
+                                  position: 'absolute',
+                                  right: '100%',
+                                  marginRight: '8px',
+                                  fontSize: '0.75rem', 
+                                  color: '#10b981', 
+                                  background: 'rgba(16, 185, 129, 0.15)', 
+                                  padding: '2px 6px', 
+                                  borderRadius: '10px',
+                                  fontWeight: 800
+                                }}
+                                className="animate-fade-in"
+                              >
+                                +{user.recentPoints}
+                              </span>
+                            )}
+                            <span>{user.totalPoints}</span>
+                          </div>
                         </div>
                       </td>
                     </tr>
