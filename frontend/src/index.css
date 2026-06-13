@@ -99,6 +99,12 @@
   --danger-text: #dc2626;
   --danger-bg: rgba(220, 38, 38, 0.1);
   
+  --finished-score-bg: rgba(0, 0, 0, 0.04);
+  --finished-score-border: 1px solid rgba(0, 0, 0, 0.08);
+  
+  --locked-box-bg: rgba(0, 0, 0, 0.03);
+  --locked-box-border: rgba(0, 0, 0, 0.08);
+  
   --table-header-bg: rgba(0, 0, 0, 0.02);
   --self-row-bg: rgba(44, 60, 230, 0.05);
   --rank-bg: rgba(0, 0, 0, 0.03);

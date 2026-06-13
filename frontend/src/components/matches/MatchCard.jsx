@@ -344,7 +344,7 @@ export default function MatchCard({
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
               <span>Η πρόβλεψή σας: </span>
-              <strong style={{ color: '#ffffff', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <strong style={{ color: 'var(--text-main, #ffffff)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <span>{matchPred.savedHome} - {matchPred.savedAway}</span>
                 {isKnockout && matchPred.savedQualifier && (
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: '2px' }} title={matchPred.savedQualifier}>
