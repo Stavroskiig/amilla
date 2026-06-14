@@ -50,7 +50,7 @@ public class StatsService {
                 calculateMatchSuperlatives(stats, matches, predictions, users.size());
 
                 // 3. Hall of Fame
-                calculateHallOfFame(stats, users);
+                calculateHallOfFame(stats, users, predictions);
 
                 // 4. Global Averages
                 calculateGlobalAverages(stats, predictions, users);
@@ -243,7 +243,7 @@ public class StatsService {
                 }
         }
 
-        private void calculateHallOfFame(GlobalStatsDto stats, List<User> users) {
+        private void calculateHallOfFame(GlobalStatsDto stats, List<User> users, List<Prediction> predictions) {
                 if (users.isEmpty())
                         return;
 
@@ -282,6 +282,55 @@ public class StatsService {
                                         .avatar(highestScorer.getAvatar())
                                         .statValue(highestScorer.getTotalPoints() + (highestScorer.getTotalPoints() == 1 ? " πόντος" : " πόντοι"))
                                         .build());
+                }
+
+                // The Soulmates (most identical predictions)
+                if (users.size() >= 2 && predictions != null && !predictions.isEmpty()) {
+                    Map<String, List<Prediction>> predsByUser = predictions.stream()
+                            .collect(Collectors.groupingBy(p -> p.getUserId().toString()));
+
+                    int maxIdentical = 0;
+                    User soulmate1 = null;
+                    User soulmate2 = null;
+
+                    for (int i = 0; i < users.size(); i++) {
+                        for (int j = i + 1; j < users.size(); j++) {
+                            User u1 = users.get(i);
+                            User u2 = users.get(j);
+
+                            List<Prediction> list1 = predsByUser.getOrDefault(u1.getId().toString(), Collections.emptyList());
+                            List<Prediction> list2 = predsByUser.getOrDefault(u2.getId().toString(), Collections.emptyList());
+
+                            Map<String, Prediction> map2 = list2.stream()
+                                    .collect(Collectors.toMap(Prediction::getMatchId, p -> p, (p1, p2) -> p2));
+
+                            int identicalCount = 0;
+                            for (Prediction p1 : list1) {
+                                Prediction p2 = map2.get(p1.getMatchId());
+                                if (p2 != null && 
+                                    p1.getPredictedHomeScore() == p2.getPredictedHomeScore() && 
+                                    p1.getPredictedAwayScore() == p2.getPredictedAwayScore()) {
+                                    identicalCount++;
+                                }
+                            }
+
+                            if (identicalCount > maxIdentical) {
+                                maxIdentical = identicalCount;
+                                soulmate1 = u1;
+                                soulmate2 = u2;
+                            }
+                        }
+                    }
+
+                    if (maxIdentical > 0 && soulmate1 != null && soulmate2 != null) {
+                        stats.setSoulmates(GlobalStatsDto.UserPairStatDto.builder()
+                                .username1(soulmate1.getUsername())
+                                .avatar1(soulmate1.getAvatar())
+                                .username2(soulmate2.getUsername())
+                                .avatar2(soulmate2.getAvatar())
+                                .statValue(maxIdentical + (maxIdentical == 1 ? " κοινή πρόβλεψη" : " κοινές προβλέψεις"))
+                                .build());
+                    }
                 }
         }
 

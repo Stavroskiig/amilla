@@ -262,6 +262,26 @@ export default function Stats({ user }) {
               </div>
             )}
 
+            {stats.soulmates && (
+              <div className="hof-item">
+                <div style={{ display: 'flex' }}>
+                  <div style={{ zIndex: 2, position: 'relative' }}>
+                    <Avatar id={stats.soulmates.avatar1} size={40} />
+                  </div>
+                  <div style={{ marginLeft: '-12px', zIndex: 1, position: 'relative' }}>
+                    <Avatar id={stats.soulmates.avatar2} size={40} />
+                  </div>
+                </div>
+                <div className="hof-info">
+                  <p className="hof-role">ΟΙ ΑΝΤΙΓΡΑΦΕΙΣ</p>
+                  <p className="hof-name">{stats.soulmates.username1} & {stats.soulmates.username2}</p>
+                </div>
+                <div className="hof-stat" style={{ color: '#ec4899', background: 'rgba(236, 72, 153, 0.1)' }}>
+                  {stats.soulmates.statValue}
+                </div>
+              </div>
+            )}
+
             {!stats.theOracle && !stats.mrConsistent && (
               <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Η κατάταξη μορφοποιείται...</p>
             )}

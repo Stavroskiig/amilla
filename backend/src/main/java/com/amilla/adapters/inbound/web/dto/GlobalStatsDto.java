@@ -23,6 +23,7 @@ public class GlobalStatsDto {
     private UserStatDto theOracle; // Highest exact hit rate
     private UserStatDto mrConsistent; // Longest streak
     private UserStatDto highestScorer; // Highest points
+    private UserPairStatDto soulmates; // Users with most identical predictions
 
     // 4. Global Averages
     private Double averagePointsPerPrediction;
@@ -58,6 +59,18 @@ public class GlobalStatsDto {
         private String username;
         private String avatar;
         private String statValue; // e.g. "45% exact hits", "12 predictions in a row"
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserPairStatDto {
+        private String username1;
+        private String avatar1;
+        private String username2;
+        private String avatar2;
+        private String statValue;
     }
 
     @Data
