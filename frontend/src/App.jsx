@@ -10,6 +10,7 @@ import OddsManager from './views/OddsManager';
 import Profile from './views/Profile';
 import Stats from './views/Stats';
 import Rules from './views/Rules';
+import wc26Logo from './assets/wc26-logo.svg';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
@@ -126,19 +127,23 @@ export default function App() {
   };
 
   if (loading) {
+    const isWc26 = theme === 'wc26';
     return (
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         height: '100vh',
-        backgroundColor: '#0b0c10',
-        color: '#f3f4f6',
+        backgroundColor: isWc26 ? '#ffffff' : '#0b0c10',
+        color: isWc26 ? '#0f172a' : '#f3f4f6',
         fontFamily: 'sans-serif'
       }}>
         <div style={{ textAlign: 'center' }}>
-          <h2 style={{ marginBottom: '10px' }}>Amilla Loading...</h2>
-          <div style={{ fontSize: '0.9rem', color: '#9ca3af' }}>Verify credentials</div>
+          {isWc26 && (
+            <img src={wc26Logo} alt="WC 2026" style={{ height: '64px', marginBottom: '16px' }} />
+          )}
+          <h2 style={{ marginBottom: '10px', fontWeight: 800, letterSpacing: '-0.5px' }}>Amilla Loading...</h2>
+          <div style={{ fontSize: '0.9rem', color: isWc26 ? '#64748b' : '#9ca3af' }}>Verify credentials</div>
         </div>
       </div>
     );
