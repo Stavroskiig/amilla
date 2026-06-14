@@ -14,7 +14,8 @@ import {
   User,
   Lock,
   Crown,
-  Gem
+  Gem,
+  Orbit
 } from 'lucide-react';
 
 export const AVATARS = [
@@ -143,6 +144,15 @@ export const AVATARS = [
     icon: Gem,
     color: '#ffffff',
     unlockThreshold: 1000
+  },
+  {
+    id: 'avatar_15',
+    name: 'Galactico',
+    description: 'Από άλλο πλανήτη. Οι προβλέψεις του αψηφούν τη βαρύτητα.',
+    gradient: 'linear-gradient(135deg, #0f172a 0%, #3730a3 100%)',
+    icon: Orbit,
+    color: '#ffffff',
+    unlockThreshold: 1500
   }
 ].sort((a, b) => a.unlockThreshold - b.unlockThreshold);
 
