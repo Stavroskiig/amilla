@@ -58,7 +58,7 @@ export default function Stats({ user }) {
     { name: 'Μόνο Σημείο', value: correctSignCount },
     { name: 'Λάθος', value: missCount }
   ];
-  const ACCURACY_COLORS = ['#10b981', '#3b82f6', '#ef4444'];
+  const ACCURACY_COLORS = ['var(--success)', 'var(--primary)', 'var(--danger)'];
   const totalAccuracy = accuracyData.reduce((acc, cur) => acc + cur.value, 0);
 
   return (
@@ -77,7 +77,7 @@ export default function Stats({ user }) {
             <p className="stat-label">Μ.Ο. Πόντων / Πρόβλεψη</p>
             <p className="stat-value">{stats.averagePointsPerPrediction}</p>
           </div>
-          <Zap size={32} className="stat-icon" color="#f59e0b" />
+          <Zap size={32} className="stat-icon" color="var(--warning)" />
         </div>
         <div className="glass stat-card">
           <div>
@@ -89,9 +89,9 @@ export default function Stats({ user }) {
         <div className="glass stat-card">
           <div>
             <p className="stat-label">Σύνολο Σωστών Σημείων</p>
-            <p className="stat-value" style={{ color: '#3b82f6' }}>{stats.totalCorrectResults}</p>
+            <p className="stat-value" style={{ color: 'var(--primary)' }}>{stats.totalCorrectResults}</p>
           </div>
-          <TrendingUp size={32} className="stat-icon" color="#3b82f6" />
+          <TrendingUp size={32} className="stat-icon" color="var(--primary)" />
         </div>
         <div className="glass stat-card">
           <div>
@@ -108,7 +108,7 @@ export default function Stats({ user }) {
         <div className="glass chart-card">
           <h2 className="chart-title">Πρόβλεψη Νικητή</h2>
           {championData.length > 0 ? (
-            <div className="custom-bars-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '16px' }}>
+            <div className="custom-bars-container">
               {championData.map((entry, index) => (
                 <div key={entry.name} className="custom-bar-item" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
@@ -140,40 +140,35 @@ export default function Stats({ user }) {
 
         <div className="glass chart-card">
           <h2 className="chart-title">Συνολικό Ποσοστό Επιτυχίας</h2>
-          <div className="accuracy-container" style={{ marginTop: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
+          <div className="accuracy-container" style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', flex: 1, justifyContent: 'center' }}>
             {totalAccuracy > 0 ? (
               <>
-                <div style={{ display: 'flex', width: '100%', height: '16px', borderRadius: '8px', overflow: 'hidden', marginBottom: '24px' }}>
-                  {accuracyData.map((entry, index) => {
-                    if (entry.value === 0) return null;
-                    const pct = (entry.value / totalAccuracy) * 100;
-                    return (
-                      <div
-                        key={entry.name}
-                        style={{
-                          width: `${pct}%`,
-                          height: '100%',
-                          backgroundColor: ACCURACY_COLORS[index % ACCURACY_COLORS.length],
-                          transition: 'width 1s ease-out'
-                        }}
-                        title={`${entry.name}: ${entry.value}`}
-                      />
-                    );
-                  })}
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
-                  {accuracyData.map((entry, index) => {
-                    const pct = totalAccuracy > 0 ? ((entry.value / totalAccuracy) * 100).toFixed(1) : 0;
-                    return (
-                      <div key={entry.name} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div style={{ width: '14px', height: '14px', borderRadius: '50%', backgroundColor: ACCURACY_COLORS[index % ACCURACY_COLORS.length] }}></div>
-                        <span style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                          {entry.name} <strong style={{ color: 'var(--text-main)', marginLeft: '4px' }}>{entry.value}</strong> <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>({pct}%)</span>
+                {accuracyData.map((entry, index) => {
+                  const pct = totalAccuracy > 0 ? ((entry.value / totalAccuracy) * 100).toFixed(1) : 0;
+                  const color = ACCURACY_COLORS[index % ACCURACY_COLORS.length];
+                  return (
+                    <div key={entry.name} className="custom-bar-item" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
+                        <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>
+                          {entry.name} <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 400, marginLeft: '4px' }}>({entry.value})</span>
                         </span>
+                        <span className="chart-team-pct" style={{ fontWeight: 700, color: color }}>{pct}%</span>
                       </div>
-                    );
-                  })}
-                </div>
+                      <div style={{ width: '100%', height: '8px', background: 'var(--bar-bg, rgba(255,255,255,0.05))', borderRadius: '4px', overflow: 'hidden' }}>
+                        <div
+                          className="chart-team-bar"
+                          style={{
+                            height: '100%',
+                            width: `${pct}%`,
+                            background: color,
+                            borderRadius: '4px',
+                            transition: 'width 1s ease-out'
+                          }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
               </>
             ) : (
               <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', minHeight: '200px' }}>Δεν υπάρχουν δεδομένα</div>
@@ -184,54 +179,68 @@ export default function Stats({ user }) {
       </div>
 
       {/* Superlatives Section */}
-      <div className="stats-grid-3">
+      <div className="stats-grid-2">
 
-        {/* Match Superlatives */}
-        <div className="glass superlative-card">
-          <h2 className="superlative-title" style={{ color: '#818cf8' }}>
-            <Target size={20} /> Πιο Εύκολη Πρόβλεψη
-          </h2>
-          {stats.mostPredictableMatch ? (
-            <div className="superlative-box" style={{ border: '1px solid rgba(99,102,241,0.2)' }}>
-              <div className="superlative-match">
-                <span className="superlative-team">{stats.mostPredictableMatch.homeTeam}</span>
-                <span className="superlative-score">{stats.mostPredictableMatch.homeScore} - {stats.mostPredictableMatch.awayScore}</span>
-                <span className="superlative-team">{stats.mostPredictableMatch.awayTeam}</span>
-              </div>
-              <div className="superlative-avg">
-                Σωστές Προβλέψεις: <span style={{ color: '#818cf8', fontWeight: 700 }}>{stats.mostPredictableMatch.exactPredictions + stats.mostPredictableMatch.correctResultPredictions} / {stats.mostPredictableMatch.totalPredictions}</span>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                  ({stats.mostPredictableMatch.exactPredictions} {stats.mostPredictableMatch.exactPredictions === 1 ? 'Ακριβές' : 'Ακριβή'}, {stats.mostPredictableMatch.correctResultPredictions} {stats.mostPredictableMatch.correctResultPredictions === 1 ? 'Σημείο' : 'Σημεία'})
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          {/* Match Superlatives */}
+          <div className="glass superlative-card" style={{ height: '100%' }}>
+            <h2 className="superlative-title" style={{ color: 'var(--secondary)' }}>
+              <Target size={20} /> Πιο Εύκολη Πρόβλεψη
+            </h2>
+            {stats.mostPredictableMatch ? (
+              <div className="superlative-box" style={{ border: '1px solid var(--secondary-glow)' }}>
+                <div className="superlative-match">
+                  <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Flag teamName={stats.mostPredictableMatch.homeTeam} width={24} height={18} />
+                    {getTeamShortName(stats.mostPredictableMatch.homeTeam)}
+                  </span>
+                  <span className="superlative-score">{stats.mostPredictableMatch.homeScore} - {stats.mostPredictableMatch.awayScore}</span>
+                  <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {getTeamShortName(stats.mostPredictableMatch.awayTeam)}
+                    <Flag teamName={stats.mostPredictableMatch.awayTeam} width={24} height={18} />
+                  </span>
+                </div>
+                <div className="superlative-avg">
+                  Σωστές Προβλέψεις: <span style={{ color: 'var(--secondary)', fontWeight: 700 }}>{stats.mostPredictableMatch.exactPredictions + stats.mostPredictableMatch.correctResultPredictions} / {stats.mostPredictableMatch.totalPredictions}</span>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                    ({stats.mostPredictableMatch.exactPredictions} {stats.mostPredictableMatch.exactPredictions === 1 ? 'Ακριβές' : 'Ακριβή'}, {stats.mostPredictableMatch.correctResultPredictions} {stats.mostPredictableMatch.correctResultPredictions === 1 ? 'Σημείο' : 'Σημεία'})
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Δεν υπάρχουν ολοκληρωμένοι αγώνες.</p>}
-        </div>
+            ) : <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Δεν υπάρχουν ολοκληρωμένοι αγώνες.</p>}
+          </div>
 
-        <div className="glass superlative-card">
-          <h2 className="superlative-title" style={{ color: '#f472b6' }}>
-            <Flame size={20} /> Πιο Δύσκολη Πρόβλεψη
-          </h2>
-          {stats.biggestUpset ? (
-            <div className="superlative-box" style={{ border: '1px solid rgba(244,114,182,0.2)' }}>
-              <div className="superlative-match">
-                <span className="superlative-team">{stats.biggestUpset.homeTeam}</span>
-                <span className="superlative-score">{stats.biggestUpset.homeScore} - {stats.biggestUpset.awayScore}</span>
-                <span className="superlative-team">{stats.biggestUpset.awayTeam}</span>
-              </div>
-              <div className="superlative-avg">
-                Σωστές Προβλέψεις: <span style={{ color: '#f472b6', fontWeight: 700 }}>{stats.biggestUpset.exactPredictions + stats.biggestUpset.correctResultPredictions} / {stats.biggestUpset.totalPredictions}</span>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                  ({stats.biggestUpset.exactPredictions} {stats.biggestUpset.exactPredictions === 1 ? 'Ακριβές' : 'Ακριβή'}, {stats.biggestUpset.correctResultPredictions} {stats.biggestUpset.correctResultPredictions === 1 ? 'Σημείο' : 'Σημεία'})
+          <div className="glass superlative-card" style={{ height: '100%' }}>
+            <h2 className="superlative-title" style={{ color: 'var(--danger)' }}>
+              <Flame size={20} /> Πιο Δύσκολη Πρόβλεψη
+            </h2>
+            {stats.biggestUpset ? (
+              <div className="superlative-box" style={{ border: '1px solid var(--danger-glow)' }}>
+                <div className="superlative-match">
+                  <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Flag teamName={stats.biggestUpset.homeTeam} width={24} height={18} />
+                    {getTeamShortName(stats.biggestUpset.homeTeam)}
+                  </span>
+                  <span className="superlative-score">{stats.biggestUpset.homeScore} - {stats.biggestUpset.awayScore}</span>
+                  <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {getTeamShortName(stats.biggestUpset.awayTeam)}
+                    <Flag teamName={stats.biggestUpset.awayTeam} width={24} height={18} />
+                  </span>
+                </div>
+                <div className="superlative-avg">
+                  Σωστές Προβλέψεις: <span style={{ color: 'var(--danger)', fontWeight: 700 }}>{stats.biggestUpset.exactPredictions + stats.biggestUpset.correctResultPredictions} / {stats.biggestUpset.totalPredictions}</span>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                    ({stats.biggestUpset.exactPredictions} {stats.biggestUpset.exactPredictions === 1 ? 'Ακριβές' : 'Ακριβή'}, {stats.biggestUpset.correctResultPredictions} {stats.biggestUpset.correctResultPredictions === 1 ? 'Σημείο' : 'Σημεία'})
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Δεν υπάρχουν ολοκληρωμένοι αγώνες.</p>}
+            ) : <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Δεν υπάρχουν ολοκληρωμένοι αγώνες.</p>}
+          </div>
         </div>
 
         {/* Hall of Fame */}
         <div className="glass superlative-card">
-          <h2 className="superlative-title" style={{ color: '#fbbf24' }}>
+          <h2 className="superlative-title" style={{ color: 'var(--warning)' }}>
             <Award size={20} /> Hall of Fame
           </h2>
 
@@ -256,7 +265,7 @@ export default function Stats({ user }) {
                   <p className="hof-role">Ο ΣΤΑΘΕΡΟΣ</p>
                   <p className="hof-name">{stats.mrConsistent.username}</p>
                 </div>
-                <div className="hof-stat" style={{ color: '#60a5fa', background: 'rgba(59, 130, 246, 0.1)' }}>
+                <div className="hof-stat" style={{ color: 'var(--primary)', background: 'var(--primary-glow)' }}>
                   {stats.mrConsistent.statValue}
                 </div>
               </div>
@@ -276,7 +285,7 @@ export default function Stats({ user }) {
                   <p className="hof-role">ΟΙ ΑΝΤΙΓΡΑΦΕΙΣ</p>
                   <p className="hof-name">{stats.soulmates.username1} & {stats.soulmates.username2}</p>
                 </div>
-                <div className="hof-stat" style={{ color: '#ec4899', background: 'rgba(236, 72, 153, 0.1)' }}>
+                <div className="hof-stat" style={{ color: 'var(--secondary)', background: 'var(--secondary-glow)' }}>
                   {stats.soulmates.statValue}
                 </div>
               </div>
