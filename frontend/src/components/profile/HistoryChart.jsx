@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, Trophy, Flag as LucideFlag } from 'lucide-react';
 import { Flag, getTeamShortName } from '../Countries';
 
 export default function HistoryChart({ history }) {
@@ -14,7 +14,13 @@ export default function HistoryChart({ history }) {
     );
   }
 
-  const N = history.length;
+  // Prepend a start node
+  const chartHistory = [
+    { isStart: true, points: 0, rank: history[0]?.rank || 1 },
+    ...history
+  ];
+
+  const N = chartHistory.length;
   const paddingLeft = 52;
   const paddingRight = 20;
   const paddingTop = 25;
@@ -26,17 +32,17 @@ export default function HistoryChart({ history }) {
   const chartHeight = viewBoxHeight - paddingTop - paddingBottom;
 
   // Calculate points min/max
-  const pointsValues = history.map(h => h.points);
+  const pointsValues = chartHistory.map(h => h.points);
   const maxPoints = Math.max(...pointsValues, 10);
   const minPoints = 0;
 
   // Calculate rank min/max
-  const rankValues = history.map(h => h.rank);
+  const rankValues = chartHistory.map(h => h.rank);
   const maxRank = Math.max(...rankValues, 10);
   const minRank = 1;
 
   // Generate coordinates
-  const points = history.map((item, idx) => {
+  const points = chartHistory.map((item, idx) => {
     const x = paddingLeft + (idx * chartWidth) / Math.max(1, N - 1);
     let y = 0;
     if (chartType === 'points') {
@@ -247,8 +253,15 @@ export default function HistoryChart({ history }) {
                 )}
 
                 {/* X axis labels (Match tags) */}
-                {/* We only show a few labels to prevent overlap on small screens */}
-                {(N <= 8 || idx === 0 || idx === N - 1 || idx === Math.floor(N / 2)) && (
+                {(idx === 0) ? (
+                  <svg x={pt.x - 9} y={paddingTop + chartHeight + 8} width="18" height="18">
+                    <LucideFlag size={18} color="var(--text-muted)" />
+                  </svg>
+                ) : (idx === N - 1) ? (
+                  <svg x={pt.x - 9} y={paddingTop + chartHeight + 8} width="18" height="18">
+                    <Trophy size={18} color="#fbbf24" />
+                  </svg>
+                ) : (N <= 8 || idx === Math.floor(N / 2)) && !pt.data.isStart ? (
                   <text
                     x={pt.x}
                     y={paddingTop + chartHeight + 20}
@@ -259,7 +272,7 @@ export default function HistoryChart({ history }) {
                   >
                     {`${getTeamShortName(pt.data.homeTeam)}-${getTeamShortName(pt.data.awayTeam)}`}
                   </text>
-                )}
+                ) : null}
 
                 {/* Large transparent hover target */}
                 <circle
@@ -296,15 +309,21 @@ export default function HistoryChart({ history }) {
             transition: 'left 0.1s ease, top 0.1s ease'
           }}>
             <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase' }}>
-              {hoveredPoint.data.matchStage === 'GROUP' ? 'ΦΑΣΗ ΟΜΙΛΩΝ' : 'ΝΟΚ-ΑΟΥΤ'}
+              {hoveredPoint.data.isStart ? 'ΕΝΑΡΞΗ' : (hoveredPoint.data.matchStage === 'GROUP' ? 'ΦΑΣΗ ΟΜΙΛΩΝ' : 'ΝΟΚ-ΑΟΥΤ')}
             </div>
-            <div style={{ fontSize: '0.85rem', fontWeight: 800, marginBottom: '6px', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Flag teamName={hoveredPoint.data.homeTeam} width={16} height={12} />
-              <span>{getTeamShortName(hoveredPoint.data.homeTeam)}</span>
-              <span style={{ margin: '0 2px', color: 'var(--text-muted)', fontSize: '0.75rem' }}>vs</span>
-              <span>{getTeamShortName(hoveredPoint.data.awayTeam)}</span>
-              <Flag teamName={hoveredPoint.data.awayTeam} width={16} height={12} />
-            </div>
+            {hoveredPoint.data.isStart ? (
+              <div style={{ fontSize: '0.85rem', fontWeight: 800, marginBottom: '6px', whiteSpace: 'nowrap' }}>
+                Εκκίνηση Τουρνουά
+              </div>
+            ) : (
+              <div style={{ fontSize: '0.85rem', fontWeight: 800, marginBottom: '6px', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Flag teamName={hoveredPoint.data.homeTeam} width={16} height={12} />
+                <span>{getTeamShortName(hoveredPoint.data.homeTeam)}</span>
+                <span style={{ margin: '0 2px', color: 'var(--text-muted)', fontSize: '0.75rem' }}>vs</span>
+                <span>{getTeamShortName(hoveredPoint.data.awayTeam)}</span>
+                <Flag teamName={hoveredPoint.data.awayTeam} width={16} height={12} />
+              </div>
+            )}
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', fontSize: '0.8rem' }}>
               <div>
                 <span style={{ color: 'var(--text-muted)' }}>Θέση:</span>{' '}
