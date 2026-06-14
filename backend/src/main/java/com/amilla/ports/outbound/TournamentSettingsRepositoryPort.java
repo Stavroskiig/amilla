@@ -9,6 +9,6 @@ public interface TournamentSettingsRepositoryPort {
     
     // Tournament Settings
     @org.springframework.lang.Nullable
-    String getSetting(String key);
+    String getSetting(@org.springframework.lang.NonNull String key);
     void saveSetting(String key, String value);
 }

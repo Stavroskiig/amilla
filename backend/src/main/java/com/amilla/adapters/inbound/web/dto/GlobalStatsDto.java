@@ -44,6 +44,10 @@ public class GlobalStatsDto {
         private Integer homeScore;
         private Integer awayScore;
         private Double averagePoints;
+        private Integer exactPredictions;
+        private Integer correctResultPredictions;
+        private Integer totalPredictions;
+        private Double correctPercentage;
     }
 
     @Data

@@ -35,7 +35,7 @@ public class TournamentSettingsPersistenceAdapter implements TournamentSettingsR
 
     @Override
     @Nullable
-    public String getSetting(String key) {
+    public String getSetting(@org.springframework.lang.NonNull String key) {
         return tournamentSettingsRepository.findById(key)
                 .map(TournamentSettingsEntity::getSettingValue)
                 .orElse(null);

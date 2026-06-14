@@ -55,7 +55,7 @@ export default function Stats({ user }) {
 
   const accuracyData = [
     { name: 'Ακριβές Σκορ', value: exactCount },
-    { name: 'Σωστό Αποτέλεσμα', value: correctSignCount },
+    { name: 'Μόνο Σημείο', value: correctSignCount },
     { name: 'Λάθος', value: missCount }
   ];
   const ACCURACY_COLORS = ['#10b981', '#3b82f6', '#ef4444'];
@@ -199,7 +199,10 @@ export default function Stats({ user }) {
                 <span className="superlative-team">{stats.mostPredictableMatch.awayTeam}</span>
               </div>
               <div className="superlative-avg">
-                Μ.Ο. Πόντων: <span style={{ color: '#818cf8', fontWeight: 700 }}>{stats.mostPredictableMatch.averagePoints}</span>
+                Σωστές Προβλέψεις: <span style={{ color: '#818cf8', fontWeight: 700 }}>{stats.mostPredictableMatch.exactPredictions + stats.mostPredictableMatch.correctResultPredictions} / {stats.mostPredictableMatch.totalPredictions}</span>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                  ({stats.mostPredictableMatch.exactPredictions} {stats.mostPredictableMatch.exactPredictions === 1 ? 'Ακριβές' : 'Ακριβή'}, {stats.mostPredictableMatch.correctResultPredictions} {stats.mostPredictableMatch.correctResultPredictions === 1 ? 'Σημείο' : 'Σημεία'})
+                </div>
               </div>
             </div>
           ) : <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Δεν υπάρχουν ολοκληρωμένοι αγώνες.</p>}
@@ -217,7 +220,10 @@ export default function Stats({ user }) {
                 <span className="superlative-team">{stats.biggestUpset.awayTeam}</span>
               </div>
               <div className="superlative-avg">
-                Μ.Ο. Πόντων: <span style={{ color: '#f472b6', fontWeight: 700 }}>{stats.biggestUpset.averagePoints}</span>
+                Σωστές Προβλέψεις: <span style={{ color: '#f472b6', fontWeight: 700 }}>{stats.biggestUpset.exactPredictions + stats.biggestUpset.correctResultPredictions} / {stats.biggestUpset.totalPredictions}</span>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                  ({stats.biggestUpset.exactPredictions} {stats.biggestUpset.exactPredictions === 1 ? 'Ακριβές' : 'Ακριβή'}, {stats.biggestUpset.correctResultPredictions} {stats.biggestUpset.correctResultPredictions === 1 ? 'Σημείο' : 'Σημεία'})
+                </div>
               </div>
             </div>
           ) : <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Δεν υπάρχουν ολοκληρωμένοι αγώνες.</p>}

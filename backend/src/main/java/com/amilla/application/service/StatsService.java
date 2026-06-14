@@ -172,14 +172,33 @@ public class StatsService {
 
                 GlobalStatsDto.MatchStatDto mostPredictable = null;
                 GlobalStatsDto.MatchStatDto biggestUpset = null;
-                double highestAvg = -1;
-                double lowestAvg = Double.MAX_VALUE;
+                double highestRate = -1.0;
+                double lowestRate = Double.MAX_VALUE;
 
                 for (Match m : finishedMatches) {
                         List<Prediction> matchPreds = predsByMatch.getOrDefault(m.getId(), Collections.emptyList());
+                        if (matchPreds.isEmpty()) continue;
+
+                        Integer homeScore = m.getHomeScore90();
+                        Integer awayScore = m.getAwayScore90();
+                        if (homeScore == null || awayScore == null) continue;
+
+                        long exactCount = matchPreds.stream().filter(p -> 
+                            p.getPredictedHomeScore() == homeScore && 
+                            p.getPredictedAwayScore() == awayScore
+                        ).count();
+
+                        long correctResultCount = matchPreds.stream().filter(p -> {
+                            if (p.getPredictedHomeScore() == homeScore && p.getPredictedAwayScore() == awayScore) return false;
+                            return Integer.signum(p.getPredictedHomeScore() - p.getPredictedAwayScore()) == 
+                                   Integer.signum(homeScore - awayScore);
+                        }).count();
+
+                        double predictabilityScore = (exactCount * 3.0 + correctResultCount * 1.0) / matchPreds.size();
+                        double successRate = predictabilityScore / 3.0;
 
                         double sumPts = matchPreds.stream().mapToInt(Prediction::getPointsEarned).sum();
-                        double avgPts = matchPreds.isEmpty() ? 0.0 : sumPts / (double) matchPreds.size();
+                        double avgPts = sumPts / (double) matchPreds.size();
 
                         GlobalStatsDto.MatchStatDto dto = GlobalStatsDto.MatchStatDto.builder()
                                         .matchId(m.getId())
@@ -188,15 +207,30 @@ public class StatsService {
                                         .homeScore(m.getHomeScore90())
                                         .awayScore(m.getAwayScore90())
                                         .averagePoints(Math.round(avgPts * 10.0) / 10.0)
+                                        .exactPredictions((int) exactCount)
+                                        .correctResultPredictions((int) correctResultCount)
+                                        .totalPredictions(matchPreds.size())
+                                        .correctPercentage(Math.round(successRate * 1000.0) / 10.0)
                                         .build();
 
-                        if (avgPts > highestAvg) {
-                                highestAvg = avgPts;
+                        if (successRate > highestRate) {
+                                highestRate = successRate;
                                 mostPredictable = dto;
+                        } else if (successRate == highestRate && mostPredictable != null) {
+                                if (exactCount > mostPredictable.getExactPredictions()) {
+                                        mostPredictable = dto;
+                                } else if (exactCount == mostPredictable.getExactPredictions() && correctResultCount > mostPredictable.getCorrectResultPredictions()) {
+                                        mostPredictable = dto;
+                                }
                         }
-                        if (avgPts < lowestAvg) {
-                                lowestAvg = avgPts;
+
+                        if (successRate < lowestRate) {
+                                lowestRate = successRate;
                                 biggestUpset = dto;
+                        } else if (successRate == lowestRate && biggestUpset != null) {
+                                if (matchPreds.size() > biggestUpset.getTotalPredictions()) {
+                                        biggestUpset = dto;
+                                }
                         }
                 }
 
