@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Trophy,
   Sparkles,
@@ -13,7 +12,9 @@ import {
   Cat,
   Ghost,
   User,
-  Lock
+  Lock,
+  Crown,
+  Gem
 } from 'lucide-react';
 
 export const AVATARS = [
@@ -124,6 +125,24 @@ export const AVATARS = [
     icon: Ghost,
     color: '#ffffff',
     unlockThreshold: 0
+  },
+  {
+    id: 'avatar_13',
+    name: 'Αυτοκράτορας',
+    description: 'Ο απόλυτος κυρίαρχος των προβλέψεων. Υποκλιθείτε.',
+    gradient: 'linear-gradient(135deg, #fcd34d 0%, #92400e 100%)',
+    icon: Crown,
+    color: '#ffffff',
+    unlockThreshold: 750
+  },
+  {
+    id: 'avatar_14',
+    name: 'GOAT',
+    description: 'Greatest Of All Time. Ο ζωντανός μύθος.',
+    gradient: 'linear-gradient(135deg, #e879f9 0%, #4c1d95 100%)',
+    icon: Gem,
+    color: '#ffffff',
+    unlockThreshold: 1000
   }
 ].sort((a, b) => a.unlockThreshold - b.unlockThreshold);
 
