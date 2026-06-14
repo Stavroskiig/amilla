@@ -174,7 +174,7 @@ body {
 [data-theme='wc26'] body {
   background-color: #ffffff;
   background-image: url('./assets/wc26-bg.svg');
-  background-size: cover;
+  background-size: 100vw 100vh;
   background-position: center top;
   background-repeat: no-repeat;
   background-attachment: fixed;
