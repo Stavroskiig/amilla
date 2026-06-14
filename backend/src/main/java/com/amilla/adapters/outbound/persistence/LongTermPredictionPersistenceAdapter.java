@@ -53,6 +53,9 @@ public class LongTermPredictionPersistenceAdapter implements LongTermPredictionR
                 .predictedChampionTeam(entity.getPredictedChampionTeam())
                 .submittedAt(entity.getSubmittedAt())
                 .championOdds(entity.getChampionOdds())
+                .predictedTopScorer(entity.getPredictedTopScorer())
+                .topScorerOdds(entity.getTopScorerOdds())
+                .topScorerSubmittedAt(entity.getTopScorerSubmittedAt())
                 .build();
     }
 
@@ -64,6 +67,9 @@ public class LongTermPredictionPersistenceAdapter implements LongTermPredictionR
                 .predictedChampionTeam(domain.getPredictedChampionTeam())
                 .submittedAt(domain.getSubmittedAt())
                 .championOdds(domain.getChampionOdds())
+                .predictedTopScorer(domain.getPredictedTopScorer())
+                .topScorerOdds(domain.getTopScorerOdds())
+                .topScorerSubmittedAt(domain.getTopScorerSubmittedAt())
                 .build();
     }
 }

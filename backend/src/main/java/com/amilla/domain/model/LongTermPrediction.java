@@ -23,4 +23,7 @@ public class LongTermPrediction {
     private String predictedChampionTeam;
     private Instant submittedAt;
     private Double championOdds;
+    private String predictedTopScorer;
+    private Double topScorerOdds;
+    private Instant topScorerSubmittedAt;
 }

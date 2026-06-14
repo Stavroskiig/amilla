@@ -79,6 +79,8 @@ public class PredictionDomainService {
      * @param now           The current timestamp.
      */
     public void validateOtherLongTermPredictionsVisibility(Instant groupStageEnd, Instant now) {
+        if (ALWAYS_SHOW_PREDICTIONS) return;
+
         if (now.isBefore(groupStageEnd)) {
             throw new PredictionsLockedException(
                     "Οι μακροχρόνιες προβλέψεις των άλλων χρηστών θα είναι ορατές μετά τη λήξη της φάσης των ομίλων!");

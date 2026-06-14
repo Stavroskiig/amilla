@@ -28,6 +28,8 @@ export default function Admin() {
   const queryClient = useQueryClient();
   const [matches, setMatches] = useState([]);
   const [users, setUsers] = useState([]);
+  const [topScorerGoals, setTopScorerGoals] = useState({});
+  const [longTermPredictions, setLongTermPredictions] = useState([]);
 
   // Scoring state
   const [matchScores, setMatchScores] = useState({});
@@ -69,6 +71,11 @@ export default function Admin() {
   // Filters
   const [filterStage, setFilterStage] = useState('ALL');
   const [filterStatus, setFilterStatus] = useState('ALL');
+
+  // Long Term Settings State
+  const [resolveChampion, setResolveChampion] = useState('');
+  const [resolving, setResolving] = useState(false);
+  const [updatingGoals, setUpdatingGoals] = useState({});
 
   useEffect(() => {
     fetchAdminData();
@@ -296,6 +303,17 @@ export default function Admin() {
       if (userRes.ok) {
         setUsers(usersData);
       }
+
+      // 3. Fetch Long Term data
+      const goalsRes = await fetch(API_URL + '/api/predictions/longterm/topscorer-goals', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (goalsRes.ok) setTopScorerGoals(await goalsRes.json());
+
+      const ltRes = await fetch(API_URL + '/api/admin/longterm/predictions', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (ltRes.ok) setLongTermPredictions(await ltRes.json());
     } catch (e) {
       console.error(e);
     }
@@ -486,6 +504,54 @@ export default function Admin() {
       setOverrideError(err.message);
     } finally {
       setOverrideSubmitting(false);
+    }
+  };
+
+  const handleUpdatePlayerGoals = async (playerName, goals) => {
+    setUpdatingGoals(prev => ({ ...prev, [playerName]: true }));
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/admin/longterm/topscorer-goals?playerName=${encodeURIComponent(playerName)}&goals=${goals}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        setTopScorerGoals(prev => ({ ...prev, [playerName]: goals }));
+      } else {
+        alert('Σφάλμα ενημέρωσης γκολ');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Σφάλμα επικοινωνίας');
+    } finally {
+      setUpdatingGoals(prev => ({ ...prev, [playerName]: false }));
+    }
+  };
+
+  const handleResolveTournament = async () => {
+    if (!window.confirm('Θέλετε σίγουρα να ολοκληρώσετε το τουρνουά; Αυτό θα υπολογίσει τους τελικούς πόντους μακροχρόνιων προβλέψεων.')) return;
+    setResolving(true);
+    try {
+      const token = localStorage.getItem('token');
+      let url = `${API_URL}/api/admin/longterm/resolve?`;
+      const params = new URLSearchParams();
+      if (resolveChampion) params.append('championTeam', resolveChampion);
+      
+      const res = await fetch(url + params.toString(), {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        alert('Το τουρνουά ολοκληρώθηκε και οι πόντοι υπολογίστηκαν!');
+        queryClient.invalidateQueries();
+      } else {
+        alert('Σφάλμα ολοκλήρωσης τουρνουά');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Σφάλμα επικοινωνίας');
+    } finally {
+      setResolving(false);
     }
   };
 
@@ -1145,6 +1211,61 @@ export default function Admin() {
                 </button>
               </div>
             </form>
+          </div>
+
+          {/* Section: Long Term Settings */}
+          <div className="glass-card" style={{ padding: '24px' }}>
+            <h2 style={{ fontSize: '1.4rem', marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
+              Μακροχρόνια & Πρώτοι Σκόρερ
+            </h2>
+
+            <h3 style={{ fontSize: '1.1rem', marginBottom: '12px' }}>Βαθμολογία Παικτών (Ψηφισμένοι)</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '30px' }}>
+              {Array.from(new Set(longTermPredictions.map(p => p.predictedTopScorer).filter(Boolean))).map(player => (
+                <div key={player} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <span style={{ minWidth: '150px' }}>{player}</span>
+                  <input
+                    type="number"
+                    min="0"
+                    className="form-input"
+                    style={{ width: '80px' }}
+                    value={topScorerGoals[player] !== undefined ? topScorerGoals[player] : 0}
+                    onChange={(e) => setTopScorerGoals(prev => ({ ...prev, [player]: parseInt(e.target.value) || 0 }))}
+                  />
+                  <button
+                    className="btn btn-primary"
+                    disabled={updatingGoals[player]}
+                    onClick={() => handleUpdatePlayerGoals(player, topScorerGoals[player] || 0)}
+                    style={{ padding: '8px 12px' }}
+                  >
+                    {updatingGoals[player] ? <RefreshCw size={16} className="animate-spin" /> : <Save size={16} />}
+                  </button>
+                </div>
+              ))}
+              {longTermPredictions.length === 0 && <p className="text-muted">Δεν υπάρχουν ακόμη προβλέψεις.</p>}
+            </div>
+
+            <h3 style={{ fontSize: '1.1rem', marginBottom: '12px' }}>Ολοκλήρωση Τουρνουά (Υπολογισμός Μακροχρόνιων Πόντων)</h3>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+              <div className="form-group" style={{ flex: '1', minWidth: '150px' }}>
+                <label className="form-label">Πρωταθλητής</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  placeholder="Χώρα"
+                  value={resolveChampion}
+                  onChange={e => setResolveChampion(e.target.value)}
+                />
+              </div>
+              <button
+                className="btn btn-primary"
+                disabled={resolving || !resolveChampion}
+                onClick={handleResolveTournament}
+                style={{ padding: '0 24px', height: '45px', marginBottom: '4px' }}
+              >
+                {resolving ? 'Ολοκλήρωση...' : 'Επίσημη Λήξη Πρωταθλητή'}
+              </button>
+            </div>
           </div>
 
         </div>

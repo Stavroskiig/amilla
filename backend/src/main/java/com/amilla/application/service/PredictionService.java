@@ -8,8 +8,10 @@ import com.amilla.ports.inbound.SubmitPredictionUseCase;
 import com.amilla.ports.outbound.LongTermPredictionRepositoryPort;
 import com.amilla.ports.outbound.MatchRepositoryPort;
 import com.amilla.ports.outbound.PredictionRepositoryPort;
+import com.amilla.ports.outbound.TournamentSettingsRepositoryPort;
 import com.amilla.ports.outbound.UserRepositoryPort;
 import org.springframework.stereotype.Service;
+import java.util.Map;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -25,18 +27,21 @@ public class PredictionService implements SubmitPredictionUseCase {
     private final LongTermPredictionRepositoryPort longTermPredictionRepository;
     private final PredictionDomainService predictionDomainService;
     private final UserRepositoryPort userRepository;
+    private final TournamentSettingsRepositoryPort settingsRepository;
 
     public PredictionService(
             MatchRepositoryPort matchRepository,
             PredictionRepositoryPort predictionRepository,
             LongTermPredictionRepositoryPort longTermPredictionRepository,
             PredictionDomainService predictionDomainService,
-            UserRepositoryPort userRepository) {
+            UserRepositoryPort userRepository,
+            TournamentSettingsRepositoryPort settingsRepository) {
         this.matchRepository = matchRepository;
         this.predictionRepository = predictionRepository;
         this.longTermPredictionRepository = longTermPredictionRepository;
         this.predictionDomainService = predictionDomainService;
         this.userRepository = userRepository;
+        this.settingsRepository = settingsRepository;
     }
 
     @Override
@@ -63,7 +68,7 @@ public class PredictionService implements SubmitPredictionUseCase {
     }
 
     @Override
-    public LongTermPrediction submitLongTermPrediction(UUID userId, String championTeam) {
+    public LongTermPrediction submitLongTermPrediction(UUID userId, String championTeam, String predictedTopScorer) {
         // Calculate dynamic cutoff: group stage end is the kickoff of the first
         // knockout (ROUND_OF_16) match.
         // Fallback to 30 days from now if not present.
@@ -77,29 +82,54 @@ public class PredictionService implements SubmitPredictionUseCase {
 
         predictionDomainService.validateLongTermPredictionAllowed(groupStageEnd, Instant.now());
 
-        Double odds = null;
-        try {
-            org.springframework.core.io.ClassPathResource resource = new org.springframework.core.io.ClassPathResource("champion-odds-seed.json");
-            if (resource.exists()) {
-                try (java.io.InputStream is = resource.getInputStream()) {
-                    com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-                    java.util.Map<String, Double> championOddsMap = mapper.readValue(is, new com.fasterxml.jackson.core.type.TypeReference<java.util.Map<String, Double>>() {});
-                    odds = championOddsMap.get(championTeam);
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Failed to read champion odds: " + e.getMessage());
-        }
-
         LongTermPrediction prediction = longTermPredictionRepository.findByUserId(userId)
                 .orElse(LongTermPrediction.builder()
                         .id(UUID.randomUUID())
                         .userId(userId)
                         .build());
 
-        prediction.setPredictedChampionTeam(championTeam);
-        prediction.setChampionOdds(odds);
-        prediction.setSubmittedAt(Instant.now());
+        if (championTeam != null && !championTeam.trim().isEmpty()) {
+            Double odds = null;
+            try {
+                org.springframework.core.io.ClassPathResource resource = new org.springframework.core.io.ClassPathResource("champion-odds-seed.json");
+                if (resource.exists()) {
+                    try (java.io.InputStream is = resource.getInputStream()) {
+                        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                        java.util.Map<String, Double> championOddsMap = mapper.readValue(is, new com.fasterxml.jackson.core.type.TypeReference<java.util.Map<String, Double>>() {});
+                        odds = championOddsMap.get(championTeam);
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to read champion odds: " + e.getMessage());
+            }
+            prediction.setPredictedChampionTeam(championTeam);
+            prediction.setChampionOdds(odds);
+            prediction.setSubmittedAt(Instant.now());
+        }
+
+        if (predictedTopScorer != null && !predictedTopScorer.trim().isEmpty()) {
+            Double odds = null;
+            try {
+                org.springframework.core.io.ClassPathResource resource = new org.springframework.core.io.ClassPathResource("topscorer-odds-seed.json");
+                if (resource.exists()) {
+                    try (java.io.InputStream is = resource.getInputStream()) {
+                        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                        java.util.Map<String, Double> topScorerOddsMap = mapper.readValue(is, new com.fasterxml.jackson.core.type.TypeReference<java.util.Map<String, Double>>() {});
+                        odds = topScorerOddsMap.get(predictedTopScorer);
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to read top scorer odds: " + e.getMessage());
+            }
+            prediction.setPredictedTopScorer(predictedTopScorer);
+            prediction.setTopScorerOdds(odds);
+            prediction.setTopScorerSubmittedAt(Instant.now());
+
+            Map<String, Integer> currentGoals = settingsRepository.getAllPlayerGoals();
+            if (!currentGoals.containsKey(predictedTopScorer)) {
+                settingsRepository.savePlayerGoal(predictedTopScorer, 0);
+            }
+        }
 
         return longTermPredictionRepository.save(prediction);
     }
@@ -145,6 +175,15 @@ public class PredictionService implements SubmitPredictionUseCase {
 
         predictionDomainService.validateOtherLongTermPredictionsVisibility(groupStageEnd, Instant.now());
 
+        List<LongTermPrediction> predictions = longTermPredictionRepository.findAll();
+        for (LongTermPrediction p : predictions) {
+            userRepository.findById(p.getUserId()).ifPresent(user -> p.setUsername(user.getUsername()));
+        }
+        return predictions;
+    }
+
+    @Override
+    public List<LongTermPrediction> getAdminAllLongTermPredictions() {
         List<LongTermPrediction> predictions = longTermPredictionRepository.findAll();
         for (LongTermPrediction p : predictions) {
             userRepository.findById(p.getUserId()).ifPresent(user -> p.setUsername(user.getUsername()));

@@ -20,12 +20,15 @@ public class PredictionController {
 
     private final SubmitPredictionUseCase submitPredictionUseCase;
     private final AuthenticationUseCase authenticationUseCase;
+    private final com.amilla.ports.inbound.LongTermSettingsUseCase longTermSettingsUseCase;
 
     public PredictionController(
             SubmitPredictionUseCase submitPredictionUseCase,
-            AuthenticationUseCase authenticationUseCase) {
+            AuthenticationUseCase authenticationUseCase,
+            com.amilla.ports.inbound.LongTermSettingsUseCase longTermSettingsUseCase) {
         this.submitPredictionUseCase = submitPredictionUseCase;
         this.authenticationUseCase = authenticationUseCase;
+        this.longTermSettingsUseCase = longTermSettingsUseCase;
     }
 
     @PostMapping("/match")
@@ -70,7 +73,8 @@ public class PredictionController {
         User user = getCurrentUser();
         LongTermPrediction prediction = submitPredictionUseCase.submitLongTermPrediction(
                 user.getId(),
-                request.getChampionTeam()
+                request.getChampionTeam(),
+                request.getPredictedTopScorer()
         );
         return ResponseEntity.ok(prediction);
     }
@@ -86,6 +90,11 @@ public class PredictionController {
     public ResponseEntity<List<LongTermPrediction>> getAllLongTermPredictions() {
         List<LongTermPrediction> predictions = submitPredictionUseCase.getAllLongTermPredictions();
         return ResponseEntity.ok(predictions);
+    }
+
+    @GetMapping("/longterm/topscorer-goals")
+    public ResponseEntity<java.util.Map<String, Integer>> getTopScorerGoals() {
+        return ResponseEntity.ok(longTermSettingsUseCase.getAllPlayerGoals());
     }
 
     private User getCurrentUser() {

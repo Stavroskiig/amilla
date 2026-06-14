@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { BarChartBig, Trophy, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart, Info, Bell, TrendingUp, Palette } from 'lucide-react';
+import { BarChartBig, Trophy, ClockFading, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart, Info, Bell, TrendingUp, Palette } from 'lucide-react';
 
 import wc26Logo from '../assets/wc26-logo.svg';
 import { Avatar } from './Avatars';
@@ -55,8 +55,8 @@ export default function Navbar({ user, onLogout, theme, toggleTheme }) {
               background: 'linear-gradient(to right, #0f172a, #334155)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              fontWeight: '900', 
-              fontSize: '1.5rem', 
+              fontWeight: '900',
+              fontSize: '1.5rem',
               letterSpacing: '-0.5px'
             } : {}}>
               Amilla
@@ -93,8 +93,8 @@ export default function Navbar({ user, onLogout, theme, toggleTheme }) {
             to="/longterm"
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
-            <Trophy size={18} />
-            <span>Πρωταθλητής</span>
+            <ClockFading size={18} />
+            <span>Μακροχρόνια</span>
           </NavLink>
 
           <NavLink
@@ -197,8 +197,8 @@ export default function Navbar({ user, onLogout, theme, toggleTheme }) {
           to="/longterm"
           className={({ isActive }) => `mobile-bottom-link ${isActive ? 'active' : ''}`}
         >
-          <Trophy size={20} />
-          <span>Πρωταθλητής</span>
+          <ClockFading size={20} />
+          <span>Μακροχρόνια</span>
         </NavLink>
 
         <NavLink

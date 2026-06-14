@@ -1,0 +1,21 @@
+export const PLAYERS = [
+  { name: 'Kylian Mbappé', country: 'Γαλλία' },
+  { name: 'Harry Kane', country: 'Αγγλία' },
+  { name: 'Erling Haaland', country: 'Νορβηγία' },
+  { name: 'Mikel Oyarzabal', country: 'Ισπανία' },
+  { name: 'Lionel Messi', country: 'Αργεντινή' },
+  { name: 'Vinícius', country: 'Βραζιλία' },
+  { name: 'Folarin Balogun', country: 'ΗΠΑ' },
+  { name: 'Cristiano Ronaldo', country: 'Πορτογαλία' },
+  { name: 'Lamine Yamal', country: 'Ισπανία' },
+  { name: 'Ferran Torres', country: 'Ισπανία' },
+  { name: 'Kai Havertz', country: 'Γερμανία' },
+  { name: 'Julián Álvarez', country: 'Αργεντινή' },
+  { name: 'Michael Olise', country: 'Γαλλία' },
+  { name: 'Raphinha', country: 'Βραζιλία' },
+  { name: 'Ousmane Dembélé', country: 'Γαλλία' },
+  { name: 'Bruno Fernandes', country: 'Πορτογαλία' },
+  { name: 'Lautaro Martínez', country: 'Αργεντινή' },
+  { name: 'Romelu Lukaku', country: 'Βέλγιο' },
+  { name: 'Nick Woltemade', country: 'Γερμανία' }
+];

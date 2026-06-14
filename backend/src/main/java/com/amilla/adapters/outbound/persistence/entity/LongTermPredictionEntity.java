@@ -24,12 +24,21 @@ public class LongTermPredictionEntity {
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
-    @Column(name = "predicted_champion_team", nullable = false)
+    @Column(name = "predicted_champion_team")
     private String predictedChampionTeam;
 
-    @Column(name = "submitted_at", nullable = false)
+    @Column(name = "submitted_at")
     private Instant submittedAt;
 
     @Column(name = "champion_odds")
     private Double championOdds;
+
+    @Column(name = "predicted_top_scorer")
+    private String predictedTopScorer;
+
+    @Column(name = "top_scorer_odds")
+    private Double topScorerOdds;
+
+    @Column(name = "top_scorer_submitted_at")
+    private Instant topScorerSubmittedAt;
 }

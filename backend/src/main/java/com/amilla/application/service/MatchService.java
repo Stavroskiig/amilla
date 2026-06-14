@@ -37,6 +37,7 @@ public class MatchService implements ManageMatchUseCase {
     private final UserRepositoryPort userRepository;
     private final PointCalculatorService pointCalculatorService;
     private final UserRankHistoryRepositoryPort userRankHistoryRepository;
+    private final TournamentSettingsRepositoryPort tournamentSettingsRepository;
 
     public MatchService(
             MatchRepositoryPort matchRepository,
@@ -44,13 +45,15 @@ public class MatchService implements ManageMatchUseCase {
             LongTermPredictionRepositoryPort longTermPredictionRepository,
             UserRepositoryPort userRepository,
             PointCalculatorService pointCalculatorService,
-            UserRankHistoryRepositoryPort userRankHistoryRepository) {
+            UserRankHistoryRepositoryPort userRankHistoryRepository,
+            TournamentSettingsRepositoryPort tournamentSettingsRepository) {
         this.matchRepository = matchRepository;
         this.predictionRepository = predictionRepository;
         this.longTermPredictionRepository = longTermPredictionRepository;
         this.userRepository = userRepository;
         this.pointCalculatorService = pointCalculatorService;
         this.userRankHistoryRepository = userRankHistoryRepository;
+        this.tournamentSettingsRepository = tournamentSettingsRepository;
     }
 
     @Override
@@ -242,43 +245,54 @@ public class MatchService implements ManageMatchUseCase {
     }
 
     private void applyLongTermPointsToUsers(Match finalMatch, List<User> users) {
-        String champion = finalMatch.getQualifiedTeam();
-        if (champion == null) {
-            // If it's the final, whoever won the final is the champion
-            Integer home = finalMatch.getHomeScore90();
-            Integer away = finalMatch.getAwayScore90();
-            if (home != null && away != null) {
-                if (home > away) {
-                    champion = finalMatch.getHomeTeam();
-                } else if (away > home) {
-                    champion = finalMatch.getAwayTeam();
+        String champion = tournamentSettingsRepository.getSetting("RESOLVED_CHAMPION");
+        if (champion == null && finalMatch != null) {
+            champion = finalMatch.getQualifiedTeam();
+            if (champion == null) {
+                // If it's the final, whoever won the final is the champion
+                Integer home = finalMatch.getHomeScore90();
+                Integer away = finalMatch.getAwayScore90();
+                if (home != null && away != null) {
+                    if (home > away) {
+                        champion = finalMatch.getHomeTeam();
+                    } else if (away > home) {
+                        champion = finalMatch.getAwayTeam();
+                    }
                 }
             }
         }
 
-        if (champion != null) {
-            List<Match> allMatches = matchRepository.findAll();
-            Instant openingKickoff = allMatches.stream()
-                    .map(Match::getKickoffTime)
-                    .filter(t -> t != null)
-                    .min(Comparator.naturalOrder())
-                    .orElse(Instant.now());
-            Instant groupStageEnd = allMatches.stream()
-                    .filter(m -> !"GROUP".equalsIgnoreCase(m.getMatchStage()))
-                    .map(Match::getKickoffTime)
-                    .filter(t -> t != null)
-                    .min(Comparator.naturalOrder())
-                    .orElse(Instant.now().plusSeconds(3600 * 24 * 14));
 
-            List<LongTermPrediction> longTermPreds = longTermPredictionRepository.findAll();
-            for (LongTermPrediction ltPred : longTermPreds) {
-                int pts = pointCalculatorService.calculateLongTermPoints(champion, ltPred, openingKickoff, groupStageEnd);
-                if (pts > 0) {
-                    users.stream()
-                            .filter(u -> u.getId().equals(ltPred.getUserId()))
-                            .findFirst()
-                            .ifPresent(u -> u.setTotalPoints(u.getTotalPoints() + pts));
-                }
+        List<Match> allMatches = matchRepository.findAll();
+        Instant openingKickoff = allMatches.stream()
+                .map(Match::getKickoffTime)
+                .filter(t -> t != null)
+                .min(Comparator.naturalOrder())
+                .orElse(Instant.now());
+        Instant groupStageEnd = allMatches.stream()
+                .filter(m -> !"GROUP".equalsIgnoreCase(m.getMatchStage()))
+                .map(Match::getKickoffTime)
+                .filter(t -> t != null)
+                .min(Comparator.naturalOrder())
+                .orElse(Instant.now().plusSeconds(3600 * 24 * 14));
+
+        List<LongTermPrediction> longTermPreds = longTermPredictionRepository.findAll();
+        for (LongTermPrediction ltPred : longTermPreds) {
+            int pts = 0;
+            if (champion != null) {
+                pts += pointCalculatorService.calculateLongTermPoints(champion, ltPred, openingKickoff, groupStageEnd);
+            }
+            // Top Scorer points are independent and no longer count towards general leaderboard
+            // if (topScorer != null) {
+            //     pts += pointCalculatorService.calculateTopScorerPoints(topScorer, ltPred, openingKickoff, groupStageEnd);
+            // }
+
+            if (pts > 0) {
+                final int finalPts = pts;
+                users.stream()
+                        .filter(u -> u.getId().equals(ltPred.getUserId()))
+                        .findFirst()
+                        .ifPresent(u -> u.setTotalPoints(u.getTotalPoints() + finalPts));
             }
         }
     }

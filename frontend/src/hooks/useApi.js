@@ -134,11 +134,11 @@ export const useAllLongTermPredictions = (enabled = true) => {
 export const useSubmitLongTermPrediction = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ championTeam }) => {
+    mutationFn: async ({ championTeam, predictedTopScorer }) => {
       const res = await fetch(API_URL + '/api/predictions/longterm', {
         method: 'POST',
         headers: getAuthHeaders(),
-        body: JSON.stringify({ championTeam })
+        body: JSON.stringify({ championTeam, predictedTopScorer })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Σφάλμα υποβολής');
@@ -147,6 +147,7 @@ export const useSubmitLongTermPrediction = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['longTermInfo'] });
       queryClient.invalidateQueries({ queryKey: ['profile'] });
+      queryClient.invalidateQueries({ queryKey: ['topScorerGoals'] });
     }
   });
 };
@@ -166,6 +167,56 @@ export const useUpdateAvatar = () => {
     },
     onSuccess: () => {
       // Optional invalidate if there's a user query, but user state is mostly kept in App.jsx
+    }
+  });
+};
+
+export const useTopScorerGoals = (enabled = true) => {
+  return useQuery({
+    queryKey: ['topScorerGoals'],
+    queryFn: async () => {
+      const res = await fetch(API_URL + '/api/predictions/longterm/topscorer-goals', { headers: getAuthHeaders() });
+      if (!res.ok) throw new Error('Σφάλμα φόρτωσης γκολ πρώτων σκόρερ');
+      return res.json();
+    },
+    enabled,
+    retry: false
+  });
+};
+
+export const useUpdatePlayerGoals = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ playerName, goals }) => {
+      const res = await fetch(`${API_URL}/api/admin/longterm/topscorer-goals?playerName=${encodeURIComponent(playerName)}&goals=${goals}`, {
+        method: 'PUT',
+        headers: getAuthHeaders()
+      });
+      if (!res.ok) throw new Error('Σφάλμα ενημέρωσης γκολ');
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['topScorerGoals'] });
+    }
+  });
+};
+
+export const useResolveTournament = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ championTeam, topScorer }) => {
+      let url = `${API_URL}/api/admin/longterm/resolve?`;
+      const params = new URLSearchParams();
+      if (championTeam) params.append('championTeam', championTeam);
+      if (topScorer) params.append('topScorer', topScorer);
+      const res = await fetch(url + params.toString(), {
+        method: 'POST',
+        headers: getAuthHeaders()
+      });
+      if (!res.ok) throw new Error('Σφάλμα ολοκλήρωσης τουρνουά');
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['allMatches'] });
+      queryClient.invalidateQueries({ queryKey: ['leaderboard'] });
     }
   });
 };

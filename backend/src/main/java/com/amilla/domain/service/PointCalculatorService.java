@@ -146,4 +146,5 @@ public class PointCalculatorService {
 
         return 0; // Submitted after group stage ends (disallowed, but safety fallback)
     }
+
 }

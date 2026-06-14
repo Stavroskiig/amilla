@@ -22,11 +22,15 @@ public class AdminController {
     private final ManageMatchUseCase manageMatchUseCase;
     private final UserRepositoryPort userRepository;
     private final com.amilla.application.service.OddsSyncService oddsSyncService;
+    private final com.amilla.ports.inbound.LongTermSettingsUseCase longTermSettingsUseCase;
+    private final com.amilla.ports.inbound.SubmitPredictionUseCase submitPredictionUseCase;
 
-    public AdminController(ManageMatchUseCase manageMatchUseCase, UserRepositoryPort userRepository, com.amilla.application.service.OddsSyncService oddsSyncService) {
+    public AdminController(ManageMatchUseCase manageMatchUseCase, UserRepositoryPort userRepository, com.amilla.application.service.OddsSyncService oddsSyncService, com.amilla.ports.inbound.LongTermSettingsUseCase longTermSettingsUseCase, com.amilla.ports.inbound.SubmitPredictionUseCase submitPredictionUseCase) {
         this.manageMatchUseCase = manageMatchUseCase;
         this.userRepository = userRepository;
         this.oddsSyncService = oddsSyncService;
+        this.longTermSettingsUseCase = longTermSettingsUseCase;
+        this.submitPredictionUseCase = submitPredictionUseCase;
     }
 
     @PostMapping("/odds/sync")
@@ -39,6 +43,23 @@ public class AdminController {
     public ResponseEntity<Void> recalculatePoints() {
         manageMatchUseCase.forceRecalculatePoints();
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/longterm/topscorer-goals")
+    public ResponseEntity<Void> updatePlayerGoals(@RequestParam String playerName, @RequestParam Integer goals) {
+        longTermSettingsUseCase.updatePlayerGoals(playerName, goals);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/longterm/resolve")
+    public ResponseEntity<Void> resolveTournament(@RequestParam(required = false) String championTeam, @RequestParam(required = false) String topScorer) {
+        longTermSettingsUseCase.resolveTournament(championTeam, topScorer);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/longterm/predictions")
+    public ResponseEntity<List<com.amilla.domain.model.LongTermPrediction>> getAdminAllLongTermPredictions() {
+        return ResponseEntity.ok(submitPredictionUseCase.getAdminAllLongTermPredictions());
     }
 
     @PutMapping("/matches/{id}/score")
