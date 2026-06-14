@@ -41,7 +41,7 @@ export default function Navbar({ user, onLogout, theme, toggleTheme }) {
     <>
       <nav className="navbar glass">
         {/* Mobile-only Profile (Left) */}
-        <div className="show-on-mobile" style={{ display: 'flex', alignItems: 'center' }}>
+        <div className="show-on-mobile" style={{ alignItems: 'center' }}>
           <NavLink to="/profile" className="user-badge" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
             <Avatar id={user.avatar} size={20} />
             <span style={{ fontWeight: 'bold', color: 'var(--primary)' }}>{user.totalPoints ?? 0} pts</span>

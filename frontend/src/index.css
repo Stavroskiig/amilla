@@ -812,6 +812,10 @@ input[type=number] {
   .navbar .nav-links {
     display: none !important;
   }
+  
+  .hide-on-mobile {
+    display: none !important;
+  }
 
   /* Padding adjustments */
   .main-content {
