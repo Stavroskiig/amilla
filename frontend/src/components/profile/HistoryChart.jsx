@@ -261,7 +261,7 @@ export default function HistoryChart({ history }) {
                   <svg x={pt.x - 9} y={paddingTop + chartHeight + 8} width="18" height="18">
                     <Trophy size={18} color="#fbbf24" />
                   </svg>
-                ) : (N <= 8 || idx === Math.floor(N / 2)) && !pt.data.isStart ? (
+                ) : (N <= 8) && !pt.data.isStart ? (
                   <text
                     x={pt.x}
                     y={paddingTop + chartHeight + 20}
