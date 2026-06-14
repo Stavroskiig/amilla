@@ -17,5 +17,6 @@ export const PLAYERS = [
   { name: 'Bruno Fernandes', country: 'Πορτογαλία' },
   { name: 'Lautaro Martínez', country: 'Αργεντινή' },
   { name: 'Romelu Lukaku', country: 'Βέλγιο' },
-  { name: 'Nick Woltemade', country: 'Γερμανία' }
+  { name: 'Nick Woltemade', country: 'Γερμανία' },
+  { name: 'Frantzdy Pierrot', country: 'Αϊτή' }
 ];
