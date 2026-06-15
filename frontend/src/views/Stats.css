@@ -188,9 +188,15 @@
 }
 
 .hof-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .hof-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .hof-item {
@@ -202,6 +208,7 @@
   background: var(--superlative-bg, rgba(26, 27, 38, 0.5));
   padding: 16px;
   border-radius: var(--radius-md);
+  height: 100%;
 }
 
 .hof-info {
@@ -364,7 +371,7 @@
 }
 
 .pts-miss {
-  background: rgba(239, 68, 68, 0.15);
+  background: var(--danger-glow);
   color: var(--danger);
 }
 

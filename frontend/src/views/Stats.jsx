@@ -265,7 +265,7 @@ export default function Stats({ user }) {
                   <p className="hof-role">Ο ΠΙΟ ΓΡΗΓΟΡΟΣ</p>
                   <p className="hof-name">{stats.theFlash.username}</p>
                 </div>
-                <div className="hof-stat" style={{ color: 'var(--warning)', background: 'rgba(245, 158, 11, 0.1)' }}>
+                <div className="hof-stat" style={{ color: 'var(--warning)', background: 'var(--warning-glow)' }}>
                   {stats.theFlash.statValue}
                 </div>
               </div>
@@ -316,7 +316,7 @@ export default function Stats({ user }) {
       {stats.playerAveragePoints && stats.playerAveragePoints.length > 0 && (
         <div className="stats-grid-1" style={{ marginTop: '24px' }}>
           <div className="glass chart-card">
-            <h2 className="chart-title">Player Comparison (Average Points / Match)</h2>
+            <h2 className="chart-title">Μέσοι Όροι Πόντων / Αγώνα</h2>
             <div className="custom-bars-container" style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {stats.playerAveragePoints.map((player, index) => {
                 const maxAvg = stats.playerAveragePoints[0].averagePoints || 1;
