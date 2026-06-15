@@ -58,6 +58,9 @@ public class StatsService {
                 // 5. Prediction Matrix
                 calculatePredictionMatrix(stats, matches, predictions, users);
 
+                // 6. Player Comparisons
+                calculatePlayerComparisons(stats, users, predictions, matches);
+
                 return stats;
         }
 
@@ -177,21 +180,22 @@ public class StatsService {
 
                 for (Match m : finishedMatches) {
                         List<Prediction> matchPreds = predsByMatch.getOrDefault(m.getId(), Collections.emptyList());
-                        if (matchPreds.isEmpty()) continue;
+                        if (matchPreds.isEmpty())
+                                continue;
 
                         Integer homeScore = m.getHomeScore90();
                         Integer awayScore = m.getAwayScore90();
-                        if (homeScore == null || awayScore == null) continue;
+                        if (homeScore == null || awayScore == null)
+                                continue;
 
-                        long exactCount = matchPreds.stream().filter(p -> 
-                            p.getPredictedHomeScore() == homeScore && 
-                            p.getPredictedAwayScore() == awayScore
-                        ).count();
+                        long exactCount = matchPreds.stream().filter(p -> p.getPredictedHomeScore() == homeScore &&
+                                        p.getPredictedAwayScore() == awayScore).count();
 
                         long correctResultCount = matchPreds.stream().filter(p -> {
-                            if (p.getPredictedHomeScore() == homeScore && p.getPredictedAwayScore() == awayScore) return false;
-                            return Integer.signum(p.getPredictedHomeScore() - p.getPredictedAwayScore()) == 
-                                   Integer.signum(homeScore - awayScore);
+                                if (p.getPredictedHomeScore() == homeScore && p.getPredictedAwayScore() == awayScore)
+                                        return false;
+                                return Integer.signum(p.getPredictedHomeScore() - p.getPredictedAwayScore()) == Integer
+                                                .signum(homeScore - awayScore);
                         }).count();
 
                         double predictabilityScore = (exactCount * 3.0 + correctResultCount * 1.0) / matchPreds.size();
@@ -219,7 +223,8 @@ public class StatsService {
                         } else if (successRate == highestRate && mostPredictable != null) {
                                 if (exactCount > mostPredictable.getExactPredictions()) {
                                         mostPredictable = dto;
-                                } else if (exactCount == mostPredictable.getExactPredictions() && correctResultCount > mostPredictable.getCorrectResultPredictions()) {
+                                } else if (exactCount == mostPredictable.getExactPredictions()
+                                                && correctResultCount > mostPredictable.getCorrectResultPredictions()) {
                                         mostPredictable = dto;
                                 }
                         }
@@ -255,7 +260,8 @@ public class StatsService {
                         stats.setTheOracle(GlobalStatsDto.UserStatDto.builder()
                                         .username(oracle.getUsername())
                                         .avatar(oracle.getAvatar())
-                                        .statValue(oracle.getExactHits() + (oracle.getExactHits() == 1 ? " ακριβές σκορ" : " ακριβή σκορ"))
+                                        .statValue(oracle.getExactHits() + (oracle.getExactHits() == 1 ? " ακριβές σκορ"
+                                                        : " ακριβή σκορ"))
                                         .build());
                 }
 
@@ -268,7 +274,9 @@ public class StatsService {
                         stats.setMrConsistent(GlobalStatsDto.UserStatDto.builder()
                                         .username(consistent.getUsername())
                                         .avatar(consistent.getAvatar())
-                                        .statValue(consistent.getLongestStreak() + (consistent.getLongestStreak() == 1 ? " σερί επιτυχία" : " σερί επιτυχίες"))
+                                        .statValue(consistent.getLongestStreak()
+                                                        + (consistent.getLongestStreak() == 1 ? " σερί επιτυχία"
+                                                                        : " σερί επιτυχίες"))
                                         .build());
                 }
 
@@ -280,57 +288,126 @@ public class StatsService {
                         stats.setHighestScorer(GlobalStatsDto.UserStatDto.builder()
                                         .username(highestScorer.getUsername())
                                         .avatar(highestScorer.getAvatar())
-                                        .statValue(highestScorer.getTotalPoints() + (highestScorer.getTotalPoints() == 1 ? " πόντος" : " πόντοι"))
+                                        .statValue(highestScorer.getTotalPoints()
+                                                        + (highestScorer.getTotalPoints() == 1 ? " πόντος" : " πόντοι"))
                                         .build());
+                }
+
+                // The Flash (fastest submitter based on time before kickoff)
+                if (predictions != null && !predictions.isEmpty()) {
+                        Map<String, Match> matchMap = matchRepository.findAll().stream()
+                                        .collect(Collectors.toMap(Match::getId, m -> m));
+
+                        Map<String, List<Prediction>> predsByUser = predictions.stream()
+                                        .filter(p -> p.getUpdatedAt() != null && matchMap.containsKey(p.getMatchId())
+                                                        && matchMap.get(p.getMatchId()).getKickoffTime() != null)
+                                        .collect(Collectors.groupingBy(p -> p.getUserId().toString()));
+
+                        User flash = null;
+                        double minAvgHoursAfterUnlock = Double.MAX_VALUE;
+
+                        for (User u : users) {
+                                List<Prediction> userPreds = predsByUser.getOrDefault(u.getId().toString(),
+                                                Collections.emptyList());
+                                if (userPreds.isEmpty())
+                                        continue;
+
+                                double totalHours = 0;
+                                int validCount = 0;
+                                for (Prediction p : userPreds) {
+                                        if (p.getCreatedAt() == null) continue; // Ignore legacy predictions
+
+                                        Match m = matchMap.get(p.getMatchId());
+                                        java.time.Instant unlockTime = m.getKickoffTime().minus(24,
+                                                        java.time.temporal.ChronoUnit.HOURS);
+                                        java.time.Duration duration = java.time.Duration.between(unlockTime,
+                                                        p.getCreatedAt());
+
+                                        // If duration is negative, it means they somehow submitted before unlock (e.g.
+                                        // admin or before rule added). Let's clamp to 0 or count it.
+                                        double hours = Math.max(0, duration.toMillis() / 3600000.0);
+                                        totalHours += hours;
+                                        validCount++;
+                                }
+
+                                if (validCount > 0) {
+                                        double avgHours = totalHours / validCount;
+                                        if (avgHours < minAvgHoursAfterUnlock) {
+                                                minAvgHoursAfterUnlock = avgHours;
+                                                flash = u;
+                                        }
+                                }
+                        }
+
+                        if (flash != null && minAvgHoursAfterUnlock < Double.MAX_VALUE) {
+                                String timeStr;
+                                if (minAvgHoursAfterUnlock < 1.0) {
+                                        timeStr = String.format("πρόβλεψη σε ~%.0f λεπτά", minAvgHoursAfterUnlock * 60);
+                                } else {
+                                        timeStr = String.format("πρόβλεψη σε ~%.1f ώρες", minAvgHoursAfterUnlock);
+                                }
+
+                                stats.setTheFlash(GlobalStatsDto.UserStatDto.builder()
+                                                .username(flash.getUsername())
+                                                .avatar(flash.getAvatar())
+                                                .statValue(timeStr)
+                                                .build());
+                        }
                 }
 
                 // The Soulmates (most identical predictions)
                 if (users.size() >= 2 && predictions != null && !predictions.isEmpty()) {
-                    Map<String, List<Prediction>> predsByUser = predictions.stream()
-                            .collect(Collectors.groupingBy(p -> p.getUserId().toString()));
+                        Map<String, List<Prediction>> predsByUser = predictions.stream()
+                                        .collect(Collectors.groupingBy(p -> p.getUserId().toString()));
 
-                    int maxIdentical = 0;
-                    User soulmate1 = null;
-                    User soulmate2 = null;
+                        int maxIdentical = 0;
+                        User soulmate1 = null;
+                        User soulmate2 = null;
 
-                    for (int i = 0; i < users.size(); i++) {
-                        for (int j = i + 1; j < users.size(); j++) {
-                            User u1 = users.get(i);
-                            User u2 = users.get(j);
+                        for (int i = 0; i < users.size(); i++) {
+                                for (int j = i + 1; j < users.size(); j++) {
+                                        User u1 = users.get(i);
+                                        User u2 = users.get(j);
 
-                            List<Prediction> list1 = predsByUser.getOrDefault(u1.getId().toString(), Collections.emptyList());
-                            List<Prediction> list2 = predsByUser.getOrDefault(u2.getId().toString(), Collections.emptyList());
+                                        List<Prediction> list1 = predsByUser.getOrDefault(u1.getId().toString(),
+                                                        Collections.emptyList());
+                                        List<Prediction> list2 = predsByUser.getOrDefault(u2.getId().toString(),
+                                                        Collections.emptyList());
 
-                            Map<String, Prediction> map2 = list2.stream()
-                                    .collect(Collectors.toMap(Prediction::getMatchId, p -> p, (p1, p2) -> p2));
+                                        Map<String, Prediction> map2 = list2.stream()
+                                                        .collect(Collectors.toMap(Prediction::getMatchId, p -> p,
+                                                                        (p1, p2) -> p2));
 
-                            int identicalCount = 0;
-                            for (Prediction p1 : list1) {
-                                Prediction p2 = map2.get(p1.getMatchId());
-                                if (p2 != null && 
-                                    p1.getPredictedHomeScore() == p2.getPredictedHomeScore() && 
-                                    p1.getPredictedAwayScore() == p2.getPredictedAwayScore()) {
-                                    identicalCount++;
+                                        int identicalCount = 0;
+                                        for (Prediction p1 : list1) {
+                                                Prediction p2 = map2.get(p1.getMatchId());
+                                                if (p2 != null &&
+                                                                p1.getPredictedHomeScore() == p2.getPredictedHomeScore()
+                                                                &&
+                                                                p1.getPredictedAwayScore() == p2
+                                                                                .getPredictedAwayScore()) {
+                                                        identicalCount++;
+                                                }
+                                        }
+
+                                        if (identicalCount > maxIdentical) {
+                                                maxIdentical = identicalCount;
+                                                soulmate1 = u1;
+                                                soulmate2 = u2;
+                                        }
                                 }
-                            }
-
-                            if (identicalCount > maxIdentical) {
-                                maxIdentical = identicalCount;
-                                soulmate1 = u1;
-                                soulmate2 = u2;
-                            }
                         }
-                    }
 
-                    if (maxIdentical > 0 && soulmate1 != null && soulmate2 != null) {
-                        stats.setSoulmates(GlobalStatsDto.UserPairStatDto.builder()
-                                .username1(soulmate1.getUsername())
-                                .avatar1(soulmate1.getAvatar())
-                                .username2(soulmate2.getUsername())
-                                .avatar2(soulmate2.getAvatar())
-                                .statValue(maxIdentical + (maxIdentical == 1 ? " κοινή πρόβλεψη" : " κοινές προβλέψεις"))
-                                .build());
-                    }
+                        if (maxIdentical > 0 && soulmate1 != null && soulmate2 != null) {
+                                stats.setSoulmates(GlobalStatsDto.UserPairStatDto.builder()
+                                                .username1(soulmate1.getUsername())
+                                                .avatar1(soulmate1.getAvatar())
+                                                .username2(soulmate2.getUsername())
+                                                .avatar2(soulmate2.getAvatar())
+                                                .statValue(maxIdentical + (maxIdentical == 1 ? " κοινή πρόβλεψη"
+                                                                : " κοινές προβλέψεις"))
+                                                .build());
+                        }
                 }
         }
 
@@ -378,5 +455,42 @@ public class StatsService {
                 stats.setTotalExactScores(exactF);
                 stats.setTotalCorrectResults(correctF);
                 stats.setTotalMisses(missF);
+        }
+
+        private void calculatePlayerComparisons(GlobalStatsDto stats, List<User> users, List<Prediction> predictions,
+                        List<Match> matches) {
+                Map<String, Match> finishedMatchesMap = matches.stream()
+                                .filter(m -> "FINISHED".equalsIgnoreCase(m.getStatus()))
+                                .collect(Collectors.toMap(Match::getId, m -> m));
+
+                List<GlobalStatsDto.PlayerAvgPointsDto> avgPointsList = new ArrayList<>();
+
+                for (User u : users) {
+                        List<Prediction> userFinishedPreds = predictions.stream()
+                                        .filter(p -> p.getUserId().equals(u.getId())
+                                                        && finishedMatchesMap.containsKey(p.getMatchId()))
+                                        .collect(Collectors.toList());
+
+                        if (!userFinishedPreds.isEmpty()) {
+                                double avg = userFinishedPreds.stream().mapToInt(Prediction::getPointsEarned).average()
+                                                .orElse(0.0);
+                                avgPointsList.add(GlobalStatsDto.PlayerAvgPointsDto.builder()
+                                                .username(u.getUsername())
+                                                .avatar(u.getAvatar())
+                                                .averagePoints(Math.round(avg * 100.0) / 100.0)
+                                                .build());
+                        } else {
+                                avgPointsList.add(GlobalStatsDto.PlayerAvgPointsDto.builder()
+                                                .username(u.getUsername())
+                                                .avatar(u.getAvatar())
+                                                .averagePoints(0.0)
+                                                .build());
+                        }
+                }
+
+                // Sort descending by average points
+                avgPointsList.sort(
+                                Comparator.comparing(GlobalStatsDto.PlayerAvgPointsDto::getAveragePoints).reversed());
+                stats.setPlayerAveragePoints(avgPointsList);
         }
 }

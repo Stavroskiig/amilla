@@ -258,6 +258,19 @@ export default function Stats({ user }) {
               </div>
             )}
 
+            {stats.theFlash && (
+              <div className="hof-item">
+                <Avatar id={stats.theFlash.avatar} size={40} />
+                <div className="hof-info">
+                  <p className="hof-role">Ο ΠΙΟ ΓΡΗΓΟΡΟΣ</p>
+                  <p className="hof-name">{stats.theFlash.username}</p>
+                </div>
+                <div className="hof-stat" style={{ color: 'var(--warning)', background: 'rgba(245, 158, 11, 0.1)' }}>
+                  {stats.theFlash.statValue}
+                </div>
+              </div>
+            )}
+
             {stats.mrConsistent && (
               <div className="hof-item">
                 <Avatar id={stats.mrConsistent.avatar} size={40} />
@@ -298,6 +311,44 @@ export default function Stats({ user }) {
         </div>
 
       </div>
+
+      {/* Player Comparison Chart */}
+      {stats.playerAveragePoints && stats.playerAveragePoints.length > 0 && (
+        <div className="stats-grid-1" style={{ marginTop: '24px' }}>
+          <div className="glass chart-card">
+            <h2 className="chart-title">Player Comparison (Average Points / Match)</h2>
+            <div className="custom-bars-container" style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {stats.playerAveragePoints.map((player, index) => {
+                const maxAvg = stats.playerAveragePoints[0].averagePoints || 1;
+                const pct = (player.averagePoints / maxAvg) * 100;
+                return (
+                  <div key={player.username} className="custom-bar-item" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Avatar id={player.avatar} size={24} />
+                        <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{player.username}</span>
+                      </div>
+                      <span className="chart-team-pct" style={{ fontWeight: 700, color: 'var(--primary)' }}>{player.averagePoints} pts</span>
+                    </div>
+                    <div style={{ width: '100%', height: '8px', background: 'var(--bar-bg, rgba(255,255,255,0.05))', borderRadius: '4px', overflow: 'hidden' }}>
+                      <div
+                        className="chart-team-bar"
+                        style={{
+                          height: '100%',
+                          width: `${pct}%`,
+                          background: 'var(--primary)',
+                          borderRadius: '4px',
+                          transition: 'width 1s ease-out'
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Prediction Matrix Table */}
       {stats.predictionMatrix && stats.predictionMatrix.matches.length > 0 && (

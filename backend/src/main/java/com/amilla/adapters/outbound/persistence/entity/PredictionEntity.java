@@ -42,6 +42,9 @@ public class PredictionEntity {
     @Column(name = "points_earned", nullable = false)
     private int pointsEarned;
 
+    @Column(name = "created_at")
+    private Instant createdAt;
+
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 }

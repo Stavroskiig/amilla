@@ -53,10 +53,11 @@ public class PredictionService implements SubmitPredictionUseCase {
         predictionDomainService.validatePredictionSubmissionAllowed(match, Instant.now());
 
         Prediction prediction = predictionRepository.findByUserIdAndMatchId(userId, matchId)
-                .orElse(Prediction.builder()
+                .orElseGet(() -> Prediction.builder()
                         .id(UUID.randomUUID())
                         .userId(userId)
                         .matchId(matchId)
+                        .createdAt(Instant.now())
                         .build());
 
         prediction.setPredictedHomeScore(homeScore);

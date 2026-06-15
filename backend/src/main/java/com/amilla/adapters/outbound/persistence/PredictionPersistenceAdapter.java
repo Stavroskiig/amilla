@@ -90,6 +90,7 @@ public class PredictionPersistenceAdapter implements PredictionRepositoryPort {
                 .predictedAwayScore(entity.getPredictedAwayScore())
                 .predictedQualifier(entity.getPredictedQualifier())
                 .pointsEarned(entity.getPointsEarned())
+                .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .build();
     }
@@ -104,6 +105,7 @@ public class PredictionPersistenceAdapter implements PredictionRepositoryPort {
                 .predictedAwayScore(domain.getPredictedAwayScore())
                 .predictedQualifier(domain.getPredictedQualifier())
                 .pointsEarned(domain.getPointsEarned())
+                .createdAt(domain.getCreatedAt())
                 .updatedAt(domain.getUpdatedAt())
                 .build();
     }

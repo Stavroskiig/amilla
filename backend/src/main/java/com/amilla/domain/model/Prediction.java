@@ -24,6 +24,7 @@ public class Prediction {
     private int predictedAwayScore;
     private String predictedQualifier; // Only for Knockout stages
     private int pointsEarned;
+    private Instant createdAt;
     private Instant updatedAt;
     private String username;
 }

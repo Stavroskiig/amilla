@@ -23,6 +23,7 @@ public class GlobalStatsDto {
     private UserStatDto theOracle; // Highest exact hit rate
     private UserStatDto mrConsistent; // Longest streak
     private UserStatDto highestScorer; // Highest points
+    private UserStatDto theFlash; // Fastest submitter
     private UserPairStatDto soulmates; // Users with most identical predictions
 
     // 4. Global Averages
@@ -33,6 +34,9 @@ public class GlobalStatsDto {
     
     // 5. Prediction Matrix
     private PredictionMatrixDto predictionMatrix;
+
+    // 6. Player Comparisons
+    private List<PlayerAvgPointsDto> playerAveragePoints;
 
     @Data
     @Builder
@@ -118,5 +122,15 @@ public class GlobalStatsDto {
         private Integer homeScore;
         private Integer awayScore;
         private Integer pointsEarned;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PlayerAvgPointsDto {
+        private String username;
+        private String avatar;
+        private Double averagePoints;
     }
 }
