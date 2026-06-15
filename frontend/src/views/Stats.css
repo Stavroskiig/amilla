@@ -301,6 +301,26 @@
   border-right: none;
 }
 
+@media (min-width: 1024px) {
+  .matrix-table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  
+  .matrix-table th:first-child,
+  .matrix-table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background: var(--bg-main);
+    box-shadow: 4px 0 12px -4px rgba(0,0,0,0.3);
+  }
+
+  .matrix-table th:first-child {
+    z-index: 15;
+  }
+}
+
 .matrix-match-cell {
   display: flex;
   flex-direction: column;
