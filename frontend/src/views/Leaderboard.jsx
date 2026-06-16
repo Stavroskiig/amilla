@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Trophy, Award, Search, TrendingUp, TrendingDown, Flame, Target } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Trophy, Award, Search, TrendingUp, TrendingDown, Flame, Target, Share2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Avatar } from '../components/Avatars';
 import Podium from '../components/Podium';
+import html2canvas from 'html2canvas';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
@@ -10,6 +11,51 @@ export default function Leaderboard({ currentUser }) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const leaderboardRef = useRef(null);
+
+  const handleShare = async () => {
+    if (!leaderboardRef.current) return;
+    try {
+      const scrollableDiv = leaderboardRef.current.querySelector('.hide-scrollbar');
+      let originalOverflow = '';
+      if (scrollableDiv) {
+         originalOverflow = scrollableDiv.style.overflowX;
+         scrollableDiv.style.overflowX = 'visible';
+      }
+
+      const canvas = await html2canvas(leaderboardRef.current, {
+        useCORS: true,
+        scale: 2,
+        backgroundColor: document.documentElement.getAttribute('data-theme') === 'wc26' ? '#f1f5f9' : '#0f111a'
+      });
+      
+      if (scrollableDiv) {
+         scrollableDiv.style.overflowX = originalOverflow;
+      }
+
+      const imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+      const file = new File([imageBlob], 'amilla-leaderboard.png', { type: 'image/png' });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Amilla Leaderboard',
+          text: 'Δες την κατάταξη στο Amilla!',
+        });
+      } else {
+        const url = URL.createObjectURL(imageBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'amilla-leaderboard.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    } catch (err) {
+      console.error('Error sharing image', err);
+    }
+  };
 
   useEffect(() => {
     fetchLeaderboard();
@@ -56,23 +102,51 @@ export default function Leaderboard({ currentUser }) {
           </p>
         </div>
 
-        {/* Search box */}
-        <div className="leaderboard-search-container" style={{ position: 'relative', width: '100%', maxWidth: '280px' }}>
-          <Search size={18} style={{
-            position: 'absolute',
-            left: '16px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            color: 'var(--text-muted)'
-          }} />
-          <input
-            type="text"
-            placeholder="Αναζήτηση παίκτη..."
-            className="form-input"
-            style={{ width: '100%', paddingLeft: '48px', paddingRight: '16px', height: '42px' }}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        {/* Actions Container */}
+        <div className="leaderboard-actions-container" style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', maxWidth: '340px' }}>
+          {/* Search box */}
+          <div className="leaderboard-search-container" style={{ position: 'relative', flex: 1 }}>
+            <Search size={18} style={{
+              position: 'absolute',
+              left: '16px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              color: 'var(--text-muted)'
+            }} />
+            <input
+              type="text"
+              placeholder="Αναζήτηση παίκτη..."
+              className="form-input"
+              style={{ width: '100%', paddingLeft: '48px', paddingRight: '16px', height: '42px' }}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          
+          {/* Share Button */}
+          <button 
+            onClick={handleShare}
+            title="Μοιράσου την Κατάταξη"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '42px',
+              height: '42px',
+              background: 'var(--primary)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '12px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(44, 60, 230, 0.2)',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              flexShrink: 0
+            }}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'none'}
+          >
+            <Share2 size={18} />
+          </button>
         </div>
       </div>
 
@@ -87,8 +161,8 @@ export default function Leaderboard({ currentUser }) {
           {/* PODIUM COMPONENT */}
           {searchTerm === '' && <Podium topUsers={users.slice(0, 3)} currentUser={currentUser} />}
 
-          <div className="glass-card hide-scrollbar" style={{ padding: '0px', overflowX: 'auto', position: 'relative', zIndex: 10 }}>
-            <table className="leaderboard-table" style={{
+          <div ref={leaderboardRef} className="glass-card hide-scrollbar" style={{ padding: '0px', overflowX: 'auto', position: 'relative', zIndex: 10 }}>
+              <table className="leaderboard-table" style={{
               width: '100%',
               borderCollapse: 'collapse',
               textAlign: 'left'
@@ -294,6 +368,8 @@ export default function Leaderboard({ currentUser }) {
               </tbody>
             </table>
           </div>
+          {/* Bottom padding for mobile scrolling */}
+          <div style={{ height: '32px' }}></div>
         </>
       )}
     </motion.div>
