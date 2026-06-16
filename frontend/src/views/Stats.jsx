@@ -363,7 +363,7 @@ export default function Stats({ user }) {
                 <div className="hof-stat" style={{ color: 'var(--danger)', background: 'var(--danger-glow)' }}>
                   {stats.antiProphet.statValue}
                 </div>
-                <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px', lineHeight: '1.2', whiteSpace: 'nowrap' }}>Βλέπει το ματς ανάποδα</p>
+                <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px', lineHeight: '1.2', whiteSpace: 'nowrap' }}>Πέτυχε ανάποδα τον νικητή</p>
               </div>
             )}
 
