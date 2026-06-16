@@ -9,6 +9,8 @@ import com.amilla.ports.outbound.LongTermPredictionRepositoryPort;
 import com.amilla.ports.outbound.MatchRepositoryPort;
 import com.amilla.ports.outbound.PredictionRepositoryPort;
 import com.amilla.ports.outbound.UserRepositoryPort;
+import com.amilla.ports.outbound.UserRankHistoryRepositoryPort;
+import com.amilla.domain.model.UserRankHistory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,15 +25,18 @@ public class StatsService {
         private final MatchRepositoryPort matchRepository;
         private final PredictionRepositoryPort predictionRepository;
         private final LongTermPredictionRepositoryPort longTermPredictionRepository;
+        private final UserRankHistoryRepositoryPort userRankHistoryRepository;
 
         public StatsService(UserRepositoryPort userRepository,
                         MatchRepositoryPort matchRepository,
                         PredictionRepositoryPort predictionRepository,
-                        LongTermPredictionRepositoryPort longTermPredictionRepository) {
+                        LongTermPredictionRepositoryPort longTermPredictionRepository,
+                        UserRankHistoryRepositoryPort userRankHistoryRepository) {
                 this.userRepository = userRepository;
                 this.matchRepository = matchRepository;
                 this.predictionRepository = predictionRepository;
                 this.longTermPredictionRepository = longTermPredictionRepository;
+                this.userRankHistoryRepository = userRankHistoryRepository;
         }
 
         public GlobalStatsDto getGlobalStats() {
@@ -51,6 +56,9 @@ public class StatsService {
 
                 // 3. Hall of Fame
                 calculateHallOfFame(stats, users, predictions);
+
+                // Additional Stats (Hall of Fame additions & Hall of Shame)
+                calculateAdditionalStats(stats, users, predictions, matches);
 
                 // 4. Global Averages
                 calculateGlobalAverages(stats, predictions, users);
@@ -315,7 +323,8 @@ public class StatsService {
                                 double totalHours = 0;
                                 int validCount = 0;
                                 for (Prediction p : userPreds) {
-                                        if (p.getCreatedAt() == null) continue; // Ignore legacy predictions
+                                        if (p.getCreatedAt() == null)
+                                                continue; // Ignore legacy predictions
 
                                         Match m = matchMap.get(p.getMatchId());
                                         java.time.Instant unlockTime = m.getKickoffTime().minus(24,
@@ -492,5 +501,199 @@ public class StatsService {
                 avgPointsList.sort(
                                 Comparator.comparing(GlobalStatsDto.PlayerAvgPointsDto::getAveragePoints).reversed());
                 stats.setPlayerAveragePoints(avgPointsList);
+        }
+
+        private void calculateAdditionalStats(GlobalStatsDto stats, List<User> users, List<Prediction> predictions,
+                        List<Match> matches) {
+                if (users.isEmpty())
+                        return;
+
+                Map<String, Match> finishedMatchesMap = matches.stream()
+                                .filter(m -> "FINISHED".equalsIgnoreCase(m.getStatus()))
+                                .collect(Collectors.toMap(Match::getId, m -> m));
+
+                List<Prediction> finishedPreds = predictions.stream()
+                                .filter(p -> finishedMatchesMap.containsKey(p.getMatchId()))
+                                .collect(Collectors.toList());
+
+                // --- 1. The Underdog Hunter ---
+                // For each finished match, calculate if >=90% of predictions got 0 points.
+                Map<String, Integer> underdogPoints = new HashMap<>();
+                Map<String, List<Prediction>> predsByMatch = finishedPreds.stream()
+                                .collect(Collectors.groupingBy(Prediction::getMatchId));
+
+                for (Map.Entry<String, List<Prediction>> entry : predsByMatch.entrySet()) {
+                        List<Prediction> matchPreds = entry.getValue();
+                        long zeroPointsCount = matchPreds.stream().filter(p -> p.getPointsEarned() == 0).count();
+                        if (matchPreds.size() > 0 && ((double) zeroPointsCount / matchPreds.size()) >= 0.9) {
+                                // Find users who got > 0 points
+                                for (Prediction p : matchPreds) {
+                                        if (p.getPointsEarned() > 0) {
+                                                underdogPoints.merge(p.getUserId().toString(), 1, (a, b) -> a + b);
+                                        }
+                                }
+                        }
+                }
+
+                String bestUnderdogId = underdogPoints.entrySet().stream()
+                                .max(Map.Entry.comparingByValue())
+                                .map(Map.Entry::getKey).orElse(null);
+
+                if (bestUnderdogId != null) {
+                        User u = users.stream().filter(user -> user.getId().toString().equals(bestUnderdogId))
+                                        .findFirst().orElse(null);
+                        if (u != null) {
+                                int val = underdogPoints.get(bestUnderdogId);
+                                stats.setUnderdogHunter(GlobalStatsDto.UserStatDto.builder()
+                                                .username(u.getUsername())
+                                                .avatar(u.getAvatar())
+                                                .statValue(val + (val == 1 ? " φορά" : " φορές"))
+                                                .build());
+                        }
+                }
+
+                // --- 2. King of the Bucket (Most 0-point matches) ---
+                Map<String, List<Prediction>> predsByUser = finishedPreds.stream()
+                                .collect(Collectors.groupingBy(p -> p.getUserId().toString()));
+
+                String bestBucketId = null;
+                double maxBucketPct = -1.0;
+                int maxBucketCount = 0;
+
+                for (Map.Entry<String, List<Prediction>> entry : predsByUser.entrySet()) {
+                        List<Prediction> upreds = entry.getValue();
+                        int zeroCount = (int) upreds.stream().filter(p -> p.getPointsEarned() == 0).count();
+                        if (upreds.size() > 0) {
+                                double pct = (double) zeroCount / upreds.size();
+                                if (pct > maxBucketPct || (pct == maxBucketPct && zeroCount > maxBucketCount)) {
+                                        maxBucketPct = pct;
+                                        maxBucketCount = zeroCount;
+                                        bestBucketId = entry.getKey();
+                                }
+                        }
+                }
+
+                if (bestBucketId != null && maxBucketCount > 0) {
+                        String finalBestBucketId = bestBucketId;
+                        User u = users.stream().filter(user -> user.getId().toString().equals(finalBestBucketId))
+                                        .findFirst().orElse(null);
+                        if (u != null) {
+                                int pctInt = (int) Math.round(maxBucketPct * 100);
+                                stats.setKingOfBucket(GlobalStatsDto.UserStatDto.builder()
+                                                .username(u.getUsername())
+                                                .avatar(u.getAvatar())
+                                                .statValue(maxBucketCount + " αγώνες (" + pctInt + "%)")
+                                                .build());
+                        }
+                }
+
+                // --- 3. Near Miss (Παρά Τρίχα) ---
+                Map<String, Integer> nearMissCount = new HashMap<>();
+                for (Prediction p : finishedPreds) {
+                        Match m = finishedMatchesMap.get(p.getMatchId());
+                        if (m != null && m.getHomeScore90() != null && m.getAwayScore90() != null) {
+                                int diff = Math.abs(p.getPredictedHomeScore() - m.getHomeScore90()) +
+                                                Math.abs(p.getPredictedAwayScore() - m.getAwayScore90());
+                                if (diff == 1) {
+                                        nearMissCount.merge(p.getUserId().toString(), 1, (a, b) -> a + b);
+                                }
+                        }
+                }
+
+                String bestNearMissId = nearMissCount.entrySet().stream()
+                                .max(Map.Entry.comparingByValue())
+                                .map(Map.Entry::getKey).orElse(null);
+
+                if (bestNearMissId != null) {
+                        User u = users.stream().filter(user -> user.getId().toString().equals(bestNearMissId))
+                                        .findFirst().orElse(null);
+                        if (u != null) {
+                                int val = nearMissCount.get(bestNearMissId);
+                                stats.setNearMiss(GlobalStatsDto.UserStatDto.builder()
+                                                .username(u.getUsername())
+                                                .avatar(u.getAvatar())
+                                                .statValue(val + (val == 1 ? " φορά" : " φορές"))
+                                                .build());
+                        }
+                }
+
+                // --- 4. Anti-Prophet (Αντι-Προφήτης) ---
+                Map<String, Integer> antiProphetCount = new HashMap<>();
+                for (Prediction p : finishedPreds) {
+                        Match m = finishedMatchesMap.get(p.getMatchId());
+                        if (m != null && m.getHomeScore90() != null && m.getAwayScore90() != null) {
+                                int predSign = Integer.signum(p.getPredictedHomeScore() - p.getPredictedAwayScore());
+                                int actSign = Integer.signum(m.getHomeScore90() - m.getAwayScore90());
+                                // Only count if one predicted team A, and team B won (or vice versa).
+                                // i.e. 1 vs -1 or -1 vs 1. 1 * -1 = -1.
+                                if (predSign * actSign == -1) {
+                                        antiProphetCount.merge(p.getUserId().toString(), 1, (a, b) -> a + b);
+                                }
+                        }
+                }
+
+                String bestAntiProphetId = antiProphetCount.entrySet().stream()
+                                .max(Map.Entry.comparingByValue())
+                                .map(Map.Entry::getKey).orElse(null);
+
+                if (bestAntiProphetId != null) {
+                        User u = users.stream().filter(user -> user.getId().toString().equals(bestAntiProphetId))
+                                        .findFirst().orElse(null);
+                        if (u != null) {
+                                int val = antiProphetCount.get(bestAntiProphetId);
+                                stats.setAntiProphet(GlobalStatsDto.UserStatDto.builder()
+                                                .username(u.getUsername())
+                                                .avatar(u.getAvatar())
+                                                .statValue(val + (val == 1 ? " φορά" : " φορές"))
+                                                .build());
+                        }
+                }
+
+                // --- 5. Icarus (Ικαρος) ---
+                List<UserRankHistory> rankHistories = userRankHistoryRepository.findAll();
+                Map<String, List<UserRankHistory>> historyByUser = rankHistories.stream()
+                                .collect(Collectors.groupingBy(h -> h.getUserId().toString()));
+
+                String bestIcarusId = null;
+                int maxRankDrop = 0;
+
+                for (Map.Entry<String, List<UserRankHistory>> entry : historyByUser.entrySet()) {
+                        List<UserRankHistory> userHistory = entry.getValue();
+                        userHistory.sort(Comparator.comparing(UserRankHistory::getCreatedAt));
+
+                        int currentMaxDrop = 0;
+                        for (int i = 0; i < userHistory.size(); i++) {
+                                UserRankHistory start = userHistory.get(i);
+                                // User asked to exclude random initial standings with 0 points
+                                if (start.getPoints() <= 0)
+                                        continue;
+
+                                for (int j = i + 1; j < userHistory.size(); j++) {
+                                        UserRankHistory end = userHistory.get(j);
+                                        int drop = end.getRank() - start.getRank();
+                                        if (drop > currentMaxDrop) {
+                                                currentMaxDrop = drop;
+                                        }
+                                }
+                        }
+
+                        if (currentMaxDrop > maxRankDrop) {
+                                maxRankDrop = currentMaxDrop;
+                                bestIcarusId = entry.getKey();
+                        }
+                }
+
+                if (bestIcarusId != null && maxRankDrop > 0) {
+                        String finalBestIcarusId = bestIcarusId;
+                        User u = users.stream().filter(user -> user.getId().toString().equals(finalBestIcarusId))
+                                        .findFirst().orElse(null);
+                        if (u != null) {
+                                stats.setIcarus(GlobalStatsDto.UserStatDto.builder()
+                                                .username(u.getUsername())
+                                                .avatar(u.getAvatar())
+                                                .statValue(maxRankDrop + (maxRankDrop == 1 ? " θέσης" : " θέσεων"))
+                                                .build());
+                        }
+                }
         }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar } from '../components/Avatars';
 import { Flag, getTeamShortName, getTeamColor } from '../components/Countries';
-import { TrendingUp, Award, BarChart2, Zap, Target, Flame } from 'lucide-react';
+import { TrendingUp, Award, BarChart2, Zap, Target, Flame, Skull } from 'lucide-react';
 import './Stats.css';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
@@ -179,9 +179,9 @@ export default function Stats({ user }) {
       </div>
 
       {/* Superlatives Section */}
-      <div className="stats-grid-2">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div className="stats-grid-2">
           {/* Match Superlatives */}
           <div className="glass superlative-card" style={{ height: '100%' }}>
             <h2 className="superlative-title" style={{ color: 'var(--secondary)' }}>
@@ -258,19 +258,6 @@ export default function Stats({ user }) {
               </div>
             )}
 
-            {stats.theFlash && (
-              <div className="hof-item">
-                <Avatar id={stats.theFlash.avatar} size={40} />
-                <div className="hof-info">
-                  <p className="hof-role">Ο ΠΙΟ ΓΡΗΓΟΡΟΣ</p>
-                  <p className="hof-name">{stats.theFlash.username}</p>
-                </div>
-                <div className="hof-stat" style={{ color: 'var(--warning)', background: 'var(--warning-glow)' }}>
-                  {stats.theFlash.statValue}
-                </div>
-              </div>
-            )}
-
             {stats.mrConsistent && (
               <div className="hof-item">
                 <Avatar id={stats.mrConsistent.avatar} size={40} />
@@ -281,11 +268,107 @@ export default function Stats({ user }) {
                 <div className="hof-stat" style={{ color: 'var(--primary)', background: 'var(--primary-glow)' }}>
                   {stats.mrConsistent.statValue}
                 </div>
+                <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px', lineHeight: '1.2', whiteSpace: 'nowrap' }}>Το μεγαλύτερο σερί που καταγράφηκε</p>
+              </div>
+            )}
+
+            {stats.underdogHunter && (
+              <div className="hof-item">
+                <Avatar id={stats.underdogHunter.avatar} size={40} />
+                <div className="hof-info">
+                  <p className="hof-role">ΚΥΝΗΓΟΣ ΑΟΥΤΣΑΙΝΤΕΡ</p>
+                  <p className="hof-name">{stats.underdogHunter.username}</p>
+                </div>
+                <div className="hof-stat" style={{ color: 'var(--success)', background: 'var(--success-glow)' }}>
+                  {stats.underdogHunter.statValue}
+                </div>
+                <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px', lineHeight: '1.2', whiteSpace: 'nowrap' }}>Πήρε πόντους όταν το 90% πήγε κουβά</p>
+              </div>
+            )}
+
+            {stats.theFlash && (
+              <div className="hof-item">
+                <Avatar id={stats.theFlash.avatar} size={40} />
+                <div className="hof-info">
+                  <p className="hof-role">Ο ΓΡΗΓΟΡΟΣ</p>
+                  <p className="hof-name">{stats.theFlash.username}</p>
+                </div>
+                <div className="hof-stat" style={{ color: 'var(--warning)', background: 'var(--warning-glow)' }}>
+                  {stats.theFlash.statValue}
+                </div>
+              </div>
+            )}
+
+            {!stats.theOracle && !stats.mrConsistent && (
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Η κατάταξη μορφοποιείται...</p>
+            )}
+          </div>
+        </div>
+
+        {/* Hall of Shame */}
+        <div className="glass superlative-card">
+          <h2 className="superlative-title" style={{ color: 'var(--danger)' }}>
+            <Skull size={20} /> Hall of Shame
+          </h2>
+
+          <div className="shame-list">
+            {stats.kingOfBucket && (
+              <div className="shame-item">
+                <Avatar id={stats.kingOfBucket.avatar} size={40} />
+                <div className="hof-info">
+                  <p className="hof-role" style={{ color: 'var(--danger)' }}>Ο ΒΑΣΙΛΙΑΣ ΤΟΥ ΚΟΥΒΑ</p>
+                  <p className="hof-name">{stats.kingOfBucket.username}</p>
+                </div>
+                <div className="hof-stat" style={{ color: 'var(--danger)', background: 'var(--danger-glow)' }}>
+                  {stats.kingOfBucket.statValue}
+                </div>
+                <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px', lineHeight: '1.2', whiteSpace: 'nowrap' }}>Δεν πήρε πόντο</p>
+              </div>
+            )}
+
+            {stats.icarus && (
+              <div className="shame-item">
+                <Avatar id={stats.icarus.avatar} size={40} />
+                <div className="hof-info">
+                  <p className="hof-role" style={{ color: 'var(--danger)' }}>Ο ΑΛΕΞΙΠΤΩΤΙΣΤΗΣ</p>
+                  <p className="hof-name">{stats.icarus.username}</p>
+                </div>
+                <div className="hof-stat" style={{ color: 'var(--danger)', background: 'var(--danger-glow)' }}>
+                  Ελεύθερη πτώση {stats.icarus.statValue}
+                </div>
+              </div>
+            )}
+
+            {stats.nearMiss && (
+              <div className="shame-item">
+                <Avatar id={stats.nearMiss.avatar} size={40} />
+                <div className="hof-info">
+                  <p className="hof-role" style={{ color: 'var(--danger)' }}>ΔΟΚΑΡΙ ΚΙ' ΕΞΩ</p>
+                  <p className="hof-name">{stats.nearMiss.username}</p>
+                </div>
+                <div className="hof-stat" style={{ color: 'var(--danger)', background: 'var(--danger-glow)' }}>
+                  {stats.nearMiss.statValue}
+                </div>
+                <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px', lineHeight: '1.2', whiteSpace: 'nowrap' }}>Χάθηκε το ακριβές για 1 γκολ</p>
+              </div>
+            )}
+
+            {stats.antiProphet && (
+              <div className="shame-item">
+                <Avatar id={stats.antiProphet.avatar} size={40} />
+                <div className="hof-info">
+                  <p className="hof-role" style={{ color: 'var(--danger)' }}>Ο ΑΝΤΙ-ΠΡΟΦΗΤΗΣ</p>
+                  <p className="hof-name">{stats.antiProphet.username}</p>
+                </div>
+                <div className="hof-stat" style={{ color: 'var(--danger)', background: 'var(--danger-glow)' }}>
+                  {stats.antiProphet.statValue}
+                </div>
+                <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px', lineHeight: '1.2', whiteSpace: 'nowrap' }}>Βλέπει το ματς ανάποδα</p>
               </div>
             )}
 
             {stats.soulmates && (
-              <div className="hof-item">
+              <div className="shame-item">
                 <div style={{ display: 'flex' }}>
                   <div style={{ zIndex: 2, position: 'relative' }}>
                     <Avatar id={stats.soulmates.avatar1} size={40} />
@@ -295,17 +378,17 @@ export default function Stats({ user }) {
                   </div>
                 </div>
                 <div className="hof-info">
-                  <p className="hof-role">ΟΙ ΑΝΤΙΓΡΑΦΕΙΣ</p>
+                  <p className="hof-role" style={{ color: 'var(--danger)' }}>ΟΙ ΑΝΤΙΓΡΑΦΕΙΣ</p>
                   <p className="hof-name">{stats.soulmates.username1} & {stats.soulmates.username2}</p>
                 </div>
-                <div className="hof-stat" style={{ color: 'var(--secondary)', background: 'var(--secondary-glow)' }}>
+                <div className="hof-stat" style={{ color: 'var(--danger)', background: 'var(--danger-glow)' }}>
                   {stats.soulmates.statValue}
                 </div>
               </div>
             )}
 
-            {!stats.theOracle && !stats.mrConsistent && (
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Η κατάταξη μορφοποιείται...</p>
+            {!stats.icarus && !stats.kingOfBucket && !stats.nearMiss && !stats.antiProphet && !stats.soulmates && (
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Όλοι παίζουν τέλεια...</p>
             )}
           </div>
         </div>

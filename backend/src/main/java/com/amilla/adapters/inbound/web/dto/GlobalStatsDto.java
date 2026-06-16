@@ -25,17 +25,24 @@ public class GlobalStatsDto {
     private UserStatDto highestScorer; // Highest points
     private UserStatDto theFlash; // Fastest submitter
     private UserPairStatDto soulmates; // Users with most identical predictions
+    private UserStatDto underdogHunter; // Gained points when 90% failed
 
-    // 4. Global Averages
+    // 4. Hall of Shame
+    private UserStatDto icarus; // Lost most positions
+    private UserStatDto kingOfBucket; // Most 0-point matches
+    private UserStatDto nearMiss; // Missed exact score by 1 goal
+    private UserStatDto antiProphet; // Predicted exact opposite winner
+
+    // 5. Global Averages
     private Double averagePointsPerPrediction;
     private Long totalExactScores;
     private Long totalCorrectResults;
     private Long totalMisses;
     
-    // 5. Prediction Matrix
+    // 6. Prediction Matrix
     private PredictionMatrixDto predictionMatrix;
 
-    // 6. Player Comparisons
+    // 7. Player Comparisons
     private List<PlayerAvgPointsDto> playerAveragePoints;
 
     @Data

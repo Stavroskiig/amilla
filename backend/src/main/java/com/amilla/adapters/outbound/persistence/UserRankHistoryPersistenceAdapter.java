@@ -28,6 +28,13 @@ public class UserRankHistoryPersistenceAdapter implements UserRankHistoryReposit
     }
 
     @Override
+    public List<UserRankHistory> findAll() {
+        return repository.findAll().stream()
+                .map(this::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public UserRankHistory save(UserRankHistory history) {
         UserRankHistoryEntity entity = toEntity(history);
         UserRankHistoryEntity saved = repository.save(entity);

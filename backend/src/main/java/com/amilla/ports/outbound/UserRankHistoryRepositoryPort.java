@@ -11,4 +11,5 @@ public interface UserRankHistoryRepositoryPort {
     List<UserRankHistory> saveAll(List<UserRankHistory> histories);
     void deleteAll();
     void deleteByUserId(UUID userId);
+    List<UserRankHistory> findAll();
 }
