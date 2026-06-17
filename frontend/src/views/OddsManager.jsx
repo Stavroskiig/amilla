@@ -236,9 +236,9 @@ export default function OddsManager() {
     <div className="animate-fade-in">
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
         <TrendingUp size={32} className="text-indigo-400" />
-        <div>
-          <h1 style={{ fontSize: '2.2rem', fontWeight: 800 }}>Odds Manager</h1>
-          <p style={{ color: 'var(--text-muted)' }}>Διαχείριση αποδόσεων αγώνων.</p>
+        <div style={{ flex: 1 }}>
+          <h1 style={{ fontSize: '2.2rem', fontWeight: 800, margin: 0 }}>Odds Manager</h1>
+          <p style={{ color: 'var(--text-muted)', margin: 0, marginTop: '4px' }}>Διαχείριση αποδόσεων αγώνων.</p>
         </div>
       </div>
 
@@ -296,6 +296,12 @@ export default function OddsManager() {
                       <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                         {getStageLabel(match.matchStage)} • {new Date(match.kickoffTime).toLocaleString('el-GR', { timeZone: 'Europe/Athens', hour12: false })}
                       </div>
+                      {match.oddsLastUpdatedAt && (
+                        <div style={{ fontSize: '0.75rem', color: '#10b981', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <Check size={14} />
+                          Ενημερώθηκε: {new Date(match.oddsLastUpdatedAt).toLocaleString('el-GR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                        </div>
+                      )}
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'flex-end', gap: '12px', flexWrap: 'wrap' }}>

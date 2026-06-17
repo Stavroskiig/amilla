@@ -66,4 +66,7 @@ public class MatchEntity {
 
     @Column(name = "exact_score_odds_json", columnDefinition = "TEXT")
     private String exactScoreOddsJson;
+
+    @Column(name = "odds_last_updated_at")
+    private Instant oddsLastUpdatedAt;
 }

@@ -109,6 +109,7 @@ public class MatchService implements ManageMatchUseCase {
         match.setHomeAdvanceOdds(homeAdvanceOdds);
         match.setAwayAdvanceOdds(awayAdvanceOdds);
         match.setExactScoreOddsJson(exactScoreOddsJson);
+        match.setOddsLastUpdatedAt(Instant.now());
         return matchRepository.save(match);
     }
 

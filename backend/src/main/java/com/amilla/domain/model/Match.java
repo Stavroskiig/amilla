@@ -32,4 +32,5 @@ public class Match {
     private Double homeAdvanceOdds;
     private Double awayAdvanceOdds;
     private String exactScoreOddsJson; // JSON representation of exact score odds map
+    private Instant oddsLastUpdatedAt; // Last time odds were saved
 }
