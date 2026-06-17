@@ -19,8 +19,8 @@ export default function Leaderboard({ currentUser }) {
       const scrollableDiv = leaderboardRef.current.querySelector('.hide-scrollbar');
       let originalOverflow = '';
       if (scrollableDiv) {
-         originalOverflow = scrollableDiv.style.overflowX;
-         scrollableDiv.style.overflowX = 'visible';
+        originalOverflow = scrollableDiv.style.overflowX;
+        scrollableDiv.style.overflowX = 'visible';
       }
 
       const canvas = await html2canvas(leaderboardRef.current, {
@@ -28,9 +28,9 @@ export default function Leaderboard({ currentUser }) {
         scale: 2,
         backgroundColor: document.documentElement.getAttribute('data-theme') === 'wc26' ? '#f1f5f9' : '#0f111a'
       });
-      
+
       if (scrollableDiv) {
-         scrollableDiv.style.overflowX = originalOverflow;
+        scrollableDiv.style.overflowX = originalOverflow;
       }
 
       const imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
@@ -89,7 +89,7 @@ export default function Leaderboard({ currentUser }) {
   );
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -122,9 +122,9 @@ export default function Leaderboard({ currentUser }) {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          
+
           {/* Share Button */}
-          <button 
+          <button
             onClick={handleShare}
             title="Μοιράσου την Κατάταξη"
             style={{
@@ -162,7 +162,7 @@ export default function Leaderboard({ currentUser }) {
           {searchTerm === '' && <Podium topUsers={users.slice(0, 3)} currentUser={currentUser} />}
 
           <div ref={leaderboardRef} className="glass-card hide-scrollbar" style={{ padding: '0px', overflowX: 'auto', position: 'relative', zIndex: 10 }}>
-              <table className="leaderboard-table" style={{
+            <table className="leaderboard-table" style={{
               width: '100%',
               borderCollapse: 'collapse',
               textAlign: 'left'
@@ -184,187 +184,195 @@ export default function Leaderboard({ currentUser }) {
                 </tr>
               </thead>
               <tbody>
-                  {filteredUsers.length > 0 ? (
-                    filteredUsers.map((user, idx) => {
-                      const rank = getRankStyle(idx);
-                      const isSelf = currentUser && user.id === currentUser.id;
-                      
-                      const currentRank = idx + 1;
-                      const prevRank = user.previousRank;
-                      const change = prevRank > 0 ? prevRank - currentRank : 0;
-                      
-                      const baseBg = isSelf ? 'var(--self-row-bg, rgba(99, 102, 241, 0.08))' : 'transparent';
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((user, idx) => {
+                    const rank = getRankStyle(idx);
+                    const isSelf = currentUser && user.id === currentUser.id;
 
-                      return (
-                        <tr
-                          key={user.id}
-                          style={{
-                            borderBottom: '1px solid var(--border-color)',
-                            background: baseBg,
-                            fontWeight: isSelf ? '600' : '400'
-                          }}
-                          className="leaderboard-row"
-                        >
-                          {/* Rank Position */}
-                          <td style={{ padding: '18px 24px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="leaderboard-rank-cell">
-                              <span style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: '28px',
-                                height: '28px',
-                                borderRadius: '50%',
-                                background: idx < 3 ? 'var(--rank-bg, rgba(255,255,255,0.03))' : 'transparent',
-                                color: rank.color,
-                                fontWeight: 700,
-                                flexShrink: 0
-                              }}>
-                                {idx + 1}
-                              </span>
-                              <span className="hide-on-mobile" style={{ color: rank.color, display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-                                {rank.icon}
-                              </span>
+                    const currentRank = idx + 1;
+                    const prevRank = user.previousRank;
+                    const change = prevRank > 0 ? prevRank - currentRank : 0;
 
-                              {/* Trend Indicator */}
-                              {(() => {
-                                if (prevRank === 0 || change === 0) {
-                                  return (
-                                    <span className="trend-badge trend-neutral" title="Σταθερή θέση">
-                                      <span style={{ fontSize: '10px' }}>—</span>
-                                    </span>
-                                  );
-                                }
+                    const baseBg = isSelf ? 'var(--self-row-bg, rgba(99, 102, 241, 0.08))' : 'transparent';
 
-                                if (change > 0) {
-                                  return (
-                                    <span className="trend-badge trend-up" title={`Ανέβηκε ${change} ${change === 1 ? 'θέση' : 'θέσεις'}`}>
-                                      <TrendingUp size={12} style={{ marginRight: '2px' }} />
-                                      {change}
-                                    </span>
-                                  );
-                                } else {
-                                  return (
-                                    <span className="trend-badge trend-down" title={`Έπεσε ${Math.abs(change)} ${Math.abs(change) === 1 ? 'θέση' : 'θέσεις'}`}>
-                                      <TrendingDown size={12} style={{ marginRight: '2px' }} />
-                                      {Math.abs(change)}
-                                    </span>
-                                  );
-                                }
-                              })()}
-                            </div>
-                          </td>
+                    return (
+                      <tr
+                        key={user.id}
+                        style={{
+                          borderBottom: '1px solid var(--border-color)',
+                          background: baseBg,
+                          fontWeight: isSelf ? '600' : '400'
+                        }}
+                        className="leaderboard-row"
+                      >
+                        {/* Rank Position */}
+                        <td style={{ padding: '18px 24px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="leaderboard-rank-cell">
+                            <span style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              width: '28px',
+                              height: '28px',
+                              borderRadius: '50%',
+                              background: idx < 3 ? 'var(--rank-bg, rgba(255,255,255,0.03))' : 'transparent',
+                              color: rank.color,
+                              fontWeight: 700,
+                              flexShrink: 0
+                            }}>
+                              {idx + 1}
+                            </span>
+                            <span className="hide-on-mobile" style={{ color: rank.color, display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                              {rank.icon}
+                            </span>
 
-                          {/* Username */}
-                          <td style={{ padding: '18px 24px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }} className="leaderboard-player-cell">
-                              <Avatar id={user.avatar} size={28} />
-                              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', justifyContent: 'center' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                  <span style={{ fontSize: '1rem', color: isSelf ? 'var(--self-text-color, #ffffff)' : 'var(--text-main)' }} className="leaderboard-username">
-                                    {user.username}
+                            {/* Trend Indicator */}
+                            {(() => {
+                              if (prevRank === 0 || change === 0) {
+                                return (
+                                  <span className="trend-badge trend-neutral" title="Σταθερή θέση">
+                                    <span style={{ fontSize: '10px' }}>—</span>
                                   </span>
-                                  {user.currentStreak >= 3 && (
-                                    <span
-                                      title={`Καυτός! ${user.currentStreak} συνεχόμενες σωστές προβλέψεις`}
-                                      style={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '3px',
-                                        background: 'rgba(249, 115, 22, 0.15)',
-                                        color: '#f97316',
-                                        border: '1px solid rgba(249, 115, 22, 0.3)',
-                                        padding: '2px 8px',
-                                        borderRadius: '12px',
-                                        fontSize: '0.75rem',
-                                        fontWeight: 800,
-                                        boxShadow: '0 0 10px rgba(249, 115, 22, 0.25)',
-                                        animation: 'pulse 1.5s infinite',
-                                        fontFamily: 'var(--font-heading)'
-                                      }}
-                                      className="streak-badge"
-                                    >
-                                      <Flame size={12} fill="#f97316" />
-                                      <span>{user.currentStreak}</span>
-                                    </span>
-                                  )}
-                                  {isSelf && (
-                                    <span className="badge self-badge" style={{
-                                      background: 'rgba(99,102,241,0.2)',
-                                      color: 'var(--self-badge-color, #a5b4fc)',
-                                      fontSize: '0.7rem',
+                                );
+                              }
+
+                              if (change > 0) {
+                                return (
+                                  <span className="trend-badge trend-up" title={`Ανέβηκε ${change} ${change === 1 ? 'θέση' : 'θέσεις'}`}>
+                                    <TrendingUp size={12} style={{ marginRight: '2px' }} />
+                                    {change}
+                                  </span>
+                                );
+                              } else {
+                                return (
+                                  <span className="trend-badge trend-down" title={`Έπεσε ${Math.abs(change)} ${Math.abs(change) === 1 ? 'θέση' : 'θέσεις'}`}>
+                                    <TrendingDown size={12} style={{ marginRight: '2px' }} />
+                                    {Math.abs(change)}
+                                  </span>
+                                );
+                              }
+                            })()}
+                          </div>
+                        </td>
+
+                        {/* Username */}
+                        <td style={{ padding: '18px 24px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }} className="leaderboard-player-cell">
+                            <Avatar id={user.avatar} size={28} />
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', justifyContent: 'center' }}>
+                              
+                              {/* Top Row: Username & Flame */}
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span style={{ fontSize: '1rem', color: isSelf ? 'var(--self-text-color, #ffffff)' : 'var(--text-main)' }} className="leaderboard-username">
+                                  {user.username}
+                                </span>
+                                {user.currentStreak >= 3 && (
+                                  <span
+                                    title={`Καυτός! ${user.currentStreak} συνεχόμενες σωστές προβλέψεις`}
+                                    style={{
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: '3px',
+                                      background: 'rgba(249, 115, 22, 0.15)',
+                                      color: '#f97316',
+                                      border: '1px solid rgba(249, 115, 22, 0.3)',
                                       padding: '2px 6px',
-                                      borderRadius: '10px'
-                                    }}>
-                                      ΕΣΥ
-                                    </span>
-                                  )}
-                                </div>
+                                      borderRadius: '12px',
+                                      fontSize: '0.7rem',
+                                      fontWeight: 800,
+                                      boxShadow: '0 0 10px rgba(249, 115, 22, 0.25)',
+                                      animation: 'pulse 1.5s infinite',
+                                      fontFamily: 'var(--font-heading)'
+                                    }}
+                                    className="streak-badge"
+                                  >
+                                    <Flame size={10} fill="#f97316" />
+                                    <span>{user.currentStreak}</span>
+                                  </span>
+                                )}
+                              </div>
+
+                              {/* Bottom Row: Exact Hits (mobile) & YOU Badge */}
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <div className="show-on-mobile" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                                     <Target size={12} color="#06b6d4" />
                                     Ακριβή: <span style={{ color: 'var(--text-main)', fontWeight: '700' }}>{user.exactHits || 0}</span>
                                   </span>
                                 </div>
+                                {isSelf && (
+                                  <span className="badge self-badge" style={{
+                                    background: 'rgba(99,102,241,0.2)',
+                                    color: 'var(--self-badge-color, #a5b4fc)',
+                                    fontSize: '0.65rem',
+                                    padding: '2px 6px',
+                                    borderRadius: '10px',
+                                    lineHeight: 1
+                                  }}>
+                                    ΕΣΥ
+                                  </span>
+                                )}
                               </div>
+                              
                             </div>
-                          </td>
+                          </div>
+                        </td>
 
-                          {/* Exact Hits */}
-                          <td className="hide-on-mobile" style={{ padding: '18px 24px', textAlign: 'center' }}>
-                            <div style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              width: '32px',
-                              height: '32px',
-                              borderRadius: '50%',
-                              background: 'var(--exact-hits-bg, rgba(255, 255, 255, 0.05))',
-                              color: 'var(--text-main)',
-                              fontWeight: '600',
-                              fontSize: '0.9rem'
-                            }} title="Ακριβή σκορ">
-                              {user.exactHits || 0}
-                            </div>
-                          </td>
+                        {/* Exact Hits */}
+                        <td className="hide-on-mobile" style={{ padding: '18px 24px', textAlign: 'center' }}>
+                          <div style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            background: 'var(--exact-hits-bg, rgba(255, 255, 255, 0.05))',
+                            color: 'var(--text-main)',
+                            fontWeight: '600',
+                            fontSize: '0.9rem'
+                          }} title="Ακριβή σκορ">
+                            {user.exactHits || 0}
+                          </div>
+                        </td>
 
-                          {/* Points */}
-                          <td style={{ padding: '18px 24px', textAlign: 'center', fontSize: '1.1rem', fontWeight: 700, color: isSelf ? 'var(--self-points-color, #818cf8)' : 'var(--points-color, #ffffff)' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                                  {user.recentPoints > 0 && (
-                                    <span 
-                                      title={`Κέρδισε ${user.recentPoints} πόντους στον τελευταίο αγώνα`}
-                                      style={{ 
-                                        position: 'absolute',
-                                        right: '100%',
-                                        marginRight: '8px',
-                                        fontSize: '0.75rem', 
-                                        color: '#10b981', 
-                                        background: 'rgba(16, 185, 129, 0.15)', 
-                                        padding: '2px 6px', 
-                                        borderRadius: '10px',
-                                        fontWeight: 800
-                                      }}
-                                      className="animate-fade-in"
-                                    >
-                                      +{user.recentPoints}
-                                    </span>
-                                  )}
-                                <span>{user.totalPoints}</span>
-                              </div>
+                        {/* Points */}
+                        <td style={{ padding: '18px 24px', textAlign: 'center', fontSize: '1.1rem', fontWeight: 700, color: isSelf ? 'var(--self-points-color, #818cf8)' : 'var(--points-color, #ffffff)' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                              {user.recentPoints > 0 && (
+                                <span
+                                  title={`Κέρδισε ${user.recentPoints} πόντους στον τελευταίο αγώνα`}
+                                  style={{
+                                    position: 'absolute',
+                                    right: '100%',
+                                    marginRight: '8px',
+                                    fontSize: '0.75rem',
+                                    color: '#10b981',
+                                    background: 'rgba(16, 185, 129, 0.15)',
+                                    padding: '2px 6px',
+                                    borderRadius: '10px',
+                                    fontWeight: 800
+                                  }}
+                                  className="animate-fade-in"
+                                >
+                                  +{user.recentPoints}
+                                </span>
+                              )}
+                              <span>{user.totalPoints}</span>
                             </div>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  ) : (
-                    <tr>
-                      <td colSpan="4" style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)' }}>
-                        Δεν βρέθηκαν παίκτες.
-                      </td>
-                    </tr>
-                  )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="4" style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                      Δεν βρέθηκαν παίκτες.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
