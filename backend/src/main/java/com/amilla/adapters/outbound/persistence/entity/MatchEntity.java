@@ -69,4 +69,11 @@ public class MatchEntity {
 
     @Column(name = "odds_last_updated_at")
     private Instant oddsLastUpdatedAt;
+
+    @Column(name = "external_api_id")
+    private String externalApiId;
+
+    @Column(name = "auto_odds_fetched", nullable = false, columnDefinition = "boolean default false")
+    @Builder.Default
+    private Boolean autoOddsFetched = false;
 }

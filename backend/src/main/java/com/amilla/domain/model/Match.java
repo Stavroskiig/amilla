@@ -33,4 +33,6 @@ public class Match {
     private Double awayAdvanceOdds;
     private String exactScoreOddsJson; // JSON representation of exact score odds map
     private Instant oddsLastUpdatedAt; // Last time odds were saved
+    private String externalApiId; // SharpAPI event ID
+    private Boolean autoOddsFetched; // Flag to prevent redundant automated fetches
 }

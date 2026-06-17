@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Shield, RefreshCw, Calculator, Save, User as UserIcon, Calendar, Check, AlertCircle, Trash2, Plus, Upload, FileJson, ChevronDown, ChevronUp } from 'lucide-react';
+import { Shield, RefreshCw, Calculator, Save, User as UserIcon, Calendar, Check, AlertCircle, Trash2, Plus, Upload, FileJson, ChevronDown, ChevronUp, Link as LinkIcon } from 'lucide-react';
 import { COUNTRIES, Flag, getStageLabel } from '../components/Countries';
+import SharpApiEventPickerModal from '../components/SharpApiEventPickerModal';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
@@ -38,6 +39,10 @@ export default function Admin() {
   const [recalculating, setRecalculating] = useState(false);
   const [savingMatchId, setSavingMatchId] = useState(null);
   const [savingChannelId, setSavingChannelId] = useState(null);
+
+  // Link Event State
+  const [linkModalMatchId, setLinkModalMatchId] = useState(null);
+  const [linkingEventId, setLinkingEventId] = useState(null);
 
   // Override state
   const [selectedUserId, setSelectedUserId] = useState('');
@@ -83,6 +88,34 @@ export default function Admin() {
   const [resolveChampion, setResolveChampion] = useState('');
   const [resolving, setResolving] = useState(false);
   const [updatingGoals, setUpdatingGoals] = useState({});
+
+  const handleLinkEventSelect = async (externalApiId) => {
+    if (!linkModalMatchId) return;
+    setLinkingEventId(linkModalMatchId);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/odds-manager/matches/${linkModalMatchId}/external-id`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ externalApiId })
+      });
+      if (res.ok) {
+        queryClient.invalidateQueries();
+        fetchAdminData();
+      } else {
+        alert('Σφάλμα κατά τη σύνδεση του αγώνα');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Προέκυψε σφάλμα επικοινωνίας');
+    } finally {
+      setLinkingEventId(null);
+      setLinkModalMatchId(null);
+    }
+  };
 
   useEffect(() => {
     fetchAdminData();
@@ -372,6 +405,31 @@ export default function Admin() {
     }
   };
 
+  const [syncingMatchOddsId, setSyncingMatchOddsId] = useState(null);
+
+  const handleSyncSingleMatchOdds = async (matchId) => {
+    setSyncingMatchOddsId(matchId);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/odds-manager/matches/${matchId}/sync-odds`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        alert('Η συγχρονισμός αποδόσεων για τον αγώνα ολοκληρώθηκε!');
+        fetchAdminData();
+        queryClient.invalidateQueries();
+      } else {
+        alert('Σφάλμα (πιθανώς δεν έχει βρεθεί αντίστοιχο γεγονός στο SharpAPI ή rate limit)');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Προέκυψε σφάλμα επικοινωνίας');
+    } finally {
+      setSyncingMatchOddsId(null);
+    }
+  };
+
   const handleRecalculate = async () => {
     setRecalculating(true);
     try {
@@ -564,6 +622,13 @@ export default function Admin() {
 
   return (
     <div className="animate-fade-in">
+      {linkModalMatchId && (
+        <SharpApiEventPickerModal
+          matchId={linkModalMatchId}
+          onClose={() => setLinkModalMatchId(null)}
+          onSelect={handleLinkEventSelect}
+        />
+      )}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
         <Shield size={32} className="text-indigo-400" />
         <div>
@@ -827,6 +892,26 @@ export default function Admin() {
                                   title="Αποθήκευση Σκορ"
                                 >
                                   <Save size={16} />
+                                </button>
+
+                                <button
+                                  className="btn btn-secondary"
+                                  disabled={syncingMatchOddsId === match.id || !match.externalApiId}
+                                  onClick={() => handleSyncSingleMatchOdds(match.id)}
+                                  style={{ padding: '10px', minWidth: '40px', borderColor: 'rgba(59, 130, 246, 0.5)', color: match.externalApiId ? '#3b82f6' : 'var(--text-muted)' }}
+                                  title={match.externalApiId ? "Συγχρονισμός Αποδόσεων (SharpAPI)" : "Απαιτείται σύνδεση αγώνα πρώτα"}
+                                >
+                                  <RefreshCw size={16} className={syncingMatchOddsId === match.id ? 'animate-spin' : ''} />
+                                </button>
+
+                                <button
+                                  className="btn btn-secondary"
+                                  disabled={linkingEventId === match.id}
+                                  onClick={() => setLinkModalMatchId(match.id)}
+                                  style={{ padding: '10px', minWidth: '40px', borderColor: 'rgba(16, 185, 129, 0.5)', color: match.externalApiId ? '#10b981' : 'var(--text-muted)' }}
+                                  title={match.externalApiId ? `Συνδεδεμένο: ${match.externalApiId}` : "Σύνδεση με SharpAPI Event"}
+                                >
+                                  <LinkIcon size={16} />
                                 </button>
 
                                 <button

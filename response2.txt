@@ -1,0 +1,3235 @@
+{
+  "data": [
+    {
+      "id": "169401251404676",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "1st_half_correct_score",
+      "selection": "2-3",
+      "selection_type": "2_3",
+      "market_segment": "1st_half",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/169401251404676",
+      "market_id": "742.149727878",
+      "selection_id": "14",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "1st_half_correct_score",
+        "label": "1st Half Correct Score",
+        "numerical_id": 76
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "208944979766698",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "1st_half_correct_score",
+      "selection": "3-2",
+      "selection_type": "3_2",
+      "market_segment": "1st_half",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/208944979766698",
+      "market_id": "742.149727878",
+      "selection_id": "12",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "1st_half_correct_score",
+        "label": "1st Half Correct Score",
+        "numerical_id": 76
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "29943719971564",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "1st_half_correct_score",
+      "selection": "4-1",
+      "selection_type": "4_1",
+      "market_segment": "1st_half",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/29943719971564",
+      "market_id": "742.149727878",
+      "selection_id": "526012",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "1st_half_correct_score",
+        "label": "1st Half Correct Score",
+        "numerical_id": 76
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "85775612144717",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "1st_half_correct_score",
+      "selection": "2-1",
+      "selection_type": "2_1",
+      "market_segment": "1st_half",
+      "odds_american": -1000,
+      "odds_decimal": 1.1,
+      "odds_probability": 0.9091,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/85775612144717",
+      "market_id": "742.149727878",
+      "selection_id": "6",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "1st_half_correct_score",
+        "label": "1st Half Correct Score",
+        "numerical_id": 76
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "269666120441210",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "1st_half_moneyline",
+      "selection": "Croatia",
+      "selection_type": "away",
+      "team_side": "away",
+      "market_segment": "1st_half",
+      "odds_american": 5000,
+      "odds_decimal": 51,
+      "odds_probability": 0.0196,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/269666120441210",
+      "market_id": "742.149727867",
+      "selection_id": "8212",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "1st_half_moneyline",
+        "label": "1st Half Moneyline",
+        "numerical_id": 81
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "117965624507507",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "anytime_goal_scorer",
+      "selection": "Anthony Gordon",
+      "selection_type": "other",
+      "odds_american": 1000,
+      "odds_decimal": 11,
+      "odds_probability": 0.0909,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Anthony Gordon",
+      "stat_category": "goal_scorer",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/117965624507507",
+      "market_id": "742.171231770",
+      "selection_id": "27114214",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "anytime_goal_scorer",
+        "label": "Anytime Goal Scorer",
+        "numerical_id": 784
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "225728504142005",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "anytime_goal_scorer",
+      "selection": "Josip Sutalo",
+      "selection_type": "other",
+      "odds_american": 5000,
+      "odds_decimal": 51,
+      "odds_probability": 0.0196,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Josip Sutalo",
+      "stat_category": "goal_scorer",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/225728504142005",
+      "market_id": "742.171231770",
+      "selection_id": "28610231",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "anytime_goal_scorer",
+        "label": "Anytime Goal Scorer",
+        "numerical_id": 784
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "29209602088756",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "anytime_goal_scorer",
+      "selection": "Mario Pasalic",
+      "selection_type": "other",
+      "odds_american": 2200,
+      "odds_decimal": 23,
+      "odds_probability": 0.0435,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Mario Pasalic",
+      "stat_category": "goal_scorer",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/29209602088756",
+      "market_id": "742.171231770",
+      "selection_id": "8589823",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "anytime_goal_scorer",
+        "label": "Anytime Goal Scorer",
+        "numerical_id": 784
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "59213769323730",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "anytime_goal_scorer",
+      "selection": "Harry Kane",
+      "selection_type": "other",
+      "odds_american": 440,
+      "odds_decimal": 5.4,
+      "odds_probability": 0.1852,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Harry Kane",
+      "stat_category": "goal_scorer",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/59213769323730",
+      "market_id": "742.171231770",
+      "selection_id": "14843951",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "anytime_goal_scorer",
+        "label": "Anytime Goal Scorer",
+        "numerical_id": 784
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "71798512487553",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "anytime_goal_scorer",
+      "selection": "John Stones",
+      "selection_type": "other",
+      "odds_american": 4000,
+      "odds_decimal": 41,
+      "odds_probability": 0.0244,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "John Stones",
+      "stat_category": "goal_scorer",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/71798512487553",
+      "market_id": "742.171231770",
+      "selection_id": "6674067",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "anytime_goal_scorer",
+        "label": "Anytime Goal Scorer",
+        "numerical_id": 784
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "97119159240924",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "anytime_goal_scorer",
+      "selection": "Josip Stanisic",
+      "selection_type": "other",
+      "odds_american": 5000,
+      "odds_decimal": 51,
+      "odds_probability": 0.0196,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Josip Stanisic",
+      "stat_category": "goal_scorer",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/97119159240924",
+      "market_id": "742.171231770",
+      "selection_id": "19827666",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "anytime_goal_scorer",
+        "label": "Anytime Goal Scorer",
+        "numerical_id": 784
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "116332678513048",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "correct_score",
+      "selection": "5-1",
+      "selection_type": "5_1",
+      "odds_american": 2200,
+      "odds_decimal": 23,
+      "odds_probability": 0.0435,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/116332678513048",
+      "market_id": "742.149727830",
+      "selection_id": "526013",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "correct_score",
+        "label": "Correct Score",
+        "numerical_id": 811
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "144896828848584",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "correct_score",
+      "selection": "2-2",
+      "selection_type": "2_2",
+      "odds_american": 600,
+      "odds_decimal": 7,
+      "odds_probability": 0.1429,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/144896828848584",
+      "market_id": "742.149727830",
+      "selection_id": "7",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "correct_score",
+        "label": "Correct Score",
+        "numerical_id": 811
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "188395409741548",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "correct_score",
+      "selection": "6-2",
+      "selection_type": "6_2",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/188395409741548",
+      "market_id": "742.149727830",
+      "selection_id": "3647907",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "correct_score",
+        "label": "Correct Score",
+        "numerical_id": 811
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "197014316312219",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "correct_score",
+      "selection": "5-2",
+      "selection_type": "5_2",
+      "odds_american": 3500,
+      "odds_decimal": 36,
+      "odds_probability": 0.0278,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/197014316312219",
+      "market_id": "742.149727830",
+      "selection_id": "3647906",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "correct_score",
+        "label": "Correct Score",
+        "numerical_id": 811
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "88366064661529",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "correct_score",
+      "selection": "6-1",
+      "selection_type": "6_1",
+      "odds_american": 8000,
+      "odds_decimal": 81,
+      "odds_probability": 0.0123,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/88366064661529",
+      "market_id": "742.149727830",
+      "selection_id": "526014",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "correct_score",
+        "label": "Correct Score",
+        "numerical_id": 811
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "109187247715321",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "halftime_fulltime",
+      "selection": "Croatia / Draw",
+      "selection_type": "away_draw",
+      "team_side": "away",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/109187247715321",
+      "market_id": "742.149727876",
+      "selection_id": "153166",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "halftime_fulltime",
+        "label": "Halftime / Fulltime",
+        "numerical_id": 852
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "127275776645153",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "halftime_fulltime",
+      "selection": "Croatia / England",
+      "selection_type": "away_home",
+      "team_side": "away",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/127275776645153",
+      "market_id": "742.149727876",
+      "selection_id": "496684",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "halftime_fulltime",
+        "label": "Halftime / Fulltime",
+        "numerical_id": 852
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "172538540133402",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "halftime_fulltime",
+      "selection": "Croatia / Croatia",
+      "selection_type": "away_away",
+      "team_side": "away",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/172538540133402",
+      "market_id": "742.149727876",
+      "selection_id": "153165",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "halftime_fulltime",
+        "label": "Halftime / Fulltime",
+        "numerical_id": 852
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "91178403748992",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "halftime_fulltime",
+      "selection": "Draw / England",
+      "selection_type": "draw_home",
+      "team_side": "draw",
+      "odds_american": 3000,
+      "odds_decimal": 31,
+      "odds_probability": 0.0323,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/91178403748992",
+      "market_id": "742.149727876",
+      "selection_id": "15326",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "halftime_fulltime",
+        "label": "Halftime / Fulltime",
+        "numerical_id": 852
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "127085375087423",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_goals",
+      "selection": "John Stones",
+      "selection_type": "over",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "John Stones",
+      "stat_category": "goals",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/127085375087423",
+      "market_id": "742.171231773",
+      "selection_id": "6674067",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_goals",
+        "label": "Player Goals",
+        "numerical_id": 974
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "136196661018659",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_goals",
+      "selection": "Josko Gvardiol",
+      "selection_type": "over",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Josko Gvardiol",
+      "stat_category": "goals",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/136196661018659",
+      "market_id": "742.171231773",
+      "selection_id": "26784127",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_goals",
+        "label": "Player Goals",
+        "numerical_id": 974
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "142403516060514",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_goals",
+      "selection": "Petar Sucic",
+      "selection_type": "over",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Petar Sucic",
+      "stat_category": "goals",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/142403516060514",
+      "market_id": "742.171231773",
+      "selection_id": "60707758",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_goals",
+        "label": "Player Goals",
+        "numerical_id": 974
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "161728318024522",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_goals",
+      "selection": "Josip Stanisic",
+      "selection_type": "over",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Josip Stanisic",
+      "stat_category": "goals",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/161728318024522",
+      "market_id": "742.171231773",
+      "selection_id": "19827666",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_goals",
+        "label": "Player Goals",
+        "numerical_id": 974
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "16948728492357",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_goals",
+      "selection": "Josip Sutalo",
+      "selection_type": "over",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Josip Sutalo",
+      "stat_category": "goals",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/16948728492357",
+      "market_id": "742.171231773",
+      "selection_id": "28610231",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_goals",
+        "label": "Player Goals",
+        "numerical_id": 974
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "200840868675779",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_goals",
+      "selection": "Reece James",
+      "selection_type": "over",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Reece James",
+      "stat_category": "goals",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/200840868675779",
+      "market_id": "742.171231773",
+      "selection_id": "7970259",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_goals",
+        "label": "Player Goals",
+        "numerical_id": 974
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "257015098858990",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_goals",
+      "selection": "Mario Pasalic",
+      "selection_type": "over",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Mario Pasalic",
+      "stat_category": "goals",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/257015098858990",
+      "market_id": "742.171231773",
+      "selection_id": "8589823",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_goals",
+        "label": "Player Goals",
+        "numerical_id": 974
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "264618527568213",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_goals",
+      "selection": "Nico O'Reilly",
+      "selection_type": "over",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Nico O'Reilly",
+      "stat_category": "goals",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/264618527568213",
+      "market_id": "742.171231773",
+      "selection_id": "71849468",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_goals",
+        "label": "Player Goals",
+        "numerical_id": 974
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "280558136086885",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_goals",
+      "selection": "Luka Vuskovic",
+      "selection_type": "over",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Luka Vuskovic",
+      "stat_category": "goals",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/280558136086885",
+      "market_id": "742.171231773",
+      "selection_id": "72071208",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_goals",
+        "label": "Player Goals",
+        "numerical_id": 974
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "29064449870590",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_goals",
+      "selection": "Declan Rice",
+      "selection_type": "over",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Declan Rice",
+      "stat_category": "goals",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/29064449870590",
+      "market_id": "742.171231773",
+      "selection_id": "95394658",
+      "is_alternate_line": true,
+      "is_main_line": false,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_goals",
+        "label": "Player Goals",
+        "numerical_id": 974
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "81439764610535",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_goals",
+      "selection": "Luka Modric",
+      "selection_type": "over",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Luka Modric",
+      "stat_category": "goals",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/81439764610535",
+      "market_id": "742.171231773",
+      "selection_id": "2432968",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_goals",
+        "label": "Player Goals",
+        "numerical_id": 974
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "94340384554507",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_goals",
+      "selection": "Elliot Anderson",
+      "selection_type": "over",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Elliot Anderson",
+      "stat_category": "goals",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/94340384554507",
+      "market_id": "742.171231773",
+      "selection_id": "87247541",
+      "is_alternate_line": true,
+      "is_main_line": false,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_goals",
+        "label": "Player Goals",
+        "numerical_id": 974
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "98997021228692",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_goals",
+      "selection": "Ezri Konsa",
+      "selection_type": "over",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Ezri Konsa",
+      "stat_category": "goals",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/98997021228692",
+      "market_id": "742.171231773",
+      "selection_id": "11894206",
+      "is_alternate_line": true,
+      "is_main_line": false,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_goals",
+        "label": "Player Goals",
+        "numerical_id": 974
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "194229934770766",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_shots",
+      "selection": "Ivan Perisic",
+      "selection_type": "over",
+      "odds_american": 550,
+      "odds_decimal": 6.5,
+      "odds_probability": 0.1538,
+      "line": 2.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Ivan Perisic",
+      "stat_category": "shots",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/194229934770766",
+      "market_id": "742.171906984",
+      "selection_id": "4386870",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_shots",
+        "label": "Player Shots",
+        "numerical_id": 1065
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "197564189411539",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_shots",
+      "selection": "Petar Sucic",
+      "selection_type": "over",
+      "odds_american": 1900,
+      "odds_decimal": 20,
+      "odds_probability": 0.05,
+      "line": 3.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Petar Sucic",
+      "stat_category": "shots",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/197564189411539",
+      "market_id": "742.172224162",
+      "selection_id": "60707758",
+      "is_alternate_line": true,
+      "is_main_line": false,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_shots",
+        "label": "Player Shots",
+        "numerical_id": 1065
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "2319051043635",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_shots",
+      "selection": "Luka Modric",
+      "selection_type": "over",
+      "odds_american": 950,
+      "odds_decimal": 10.5,
+      "odds_probability": 0.0952,
+      "line": 2.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Luka Modric",
+      "stat_category": "shots",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/2319051043635",
+      "market_id": "742.172224139",
+      "selection_id": "2432968",
+      "is_alternate_line": true,
+      "is_main_line": false,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_shots",
+        "label": "Player Shots",
+        "numerical_id": 1065
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "25064683587087",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_shots",
+      "selection": "Petar Musa",
+      "selection_type": "over",
+      "odds_american": 3000,
+      "odds_decimal": 31,
+      "odds_probability": 0.0323,
+      "line": 4.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Petar Musa",
+      "stat_category": "shots",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/25064683587087",
+      "market_id": "742.171906997",
+      "selection_id": "28534807",
+      "is_alternate_line": true,
+      "is_main_line": false,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_shots",
+        "label": "Player Shots",
+        "numerical_id": 1065
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "42308421738592",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_shots",
+      "selection": "Martin Baturina",
+      "selection_type": "over",
+      "odds_american": 155,
+      "odds_decimal": 2.55,
+      "odds_probability": 0.3922,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Martin Baturina",
+      "stat_category": "shots",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/42308421738592",
+      "market_id": "742.172224136",
+      "selection_id": "40582556",
+      "is_alternate_line": true,
+      "is_main_line": false,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_shots",
+        "label": "Player Shots",
+        "numerical_id": 1065
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "91151887663718",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_shots",
+      "selection": "Luka Vuskovic",
+      "selection_type": "over",
+      "odds_american": 125,
+      "odds_decimal": 2.25,
+      "odds_probability": 0.4444,
+      "line": 0.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Luka Vuskovic",
+      "stat_category": "shots",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/91151887663718",
+      "market_id": "742.171906982",
+      "selection_id": "72071208",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_shots",
+        "label": "Player Shots",
+        "numerical_id": 1065
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "138259284104533",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_shots_on_target",
+      "selection": "Martin Baturina",
+      "selection_type": "over",
+      "odds_american": 240,
+      "odds_decimal": 3.4,
+      "odds_probability": 0.2941,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Martin Baturina",
+      "stat_category": "shots_on_target",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/138259284104533",
+      "market_id": "742.171907002",
+      "selection_id": "40582556",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_shots_on_target",
+        "label": "Player Shots On Target",
+        "numerical_id": 1077
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "201516276455553",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_shots_on_target",
+      "selection": "Josko Gvardiol",
+      "selection_type": "over",
+      "odds_american": 550,
+      "odds_decimal": 6.5,
+      "odds_probability": 0.1538,
+      "line": 0.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Josko Gvardiol",
+      "stat_category": "shots_on_target",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/201516276455553",
+      "market_id": "742.171906985",
+      "selection_id": "26784127",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_shots_on_target",
+        "label": "Player Shots On Target",
+        "numerical_id": 1077
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "48507575760431",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_shots_on_target",
+      "selection": "Luka Vuskovic",
+      "selection_type": "over",
+      "odds_american": 500,
+      "odds_decimal": 6,
+      "odds_probability": 0.1667,
+      "line": 0.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Luka Vuskovic",
+      "stat_category": "shots_on_target",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/48507575760431",
+      "market_id": "742.171906985",
+      "selection_id": "72071208",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_shots_on_target",
+        "label": "Player Shots On Target",
+        "numerical_id": 1077
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "88075740161580",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_shots_on_target",
+      "selection": "Petar Musa",
+      "selection_type": "over",
+      "odds_american": 800,
+      "odds_decimal": 9,
+      "odds_probability": 0.1111,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Petar Musa",
+      "stat_category": "shots_on_target",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/88075740161580",
+      "market_id": "742.171907002",
+      "selection_id": "28534807",
+      "is_alternate_line": true,
+      "is_main_line": false,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_shots_on_target",
+        "label": "Player Shots On Target",
+        "numerical_id": 1077
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "97940450893706",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "player_shots_on_target",
+      "selection": "Luka Modric",
+      "selection_type": "over",
+      "odds_american": 2200,
+      "odds_decimal": 23,
+      "odds_probability": 0.0435,
+      "line": 1.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "player_name": "Luka Modric",
+      "stat_category": "shots_on_target",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/97940450893706",
+      "market_id": "742.171907002",
+      "selection_id": "2432968",
+      "is_alternate_line": true,
+      "is_main_line": false,
+      "is_stale_pregame_price": false,
+      "is_player_prop": true,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "player_shots_on_target",
+        "label": "Player Shots On Target",
+        "numerical_id": 1077
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "63886600108831",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "team_to_win_both_halves",
+      "selection": "Croatia",
+      "selection_type": "away",
+      "team_side": "away",
+      "odds_american": 10000,
+      "odds_decimal": 101,
+      "odds_probability": 0.0099,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/63886600108831",
+      "market_id": "742.149727892",
+      "selection_id": "8212",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "team_to_win_both_halves",
+        "label": "Team To Win Both Halves",
+        "numerical_id": 1243
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "107020350568684",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "team_total_shots",
+      "selection": "Croatia",
+      "selection_type": "away_away",
+      "team_side": "away",
+      "odds_american": -4000,
+      "odds_decimal": 1.025,
+      "odds_probability": 0.9756,
+      "line": 4.5,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/107020350568684",
+      "market_id": "742.171906958",
+      "selection_id": "8212",
+      "is_alternate_line": false,
+      "is_main_line": false,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "team_total_shots",
+        "label": "Team Total Shots",
+        "numerical_id": 1276
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "108291679441691",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "to_score",
+      "selection": "Ezri Konsa",
+      "selection_type": "other",
+      "odds_american": 2200,
+      "odds_decimal": 23,
+      "odds_probability": 0.0435,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/108291679441691",
+      "market_id": "742.171231768",
+      "selection_id": "11894206",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "to_score",
+        "label": "To Score",
+        "numerical_id": 1294
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "139255882905597",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "to_score",
+      "selection": "Nico O'Reilly",
+      "selection_type": "other",
+      "odds_american": 1400,
+      "odds_decimal": 15,
+      "odds_probability": 0.0667,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/139255882905597",
+      "market_id": "742.171231768",
+      "selection_id": "71849468",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "to_score",
+        "label": "To Score",
+        "numerical_id": 1294
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "197452224972988",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "to_score",
+      "selection": "Noni Madueke",
+      "selection_type": "other",
+      "odds_american": 550,
+      "odds_decimal": 6.5,
+      "odds_probability": 0.1538,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/197452224972988",
+      "market_id": "742.171231768",
+      "selection_id": "95394679",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "to_score",
+        "label": "To Score",
+        "numerical_id": 1294
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    },
+    {
+      "id": "272102795894734",
+      "sportsbook": "fanduel",
+      "event_id": "fifa_-_world_cup_croatia_england_2026-06-17_b3",
+      "event_uuid": "317c8b44fa4ccede",
+      "sport": "soccer",
+      "league": "fifa_-_world_cup",
+      "home_team": "England",
+      "away_team": "Croatia",
+      "market_type": "to_score",
+      "selection": "Anthony Gordon",
+      "selection_type": "other",
+      "odds_american": 550,
+      "odds_decimal": 6.5,
+      "odds_probability": 0.1538,
+      "line": null,
+      "event_start_time": "2026-06-17T20:00Z",
+      "is_live": true,
+      "is_active": true,
+      "timestamp": "2026-06-17T20:46:39.556777883Z",
+      "deep_link": "https://api.sharpapi.io/api/v1/deeplink/272102795894734",
+      "market_id": "742.171231768",
+      "selection_id": "27114214",
+      "is_alternate_line": false,
+      "is_main_line": true,
+      "is_stale_pregame_price": false,
+      "is_player_prop": false,
+      "home": {
+        "id": "england",
+        "numerical_id": 3209,
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3209.png"
+      },
+      "away": {
+        "id": "croatia",
+        "numerical_id": 3254,
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://cdn.sharpapi.io/teams/soccer/3254.png"
+      },
+      "sport_ref": {
+        "id": "soccer",
+        "name": "Soccer",
+        "numerical_id": 24
+      },
+      "league_ref": {
+        "id": "fifa_-_world_cup",
+        "label": "FIFA - World Cup",
+        "numerical_id": 197
+      },
+      "market_ref": {
+        "id": "to_score",
+        "label": "To Score",
+        "numerical_id": 1294
+      },
+      "sportsbook_ref": {
+        "id": "fanduel",
+        "label": "FanDuel",
+        "numerical_id": 19
+      },
+      "external_event_id": "35035302"
+    }
+  ],
+  "pagination": {
+    "limit": 50,
+    "offset": 0,
+    "count": 50,
+    "has_more": true,
+    "next_offset": 50,
+    "next_cursor": "eyJlIjoiZmlmYV8tX3dvcmxkX2N1cF9jcm9hdGlhX2VuZ2xhbmRfMjAyNi0wNi0xN19iMyIsImIiOiJmYW5kdWVsIiwibSI6InRvX3Njb3JlIiwiaSI6IjI3MjEwMjc5NTg5NDczNCIsInMiOjE3ODE3MjY0MDAwMDAwMDAwMDB9"
+  },
+  "updated_at": "2026-06-17T20:46:41.072281133Z"
+}

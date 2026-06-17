@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 public class OddsManagerController {
 
     private final ManageMatchUseCase manageMatchUseCase;
+    private final com.amilla.adapters.outbound.sharpapi.SharpApiClient sharpApiClient;
 
-    public OddsManagerController(ManageMatchUseCase manageMatchUseCase) {
+    public OddsManagerController(ManageMatchUseCase manageMatchUseCase, com.amilla.adapters.outbound.sharpapi.SharpApiClient sharpApiClient) {
         this.manageMatchUseCase = manageMatchUseCase;
+        this.sharpApiClient = sharpApiClient;
     }
 
     @PutMapping("/matches/{id}/odds")
@@ -30,5 +32,50 @@ public class OddsManagerController {
                 request.getExactScoreOddsJson()
         );
         return ResponseEntity.ok(match);
+    }
+
+    @PostMapping("/matches/{id}/sync-odds")
+    public ResponseEntity<Match> manuallySyncOdds(@PathVariable String id) {
+        Match match = manageMatchUseCase.getMatch(id);
+        if (match == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        try {
+            sharpApiClient.fetchAndUpdateOdds(match);
+            match.setAutoOddsFetched(true);
+            
+            Match savedMatch = manageMatchUseCase.updateMatchOdds(
+                    match.getId(),
+                    match.getHomeOdds(),
+                    match.getDrawOdds(),
+                    match.getAwayOdds(),
+                    match.getHomeAdvanceOdds(),
+                    match.getAwayAdvanceOdds(),
+                    match.getExactScoreOddsJson()
+            );
+            return ResponseEntity.ok(savedMatch);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/sharpapi/events")
+    public ResponseEntity<String> getSharpApiEvents() {
+        try {
+            String eventsJson = sharpApiClient.fetchAvailableEvents();
+            return ResponseEntity.ok()
+                    .header("Content-Type", "application/json")
+                    .body(eventsJson);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
+    }
+
+    @PutMapping("/matches/{id}/external-id")
+    public ResponseEntity<Match> updateExternalApiId(@PathVariable String id, @RequestBody java.util.Map<String, String> request) {
+        String externalApiId = request.get("externalApiId");
+        Match updatedMatch = manageMatchUseCase.updateMatchExternalApiId(id, externalApiId);
+        return ResponseEntity.ok(updatedMatch);
     }
 }

@@ -100,6 +100,14 @@ public class MatchService implements ManageMatchUseCase {
     }
 
     @Override
+    public Match updateMatchExternalApiId(String id, String externalApiId) {
+        Match match = matchRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Match not found: " + id));
+        match.setExternalApiId(externalApiId);
+        return matchRepository.save(match);
+    }
+
+    @Override
     public Match updateMatchOdds(String id, Double homeOdds, Double drawOdds, Double awayOdds, Double homeAdvanceOdds, Double awayAdvanceOdds, String exactScoreOddsJson) {
         Match match = matchRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Match not found: " + id));
