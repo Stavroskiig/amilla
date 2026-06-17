@@ -16,7 +16,14 @@ export default function MatchCountdown({ match }) {
     if (diffMs < 0) return <span>Σε εξέλιξη</span>;
 
     const diffMins = Math.floor(diffMs / 60000);
-    if (diffMins < 5) return <span>Σέντρα σε &lt; 5 λεπτά!</span>;
+    if (diffMins < 5) return (
+      <span style={{ fontWeight: '600', animation: 'pulse 2s infinite', textAlign: 'right', lineHeight: '1.2' }}>
+        <span className="hide-on-mobile">Σέντρα σε &lt; 5 λεπτά!</span>
+        <span className="show-on-mobile">
+          Σέντρα σε <br /> &lt; 5 λεπτά!
+        </span>
+      </span>
+    );
 
     const hours = Math.floor(diffMins / 60);
     const mins = diffMins % 60;
