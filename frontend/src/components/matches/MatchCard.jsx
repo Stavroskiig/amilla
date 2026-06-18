@@ -255,7 +255,7 @@ export default function MatchCard({
             <span style={{ fontSize: '0.8rem', marginLeft: '6px' }}>Πόντοι</span>
           </button>
 
-          {finished || ALWAYS_SHOW_PREDICTIONS ? (
+          {finished ? (
             <button
               className={`btn btn-secondary ${expanded ? 'btn-active' : ''}`}
               onClick={toggleExpandMatchOthers}
@@ -293,26 +293,26 @@ export default function MatchCard({
               </button>
               {ALWAYS_SHOW_PREDICTIONS && (
                 <button
-                  className="btn btn-secondary"
+                  className={`btn btn-secondary ${expanded ? 'btn-active' : ''}`}
                   onClick={toggleExpandMatchOthers}
-                  style={{ padding: '8px 12px', fontSize: '0.85rem' }}
+                  style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}
                   title="Δείτε τι έπαιξαν οι άλλοι"
                 >
                   <Eye size={16} />
-                  <span style={{ fontSize: '0.8rem', marginLeft: '4px' }}>Προβλέψεις</span>
+                  <span style={{ fontSize: '0.8rem', marginLeft: '6px' }}>Προβλέψεις</span>
                 </button>
               )}
             </div>
           ) : (
             <div style={{ display: 'flex', gap: '8px' }}>
               <button
-                className="btn btn-secondary"
+                className={`btn btn-secondary ${expanded ? 'btn-active' : ''}`}
                 onClick={toggleExpandMatchOthers}
-                style={{ padding: '8px 12px', fontSize: '0.85rem' }}
+                style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}
                 title="Δείτε τι έπαιξαν οι άλλοι"
               >
                 <Eye size={16} />
-                <span style={{ fontSize: '0.8rem', marginLeft: '4px' }}>Προβλέψεις</span>
+                <span style={{ fontSize: '0.8rem', marginLeft: '6px' }}>Προβλέψεις</span>
               </button>
 
               <div style={{
