@@ -248,34 +248,35 @@ export default function MatchCard({
           <button
             className="btn btn-secondary"
             onClick={toggleExpandPoints}
-            style={{ padding: '8px 12px', fontSize: '0.85rem', background: expandedPoints ? 'var(--primary-glow)' : '' }}
+            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', background: expandedPoints ? 'var(--primary-glow)' : '' }}
             title="Δείτε τους πόντους κάθε σκορ"
           >
             <Award size={16} />
-            <span style={{ fontSize: '0.8rem', marginLeft: '4px' }}>Πόντοι</span>
+            <span style={{ fontSize: '0.8rem', marginLeft: '6px' }}>Πόντοι</span>
           </button>
 
           {finished ? (
             <button
               className="btn btn-secondary"
               onClick={toggleExpandMatchOthers}
-              style={{ padding: '8px 12px', fontSize: '0.85rem' }}
+              style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}
               title="Δείτε τι έπαιξαν οι άλλοι"
             >
               <Eye size={16} />
-              <span style={{ fontSize: '0.8rem', marginLeft: '4px' }}>Προβλέψεις</span>
+              <span style={{ fontSize: '0.8rem', marginLeft: '6px' }}>Προβλέψεις</span>
             </button>
           ) : isPredictionTooFar ? (
             <div style={{
               display: 'flex',
               alignItems: 'center',
+              padding: '8px 12px',
               gap: '6px',
               color: 'var(--text-muted)',
               fontSize: '0.85rem',
               background: 'var(--locked-box-bg, rgba(255, 255, 255, 0.02))',
-              padding: '8px 12px',
               borderRadius: 'var(--radius-sm)',
-              border: '1px solid var(--locked-box-border, rgba(255, 255, 255, 0.05))'
+              border: '1px solid var(--locked-box-border, rgba(255, 255, 255, 0.05))',
+              boxSizing: 'border-box'
             }}>
               <Clock size={15} style={{ color: 'var(--text-muted)' }} />
               <span>Κλειδωμένο (24ω)</span>
