@@ -246,18 +246,18 @@ export default function MatchCard({
         {/* Match Action Buttons */}
         <div className="match-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: '150px', justifyContent: 'flex-end' }}>
           <button
-            className="btn btn-secondary"
+            className={`btn btn-secondary ${expandedPoints ? 'btn-active' : ''}`}
             onClick={toggleExpandPoints}
-            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', background: expandedPoints ? 'var(--primary-glow)' : '' }}
+            style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}
             title="Δείτε τους πόντους κάθε σκορ"
           >
             <Award size={16} />
             <span style={{ fontSize: '0.8rem', marginLeft: '6px' }}>Πόντοι</span>
           </button>
 
-          {finished ? (
+          {finished || ALWAYS_SHOW_PREDICTIONS ? (
             <button
-              className="btn btn-secondary"
+              className={`btn btn-secondary ${expanded ? 'btn-active' : ''}`}
               onClick={toggleExpandMatchOthers}
               style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}
               title="Δείτε τι έπαιξαν οι άλλοι"

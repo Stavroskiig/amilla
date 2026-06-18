@@ -231,6 +231,12 @@ body {
   background: #f1f5f9;
 }
 
+[data-theme='wc26'] .btn-active {
+  background: rgba(44, 60, 230, 0.08) !important;
+  border-color: rgba(44, 60, 230, 0.2) !important;
+  color: var(--primary) !important;
+}
+
 [data-theme='wc26'] .nav-link:hover,
 [data-theme='wc26'] .nav-link.active {
   color: var(--primary);
@@ -397,6 +403,12 @@ h6 {
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-active {
+  background: rgba(99, 102, 241, 0.15) !important;
+  border-color: rgba(99, 102, 241, 0.3) !important;
+  color: var(--primary) !important;
 }
 
 .btn-accent {
