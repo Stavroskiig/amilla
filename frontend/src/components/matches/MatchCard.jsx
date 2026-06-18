@@ -19,6 +19,7 @@ export default function MatchCard({
   setPredictions
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [expandedPoints, setExpandedPoints] = useState(false);
   const [othersPredictions, setOthersPredictions] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
   const [success, setSuccess] = useState(false);
@@ -122,11 +123,21 @@ export default function MatchCard({
     });
   };
 
+  const toggleExpandPoints = () => {
+    if (expandedPoints) {
+      setExpandedPoints(false);
+    } else {
+      setExpanded(false);
+      setExpandedPoints(true);
+    }
+  };
+
   const toggleExpandMatchOthers = async () => {
     if (expanded) {
       setExpanded(false);
       return;
     }
+    setExpandedPoints(false);
     try {
       const token = localStorage.getItem('token');
       const res = await fetch(`${API_URL}/api/predictions/match/${match.id}/others`, {
@@ -234,6 +245,16 @@ export default function MatchCard({
 
         {/* Match Action Buttons */}
         <div className="match-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: '150px', justifyContent: 'flex-end' }}>
+          <button
+            className="btn btn-secondary"
+            onClick={toggleExpandPoints}
+            style={{ padding: '8px 12px', fontSize: '0.85rem', background: expandedPoints ? 'var(--primary-glow)' : '' }}
+            title="Δείτε τους πόντους κάθε σκορ"
+          >
+            <Award size={16} />
+            <span style={{ fontSize: '0.8rem', marginLeft: '4px' }}>Πόντοι</span>
+          </button>
+
           {finished ? (
             <button
               className="btn btn-secondary"
@@ -399,6 +420,97 @@ export default function MatchCard({
           currentUserId={currentUserId}
           isKnockout={isKnockout}
         />
+      )}
+
+      {expandedPoints && (
+        <ScorePointsList match={match} />
+      )}
+    </div>
+  );
+}
+
+function ScorePointsList({ match }) {
+  let homeWins = [];
+  let draws = [];
+  let awayWins = [];
+
+  try {
+    if (match.exactScoreOddsJson) {
+      const parsed = JSON.parse(match.exactScoreOddsJson);
+      Object.entries(parsed).forEach(([score, odds]) => {
+        const points = Math.round(10 * parseFloat(odds));
+        if (!isNaN(points)) {
+          const ah = parseInt(score.split('-')[0]) || 0;
+          const aa = parseInt(score.split('-')[1]) || 0;
+          if (ah > aa) homeWins.push({ score, points });
+          else if (ah === aa) draws.push({ score, points });
+          else awayWins.push({ score, points });
+        }
+      });
+      
+      const sortByPoints = (a, b) => a.points - b.points;
+      homeWins.sort(sortByPoints);
+      draws.sort(sortByPoints);
+      awayWins.sort(sortByPoints);
+    }
+  } catch (err) {}
+
+  const renderScoreCol = (title, items) => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '6px', textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={title}>
+        {title}
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+        {items.map(s => (
+          <div key={s.score} style={{ 
+            padding: '8px 12px', 
+            borderRadius: 'var(--radius-sm)', 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            border: '1px solid var(--others-border, rgba(255,255,255,0.03))', 
+            background: 'var(--others-card-bg, rgba(255, 255, 255, 0.05))',
+            boxShadow: 'var(--others-shadow, none)'
+          }}>
+            <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-main)', whiteSpace: 'nowrap' }}>{s.score}</span>
+            <span style={{ 
+              color: 'var(--success)', 
+              background: 'rgba(16, 185, 129, 0.15)',
+              border: '1px solid rgba(16, 185, 129, 0.3)',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              fontSize: '0.8rem', 
+              fontWeight: 700,
+              whiteSpace: 'nowrap'
+            }}>
+              {s.points} pts
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{
+      padding: '20px 24px',
+      borderTop: '1px solid var(--border-color)',
+      background: 'var(--others-bg, rgba(10,11,16,0.4))',
+      borderBottomLeftRadius: 'calc(var(--radius-lg) - 1px)',
+      borderBottomRightRadius: 'calc(var(--radius-lg) - 1px)'
+    }}>
+      <h4 style={{ fontSize: '0.9rem', marginBottom: '16px', color: 'var(--text-muted)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <Award size={16} />
+        ΠΟΝΤΟΙ ΑΚΡΙΒΟΥΣ ΣΚΟΡ
+      </h4>
+      {homeWins.length > 0 || draws.length > 0 || awayWins.length > 0 ? (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
+          {renderScoreCol(`1 (${match.homeTeam})`, homeWins)}
+          {renderScoreCol('X (ΙΣΟΠΑΛΙΑ)', draws)}
+          {renderScoreCol(`2 (${match.awayTeam})`, awayWins)}
+        </div>
+      ) : (
+        <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Δεν υπάρχουν διαθέσιμα σκορ για αυτόν τον αγώνα.</div>
       )}
     </div>
   );
