@@ -45,7 +45,7 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
 
     @Override
     public List<User> findAllOrderByPointsDesc() {
-        return repository.findAllByOrderByTotalPointsDesc().stream()
+        return repository.findLeaderboardUsers().stream()
                 .map(this::toDomain)
                 .collect(Collectors.toList());
     }
