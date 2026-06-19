@@ -220,7 +220,20 @@ export default function MatchCard({
                 {match.homeScore90} - {match.awayScore90}
               </div>
             ) : (
-              <div style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-muted)', whiteSpace: 'nowrap', flexShrink: 0 }}>VS</div>
+              <>
+                <div className="mobile-only-flex" style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-muted)', whiteSpace: 'nowrap', flexShrink: 0 }}>VS</div>
+                <div className="desktop-only-flex">
+                  <PredictionInput
+                    match={match}
+                    matchPred={matchPred}
+                    handleScoreChange={handleScoreChange}
+                    handleQualifierChange={handleQualifierChange}
+                    isLocked={isMatchLocked}
+                    isPredictionTooFar={isPredictionTooFar}
+                    isKnockout={isKnockout}
+                  />
+                </div>
+              </>
             )}
           </div>
 
@@ -232,15 +245,17 @@ export default function MatchCard({
 
         {/* Score Input Box / Prediction Status */}
         {!finished && (
-          <PredictionInput
-            match={match}
-            matchPred={matchPred}
-            handleScoreChange={handleScoreChange}
-            handleQualifierChange={handleQualifierChange}
-            isLocked={isMatchLocked}
-            isPredictionTooFar={isPredictionTooFar}
-            isKnockout={isKnockout}
-          />
+          <div className="mobile-only-flex" style={{ width: '100%', justifyContent: 'center' }}>
+            <PredictionInput
+              match={match}
+              matchPred={matchPred}
+              handleScoreChange={handleScoreChange}
+              handleQualifierChange={handleQualifierChange}
+              isLocked={isMatchLocked}
+              isPredictionTooFar={isPredictionTooFar}
+              isKnockout={isKnockout}
+            />
+          </div>
         )}
 
         {/* Match Action Buttons */}

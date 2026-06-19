@@ -839,6 +839,15 @@ input[type=number] {
   display: none;
 }
 
+.desktop-only-flex {
+  display: flex !important;
+  transform: translateY(-10px);
+}
+
+.mobile-only-flex {
+  display: none !important;
+}
+
 /* Mobile Bottom Navigation Styles */
 .mobile-bottom-nav {
   display: none;
@@ -1015,6 +1024,14 @@ input[type=number] {
 
   .leaderboard-rank-cell {
     gap: 4px !important;
+  }
+
+  .desktop-only-flex {
+    display: none !important;
+  }
+
+  .mobile-only-flex {
+    display: flex !important;
   }
 
   .leaderboard-rank-cell .trend-badge {
