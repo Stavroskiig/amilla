@@ -135,51 +135,91 @@ export default function HistoryChart({
 
   return (
     <div className="glass-card responsive-card-padding" style={{ padding: '28px', marginBottom: '32px', position: 'relative', overflow: 'visible' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
-        <h3 style={{ fontSize: '1.2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <style>{`
+        .chart-header-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 20px;
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+        .chart-controls-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 8px;
+        }
+        .chart-filters-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .legend-row {
+          display: flex;
+          gap: 12px;
+          font-size: 0.8rem;
+          font-weight: 600;
+        }
+        .select-btn {
+          min-width: 160px;
+          padding: 6px 12px;
+        }
+        @media (max-width: 767px) {
+          .chart-header-row {
+            flex-direction: column;
+            align-items: stretch;
+          }
+          .chart-controls-wrapper {
+            align-items: stretch;
+          }
+          .chart-filters-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+          }
+          .select-btn {
+            min-width: 0;
+            width: 100%;
+            padding: 6px 10px;
+          }
+          .legend-row {
+            justify-content: center;
+            margin-top: 4px;
+          }
+        }
+      `}</style>
+      <div className="chart-header-row">
+        <h3 style={{ fontSize: '1.2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
           <TrendingUp size={18} style={{ color: 'var(--primary)' }} />
           <span>Πορεία στο Τουρνουά</span>
         </h3>
 
         {/* Legend and UI Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+        <div className="chart-controls-wrapper">
           
-          {/* Legend */}
-          {compareHistory && compareHistory.length > 0 && (
-            <div style={{ display: 'flex', gap: '12px', fontSize: '0.8rem', fontWeight: 600 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <div style={{ width: '12px', height: '4px', background: primaryColor, borderRadius: '2px' }}></div>
-                <span style={{ color: 'var(--text-main)' }}>Εσύ</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <div style={{ width: '12px', height: '4px', background: compareColor, borderRadius: '2px' }}></div>
-                <span style={{ color: 'var(--text-muted)' }}>{compareUserName}</span>
-              </div>
-            </div>
-          )}
-
-          {/* Custom User Selector */}
-          {usersList && usersList.length > 0 && (
-            <div style={{ position: 'relative' }} ref={dropdownRef}>
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  background: 'var(--table-header-bg, rgba(255,255,255,0.03))',
-                  color: 'var(--text-main)',
-                  border: '1px solid var(--border-color)',
-                  padding: '6px 12px',
-                  borderRadius: '8px',
-                  fontSize: '0.85rem',
-                  fontFamily: 'var(--font-body)',
-                  outline: 'none',
-                  cursor: 'pointer',
-                  minWidth: '160px',
-                  justifyContent: 'space-between',
-                  transition: 'background 0.2s'
-                }}
+          <div className="chart-filters-row">
+            {/* Custom User Selector */}
+            {usersList && usersList.length > 0 && (
+              <div style={{ position: 'relative' }} ref={dropdownRef}>
+                <button
+                  className="select-btn"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    background: 'var(--table-header-bg, rgba(255,255,255,0.03))',
+                    color: 'var(--text-main)',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '8px',
+                    fontSize: '0.85rem',
+                    fontFamily: 'var(--font-body)',
+                    outline: 'none',
+                    cursor: 'pointer',
+                    justifyContent: 'space-between',
+                    transition: 'background 0.2s'
+                  }}
                 onMouseEnter={(e) => e.currentTarget.style.background = 'var(--table-header-bg, rgba(255,255,255,0.08))'}
                 onMouseLeave={(e) => e.currentTarget.style.background = 'var(--table-header-bg, rgba(255,255,255,0.03))'}
               >
@@ -266,7 +306,8 @@ export default function HistoryChart({
             background: 'var(--table-header-bg, rgba(255,255,255,0.03))',
             padding: '4px',
             borderRadius: '8px',
-            border: '1px solid var(--border-color)'
+            border: '1px solid var(--border-color)',
+            alignItems: 'center'
           }}>
             <button
               onClick={() => { setChartType('rank'); setHoveredPoint(null); }}
@@ -301,6 +342,22 @@ export default function HistoryChart({
               Πόντοι
             </button>
           </div>
+          </div>
+
+          {/* Legend */}
+          {compareHistory && compareHistory.length > 0 && (
+            <div className="legend-row">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ width: '12px', height: '4px', background: primaryColor, borderRadius: '2px' }}></div>
+                <span style={{ color: 'var(--text-main)' }}>Εσύ</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ width: '12px', height: '4px', background: compareColor, borderRadius: '2px' }}></div>
+                <span style={{ color: 'var(--text-muted)' }}>{compareUserName}</span>
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
 
@@ -511,12 +568,17 @@ export default function HistoryChart({
           const primaryData = hoveredPoint.data;
           const compareData = comparePoints[hoveredPoint.index]?.data;
 
+          const xRatio = hoveredPoint.x / viewBoxWidth;
+          let translateX = '-50%';
+          if (xRatio < 0.2) translateX = '-10%'; // Shift right if near left edge
+          else if (xRatio > 0.8) translateX = '-90%'; // Shift left if near right edge
+
           return (
             <div style={{
               position: 'absolute',
               left: `${(hoveredPoint.x / viewBoxWidth) * 100}%`,
               top: `${(hoveredPoint.y / viewBoxHeight) * 100 - 10}%`,
-              transform: 'translate(-50%, -100%)',
+              transform: `translate(${translateX}, -100%)`,
               background: 'var(--tooltip-bg, rgba(15, 16, 26, 0.95))',
               border: '1px solid var(--primary)',
               borderRadius: '8px',
