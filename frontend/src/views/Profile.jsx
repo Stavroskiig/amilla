@@ -71,7 +71,7 @@ export default function Profile({ user, setUser }) {
 
     const gotExactScore = actualHome === predHome && actualAway === predAway;
     const gotSign = Math.sign(actualHome - actualAway) === Math.sign(predHome - predAway);
-    
+
     const isKnockout = match.matchStage !== 'GROUP';
     const correctlyPredictedQualifier = isKnockout && match.qualifiedTeam && match.qualifiedTeam.toLowerCase() === (pred.predictedQualifier || '').toLowerCase();
 
@@ -104,6 +104,90 @@ export default function Profile({ user, setUser }) {
   // Longterm points
   const longtermPointsEarned = longTermPred?.pointsEarned || 0;
   const hasLongtermWin = longtermPointsEarned > 0;
+
+  // Fan and Hater calculation
+  const backedTeams = {};
+  const hatedTeams = {};
+  let totalPredictedGoals = 0;
+  const scoreFreq = {};
+  let validScorePredictions = 0;
+
+  predictions.forEach(pred => {
+    if (pred.predictedHomeScore != null && pred.predictedAwayScore != null) {
+      totalPredictedGoals += (pred.predictedHomeScore + pred.predictedAwayScore);
+      const scoreKey = `${pred.predictedHomeScore}-${pred.predictedAwayScore}`;
+      scoreFreq[scoreKey] = (scoreFreq[scoreKey] || 0) + 1;
+      validScorePredictions++;
+    }
+
+    const match = matches.find(m => m.id === pred.matchId);
+    if (!match) return;
+
+    let winner = null;
+    let loser = null;
+
+    if (pred.predictedHomeScore > pred.predictedAwayScore) {
+      winner = match.homeTeam;
+      loser = match.awayTeam;
+    } else if (pred.predictedHomeScore < pred.predictedAwayScore) {
+      winner = match.awayTeam;
+      loser = match.homeTeam;
+    } else if (pred.predictedQualifier) {
+      winner = pred.predictedQualifier;
+      loser = (match.homeTeam.toLowerCase() === pred.predictedQualifier.toLowerCase()) ? match.awayTeam : match.homeTeam;
+    }
+
+    if (winner) {
+      backedTeams[winner] = (backedTeams[winner] || 0) + 1;
+    }
+    if (loser) {
+      hatedTeams[loser] = (hatedTeams[loser] || 0) + 1;
+    }
+  });
+
+  let biggestFanTeam = null;
+  let biggestFanCount = 0;
+  for (const [team, count] of Object.entries(backedTeams)) {
+    if (count > biggestFanCount) {
+      biggestFanCount = count;
+      biggestFanTeam = team;
+    }
+  }
+
+  let biggestHaterTeam = null;
+  let biggestHaterCount = 0;
+  for (const [team, count] of Object.entries(hatedTeams)) {
+    if (count > biggestHaterCount) {
+      biggestHaterCount = count;
+      biggestHaterTeam = team;
+    }
+  }
+
+  const avgPredictedGoals = validScorePredictions > 0
+    ? (totalPredictedGoals / validScorePredictions).toFixed(2)
+    : 0;
+
+  let playStyle = "Ισορροπημένος";
+  let styleColor = "#f59e0b"; // amber
+  if (avgPredictedGoals > 2.5) {
+    playStyle = "ΦΟΥΛ ΕΠΙΘΕΣΗ";
+    styleColor = "#10b981"; // emerald
+  } else if (avgPredictedGoals > 0 && avgPredictedGoals < 2.0) {
+    playStyle = "ΚΑΤΕΝΑΤΣΙΟ";
+    styleColor = "#3b82f6"; // blue
+  } else if (avgPredictedGoals === 0) {
+    playStyle = "-";
+    styleColor = "var(--text-muted)";
+  }
+
+  let favScore = null;
+  let favScoreCount = 0;
+  for (const [score, count] of Object.entries(scoreFreq)) {
+    if (count > favScoreCount) {
+      favScoreCount = count;
+      favScore = score;
+    }
+  }
 
   return (
     <div className="animate-fade-in" style={{ maxWidth: '1000px', margin: '0 auto', paddingBottom: '40px' }}>
@@ -190,23 +274,32 @@ export default function Profile({ user, setUser }) {
           </div>
         </div>
 
-        <AvatarSelector 
-          user={user} 
-          setUser={setUser} 
-          showAvatarGrid={showAvatarGrid} 
-          setShowAvatarGrid={setShowAvatarGrid} 
-          setSuccessMessage={setSuccessMessage} 
-          setError={setError} 
+        <AvatarSelector
+          user={user}
+          setUser={setUser}
+          showAvatarGrid={showAvatarGrid}
+          setShowAvatarGrid={setShowAvatarGrid}
+          setSuccessMessage={setSuccessMessage}
+          setError={setError}
         />
       </div>
 
-      <StatsDashboard 
-        user={user} 
-        accuracyRate={accuracyRate} 
-        avgPoints={avgPoints} 
-        totalPredicted={totalPredicted} 
-        successCount={successCount} 
-        completedPredictedCount={completedPredictedCount} 
+      <StatsDashboard
+        user={user}
+        accuracyRate={accuracyRate}
+        avgPoints={avgPoints}
+        totalPredicted={totalPredicted}
+        successCount={successCount}
+        completedPredictedCount={completedPredictedCount}
+        fanTeam={biggestFanTeam}
+        fanCount={biggestFanCount}
+        haterTeam={biggestHaterTeam}
+        haterCount={biggestHaterCount}
+        avgPredictedGoals={avgPredictedGoals}
+        playStyle={playStyle}
+        styleColor={styleColor}
+        favScore={favScore}
+        favScoreCount={favScoreCount}
       />
 
       {/* Detailed Success Breakdown Visualization */}
@@ -307,7 +400,7 @@ export default function Profile({ user, setUser }) {
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Αστοχίες</div>
                 </div>
               </div>
-              
+
               {/* Longterm Winner */}
               {hasLongtermWin && (
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
@@ -326,8 +419,8 @@ export default function Profile({ user, setUser }) {
         )}
       </div>
 
-      <HistoryChart 
-        history={rankHistory} 
+      <HistoryChart
+        history={rankHistory}
         compareHistory={compareHistory}
         compareUserName={compareUser?.username}
         usersList={usersData?.filter(u => u.id !== user.id) || []}
