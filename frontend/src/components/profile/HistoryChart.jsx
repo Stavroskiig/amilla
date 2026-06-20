@@ -14,11 +14,7 @@ export default function HistoryChart({ history }) {
     );
   }
 
-  // Prepend a start node
-  const chartHistory = [
-    { isStart: true, points: 0, rank: history[0]?.rank || 1 },
-    ...history
-  ];
+  const chartHistory = history;
 
   const N = chartHistory.length;
   const paddingLeft = 52;
@@ -261,7 +257,7 @@ export default function HistoryChart({ history }) {
                   <svg x={pt.x - 9} y={paddingTop + chartHeight + 8} width="18" height="18">
                     <Trophy size={18} color="#fbbf24" />
                   </svg>
-                ) : (N <= 8) && !pt.data.isStart ? (
+                ) : (N <= 8) ? (
                   <text
                     x={pt.x}
                     y={paddingTop + chartHeight + 20}
@@ -309,21 +305,15 @@ export default function HistoryChart({ history }) {
             transition: 'left 0.1s ease, top 0.1s ease'
           }}>
             <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase' }}>
-              {hoveredPoint.data.isStart ? 'ΕΝΑΡΞΗ' : (hoveredPoint.data.matchStage === 'GROUP' ? 'ΦΑΣΗ ΟΜΙΛΩΝ' : 'ΝΟΚ-ΑΟΥΤ')}
+              {hoveredPoint.data.matchStage === 'GROUP' ? 'ΦΑΣΗ ΟΜΙΛΩΝ' : 'ΝΟΚ-ΑΟΥΤ'}
             </div>
-            {hoveredPoint.data.isStart ? (
-              <div style={{ fontSize: '0.85rem', fontWeight: 800, marginBottom: '6px', whiteSpace: 'nowrap' }}>
-                Εκκίνηση Τουρνουά
-              </div>
-            ) : (
-              <div style={{ fontSize: '0.85rem', fontWeight: 800, marginBottom: '6px', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Flag teamName={hoveredPoint.data.homeTeam} width={16} height={12} />
-                <span>{getTeamShortName(hoveredPoint.data.homeTeam)}</span>
-                <span style={{ margin: '0 2px', color: 'var(--text-muted)', fontSize: '0.75rem' }}>vs</span>
-                <span>{getTeamShortName(hoveredPoint.data.awayTeam)}</span>
-                <Flag teamName={hoveredPoint.data.awayTeam} width={16} height={12} />
-              </div>
-            )}
+            <div style={{ fontSize: '0.85rem', fontWeight: 800, marginBottom: '6px', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Flag teamName={hoveredPoint.data.homeTeam} width={16} height={12} />
+              <span>{getTeamShortName(hoveredPoint.data.homeTeam)}</span>
+              <span style={{ margin: '0 2px', color: 'var(--text-muted)', fontSize: '0.75rem' }}>vs</span>
+              <span>{getTeamShortName(hoveredPoint.data.awayTeam)}</span>
+              <Flag teamName={hoveredPoint.data.awayTeam} width={16} height={12} />
+            </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', fontSize: '0.8rem' }}>
               <div>
                 <span style={{ color: 'var(--text-muted)' }}>Θέση:</span>{' '}
