@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TrendingUp, Trophy, Flag as LucideFlag } from 'lucide-react';
 import { Flag, getTeamShortName } from '../Countries';
 
-export default function HistoryChart({ history }) {
+export default function HistoryChart({ history, totalUsers = 20 }) {
   const [chartType, setChartType] = useState('rank'); // 'rank' or 'points'
   const [hoveredPoint, setHoveredPoint] = useState(null);
 
@@ -34,7 +34,7 @@ export default function HistoryChart({ history }) {
 
   // Calculate rank min/max
   const rankValues = chartHistory.map(h => h.rank);
-  const maxRank = Math.max(...rankValues, 10);
+  const maxRank = Math.max(...rankValues, totalUsers);
   const minRank = 1;
 
   // Generate coordinates
