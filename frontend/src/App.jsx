@@ -14,6 +14,100 @@ import wc26Logo from './assets/wc26-logo.svg';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
+function JokePopup() {
+  const [show, setShow] = useState(false);
+  const [clicked, setClicked] = useState(false);
+
+  useEffect(() => {
+    const hasSeen = localStorage.getItem('hasSeenJokePopup');
+    if (!hasSeen) {
+      // Show it after a small delay to make it feel natural
+      const timer = setTimeout(() => {
+        setShow(true);
+        localStorage.setItem('hasSeenJokePopup', 'true');
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  if (!show) return null;
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0, left: 0, right: 0, bottom: 0,
+      background: 'rgba(0,0,0,0.6)',
+      backdropFilter: 'blur(4px)',
+      zIndex: 9999,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px'
+    }}>
+      <div style={{
+        background: 'var(--bg-card, #1a1c29)',
+        padding: '32px',
+        borderRadius: '16px',
+        textAlign: 'center',
+        maxWidth: '400px',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)',
+        border: '1px solid var(--border-color, #2d3748)',
+        animation: 'fade-in 0.3s ease-out'
+      }}>
+        {!clicked ? (
+          <>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '16px', color: '#10b981' }}>🎁 Δωρεάν Πόντοι!</h2>
+            <p style={{ fontSize: '1rem', color: 'var(--text-main, #f3f4f6)', marginBottom: '24px', lineHeight: '1.5' }}>
+              Συγχαρητήρια! Κληρώθηκες για ένα μπόνους έκπληξη. Πάτα το κουμπί παρακάτω για να λάβεις <b>+500 πόντους</b> στο τουρνουά!
+            </p>
+            <button 
+              onClick={() => setClicked(true)}
+              style={{
+                background: 'linear-gradient(135deg, #10b981, #059669)',
+                color: '#ffffff',
+                border: 'none',
+                padding: '14px 28px',
+                borderRadius: '10px',
+                fontWeight: 700,
+                fontSize: '1.1rem',
+                cursor: 'pointer',
+                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
+                transition: 'transform 0.1s'
+              }}
+              onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
+              onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            >
+              Λήψη +500 Πόντων
+            </button>
+          </>
+        ) : (
+          <>
+            <div style={{ fontSize: '4rem', marginBottom: '10px' }}>🤡</div>
+            <h2 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '16px', color: '#ef4444' }}>Χαχαχαχα!</h2>
+            <p style={{ fontSize: '1rem', color: 'var(--text-main, #f3f4f6)', marginBottom: '24px', lineHeight: '1.5' }}>
+              Σιγά μην σου δίναμε 500 πόντους έτσι εύκολα! Πήγαινε διάβασε κάνα στατιστικό και παίξε τίμια!
+            </p>
+            <button 
+              onClick={() => setShow(false)}
+              style={{
+                background: 'var(--bg-main, #0b0c10)',
+                color: 'var(--text-main, #f3f4f6)',
+                border: '1px solid var(--border-color, #2d3748)',
+                padding: '12px 24px',
+                borderRadius: '10px',
+                fontWeight: 600,
+                cursor: 'pointer'
+              }}
+            >
+              Κλείσιμο
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 
 function AppContent({ user, setUser, onLogout, theme, toggleTheme }) {
   const location = useLocation();
@@ -22,6 +116,7 @@ function AppContent({ user, setUser, onLogout, theme, toggleTheme }) {
   return (
     <div className="app-container">
       {showNavbar && <Navbar user={user} onLogout={onLogout} theme={theme} toggleTheme={toggleTheme} />}
+      {user && <JokePopup />}
       <main className="main-content">
         <Routes>
           <Route 
