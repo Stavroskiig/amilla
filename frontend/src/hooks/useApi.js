@@ -220,3 +220,27 @@ export const useResolveTournament = () => {
     }
   });
 };
+
+export const useLeaderboardUsers = () => {
+  return useQuery({
+    queryKey: ['leaderboard'],
+    queryFn: async () => {
+      const res = await fetch(API_URL + '/api/leaderboard', { headers: getAuthHeaders() });
+      if (!res.ok) throw new Error('Σφάλμα φόρτωσης κατάταξης');
+      return res.json();
+    }
+  });
+};
+
+export const useUserHistory = (userId) => {
+  return useQuery({
+    queryKey: ['profileHistory', userId],
+    queryFn: async () => {
+      if (!userId) return [];
+      const res = await fetch(`${API_URL}/api/leaderboard/history/user/${userId}`, { headers: getAuthHeaders() });
+      if (!res.ok) throw new Error('Σφάλμα φόρτωσης ιστορικού χρήστη');
+      return res.json();
+    },
+    enabled: !!userId,
+  });
+};

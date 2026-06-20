@@ -1,10 +1,53 @@
-import React, { useState } from 'react';
-import { TrendingUp, Trophy, Flag as LucideFlag } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { TrendingUp, Trophy, Flag as LucideFlag, ChevronDown } from 'lucide-react';
 import { Flag, getTeamShortName } from '../Countries';
+import { Avatar, AVATARS } from '../Avatars';
 
-export default function HistoryChart({ history, totalUsers = 20 }) {
+export default function HistoryChart({ 
+  history, 
+  totalUsers = 20,
+  compareHistory,
+  compareUserName,
+  usersList,
+  onCompareSelect,
+  compareUserId,
+  userAvatar,
+  compareUserAvatar
+}) {
   const [chartType, setChartType] = useState('rank'); // 'rank' or 'points'
   const [hoveredPoint, setHoveredPoint] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dropdownRef]);
+
+  const selectedUser = usersList?.find(u => u.id === compareUserId);
+
+  // Extract avatar colors
+  const extractColor = (gradient) => {
+    if (!gradient) return null;
+    const match = gradient.match(/#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/);
+    return match ? match[0] : null;
+  };
+
+  const primaryAvatarData = AVATARS?.find(a => a.id === userAvatar);
+  const compareAvatarData = AVATARS?.find(a => a.id === compareUserAvatar);
+
+  let primaryColor = primaryAvatarData ? extractColor(primaryAvatarData.gradient) || '#6366f1' : '#6366f1';
+  let compareColor = compareAvatarData ? extractColor(compareAvatarData.gradient) || '#10b981' : '#10b981';
+
+  if (primaryColor === compareColor) {
+    // If they have the exact same avatar color, tweak the compare color to differentiate
+    compareColor = primaryColor.toLowerCase() === '#10b981' ? '#f43f5e' : '#10b981';
+  }
 
   if (!history || history.length === 0) {
     return (
@@ -28,8 +71,11 @@ export default function HistoryChart({ history, totalUsers = 20 }) {
   const chartHeight = viewBoxHeight - paddingTop - paddingBottom;
 
   // Calculate points min/max
-  const pointsValues = chartHistory.map(h => h.points);
-  const maxPoints = Math.max(...pointsValues, 10);
+  const allPoints = [
+    ...chartHistory.map(h => h.points),
+    ...(compareHistory || []).map(h => h.points)
+  ];
+  const maxPoints = Math.max(...allPoints, 10);
   const minPoints = 0;
 
   // Calculate rank min/max
@@ -50,6 +96,19 @@ export default function HistoryChart({ history, totalUsers = 20 }) {
     return { x, y, data: item, index: idx };
   });
 
+  // Generate coordinates for comparison user
+  const comparePoints = (compareHistory || []).map((item, idx) => {
+    // We align them by index. If lengths differ, we still map to the same X.
+    const x = paddingLeft + (idx * chartWidth) / Math.max(1, N - 1);
+    let y = 0;
+    if (chartType === 'points') {
+      y = (paddingTop + chartHeight) - ((item.points - minPoints) * chartHeight) / Math.max(1, maxPoints - minPoints);
+    } else {
+      y = paddingTop + ((item.rank - 1) * chartHeight) / Math.max(1, maxRank - 1);
+    }
+    return { x, y, data: item, index: idx };
+  });
+
   // SVG Path description
   let pathD = '';
   if (points.length > 0) {
@@ -59,7 +118,16 @@ export default function HistoryChart({ history, totalUsers = 20 }) {
     }
   }
 
-  // Area path description for fill gradient
+  // Compare SVG Path description
+  let comparePathD = '';
+  if (comparePoints.length > 0) {
+    comparePathD = `M ${comparePoints[0].x} ${comparePoints[0].y}`;
+    for (let i = 1; i < comparePoints.length; i++) {
+      comparePathD += ` L ${comparePoints[i].x} ${comparePoints[i].y}`;
+    }
+  }
+
+  // Area path description for fill gradient (primary only)
   let areaD = '';
   if (points.length > 0) {
     areaD = `${pathD} L ${points[points.length - 1].x} ${paddingTop + chartHeight} L ${points[0].x} ${paddingTop + chartHeight} Z`;
@@ -73,46 +141,166 @@ export default function HistoryChart({ history, totalUsers = 20 }) {
           <span>Πορεία στο Τουρνουά</span>
         </h3>
 
-        {/* Tab Selector */}
-        <div style={{
-          display: 'flex',
-          background: 'var(--table-header-bg, rgba(255,255,255,0.03))',
-          padding: '4px',
-          borderRadius: '8px',
-          border: '1px solid var(--border-color)'
-        }}>
-          <button
-            onClick={() => { setChartType('rank'); setHoveredPoint(null); }}
-            style={{
-              padding: '6px 12px',
-              fontSize: '0.8rem',
-              fontWeight: 600,
-              borderRadius: '6px',
-              border: 'none',
-              cursor: 'pointer',
-              background: chartType === 'rank' ? 'var(--primary)' : 'transparent',
-              color: chartType === 'rank' ? '#ffffff' : 'var(--text-muted)',
-              transition: 'all 0.2s'
-            }}
-          >
-            Κατάταξη
-          </button>
-          <button
-            onClick={() => { setChartType('points'); setHoveredPoint(null); }}
-            style={{
-              padding: '6px 12px',
-              fontSize: '0.8rem',
-              fontWeight: 600,
-              borderRadius: '6px',
-              border: 'none',
-              cursor: 'pointer',
-              background: chartType === 'points' ? 'var(--primary)' : 'transparent',
-              color: chartType === 'points' ? '#ffffff' : 'var(--text-muted)',
-              transition: 'all 0.2s'
-            }}
-          >
-            Πόντοι
-          </button>
+        {/* Legend and UI Controls */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+          
+          {/* Legend */}
+          {compareHistory && compareHistory.length > 0 && (
+            <div style={{ display: 'flex', gap: '12px', fontSize: '0.8rem', fontWeight: 600 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ width: '12px', height: '4px', background: primaryColor, borderRadius: '2px' }}></div>
+                <span style={{ color: 'var(--text-main)' }}>Εσύ</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ width: '12px', height: '4px', background: compareColor, borderRadius: '2px' }}></div>
+                <span style={{ color: 'var(--text-muted)' }}>{compareUserName}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Custom User Selector */}
+          {usersList && usersList.length > 0 && (
+            <div style={{ position: 'relative' }} ref={dropdownRef}>
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: 'var(--table-header-bg, rgba(255,255,255,0.03))',
+                  color: 'var(--text-main)',
+                  border: '1px solid var(--border-color)',
+                  padding: '6px 12px',
+                  borderRadius: '8px',
+                  fontSize: '0.85rem',
+                  fontFamily: 'var(--font-body)',
+                  outline: 'none',
+                  cursor: 'pointer',
+                  minWidth: '160px',
+                  justifyContent: 'space-between',
+                  transition: 'background 0.2s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--table-header-bg, rgba(255,255,255,0.08))'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'var(--table-header-bg, rgba(255,255,255,0.03))'}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {selectedUser ? (
+                    <>
+                      <Avatar id={selectedUser.avatar} size={18} />
+                      <span style={{ fontWeight: 600 }}>{selectedUser.username}</span>
+                    </>
+                  ) : (
+                    <span>Σύγκριση με...</span>
+                  )}
+                </div>
+                <ChevronDown size={14} style={{ color: 'var(--text-muted)' }} />
+              </button>
+
+              {isDropdownOpen && (
+                <div className="glass" style={{
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0,
+                  marginTop: '8px',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '12px',
+                  padding: '6px',
+                  boxShadow: 'var(--shadow-lg)',
+                  zIndex: 100,
+                  maxHeight: '220px',
+                  overflowY: 'auto',
+                  minWidth: '180px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '2px'
+                }}>
+                  <div
+                    onClick={() => { onCompareSelect(''); setIsDropdownOpen(false); }}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontSize: '0.85rem',
+                      color: 'var(--text-muted)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      background: !compareUserId ? 'var(--table-header-bg, rgba(255,255,255,0.05))' : 'transparent',
+                      transition: 'background 0.1s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--table-header-bg, rgba(255,255,255,0.1))'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = !compareUserId ? 'var(--table-header-bg, rgba(255,255,255,0.05))' : 'transparent'}
+                  >
+                    Καμία σύγκριση
+                  </div>
+                  {usersList.map(u => (
+                    <div
+                      key={u.id}
+                      onClick={() => { onCompareSelect(u.id); setIsDropdownOpen(false); }}
+                      style={{
+                        padding: '6px 12px',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '0.85rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: compareUserId === u.id ? 'var(--table-header-bg, rgba(255,255,255,0.05))' : 'transparent',
+                        transition: 'background 0.1s'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'var(--table-header-bg, rgba(255,255,255,0.1))'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = compareUserId === u.id ? 'var(--table-header-bg, rgba(255,255,255,0.05))' : 'transparent'}
+                    >
+                      <Avatar id={u.avatar} size={24} />
+                      <span style={{ fontWeight: compareUserId === u.id ? 700 : 500, color: 'var(--text-main)' }}>{u.username}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Tab Selector */}
+          <div style={{
+            display: 'flex',
+            background: 'var(--table-header-bg, rgba(255,255,255,0.03))',
+            padding: '4px',
+            borderRadius: '8px',
+            border: '1px solid var(--border-color)'
+          }}>
+            <button
+              onClick={() => { setChartType('rank'); setHoveredPoint(null); }}
+              style={{
+                padding: '6px 12px',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                borderRadius: '6px',
+                border: 'none',
+                cursor: 'pointer',
+                background: chartType === 'rank' ? 'var(--primary)' : 'transparent',
+                color: chartType === 'rank' ? '#ffffff' : 'var(--text-muted)',
+                transition: 'all 0.2s'
+              }}
+            >
+              Κατάταξη
+            </button>
+            <button
+              onClick={() => { setChartType('points'); setHoveredPoint(null); }}
+              style={{
+                padding: '6px 12px',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                borderRadius: '6px',
+                border: 'none',
+                cursor: 'pointer',
+                background: chartType === 'points' ? 'var(--primary)' : 'transparent',
+                color: chartType === 'points' ? '#ffffff' : 'var(--text-muted)',
+                transition: 'all 0.2s'
+              }}
+            >
+              Πόντοι
+            </button>
+          </div>
         </div>
       </div>
 
@@ -140,8 +328,8 @@ export default function HistoryChart({ history, totalUsers = 20 }) {
 
           <defs>
             <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.0" />
+              <stop offset="0%" stopColor={primaryColor} stopOpacity="0.4" />
+              <stop offset="100%" stopColor={primaryColor} stopOpacity="0.0" />
             </linearGradient>
             <linearGradient id="chartLineGradient" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="var(--primary)" />
@@ -204,20 +392,52 @@ export default function HistoryChart({ history, totalUsers = 20 }) {
             />
           )}
 
-          {/* Glowing Line Path */}
-          {pathD && (
+          {/* Compare Line Path */}
+          {comparePathD && (
             <path
-              d={pathD}
+              d={comparePathD}
               fill="none"
-              stroke="url(#chartLineGradient)"
+              stroke={compareColor}
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
               style={{
-                filter: 'drop-shadow(0px 0px 4px rgba(99, 102, 241, 0.4))'
+                filter: `drop-shadow(0px 0px 4px ${compareColor}66)`
               }}
             />
           )}
+
+          {/* Glowing Line Path (Primary) */}
+          {pathD && (
+            <path
+              d={pathD}
+              fill="none"
+              stroke={primaryColor}
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{
+                filter: `drop-shadow(0px 0px 4px ${primaryColor}66)`
+              }}
+            />
+          )}
+
+          {/* Compare Points Circles */}
+          {comparePoints.map((pt, idx) => {
+            const isHovered = hoveredPoint && hoveredPoint.index === idx;
+            return (
+              <circle
+                key={`cmp-${idx}`}
+                cx={pt.x}
+                cy={pt.y}
+                r={isHovered ? 6 : 3}
+                fill={compareColor}
+                stroke={isHovered ? '#ffffff' : 'var(--bg-main)'}
+                strokeWidth={isHovered ? "2" : "1.5"}
+                style={{ transition: 'all 0.15s', pointerEvents: 'none', filter: isHovered ? `drop-shadow(0 0 6px ${compareColor})` : 'none' }}
+              />
+            );
+          })}
 
           {/* Interactive circles and hover targets */}
           {points.map((pt, idx) => {
@@ -228,11 +448,11 @@ export default function HistoryChart({ history, totalUsers = 20 }) {
                 <circle
                   cx={pt.x}
                   cy={pt.y}
-                  r={isHovered ? 6 : 4}
-                  fill={isHovered ? 'var(--text-main)' : 'var(--primary)'}
-                  stroke="var(--bg-main)"
-                  strokeWidth="2"
-                  style={{ transition: 'r 0.15s, fill 0.15s' }}
+                  r={isHovered ? 7 : 4}
+                  fill={primaryColor}
+                  stroke={isHovered ? '#ffffff' : 'var(--bg-main)'}
+                  strokeWidth={isHovered ? "2.5" : "2"}
+                  style={{ transition: 'all 0.15s', pointerEvents: 'none', filter: isHovered ? `drop-shadow(0 0 6px ${primaryColor})` : 'none' }}
                 />
 
                 {/* Vertical marker line on hover */}
@@ -270,11 +490,12 @@ export default function HistoryChart({ history, totalUsers = 20 }) {
                   </text>
                 ) : null}
 
-                {/* Large transparent hover target */}
-                <circle
-                  cx={pt.x}
-                  cy={pt.y}
-                  r="15"
+                {/* Large transparent hover target for the whole column */}
+                <rect
+                  x={pt.x - chartWidth / Math.max(1, N - 1) / 2}
+                  y={paddingTop - 10}
+                  width={chartWidth / Math.max(1, N - 1)}
+                  height={chartHeight + 20}
                   fill="transparent"
                   style={{ cursor: 'pointer' }}
                   onMouseEnter={() => setHoveredPoint(pt)}
@@ -286,46 +507,80 @@ export default function HistoryChart({ history, totalUsers = 20 }) {
         </svg>
 
         {/* Hover Tooltip Overlay */}
-        {hoveredPoint && (
-          <div style={{
-            position: 'absolute',
-            left: `${(hoveredPoint.x / viewBoxWidth) * 100}%`,
-            top: `${(hoveredPoint.y / viewBoxHeight) * 100 - 10}%`,
-            transform: 'translate(-50%, -100%)',
-            background: 'var(--tooltip-bg, rgba(15, 16, 26, 0.95))',
-            border: '1px solid var(--primary)',
-            borderRadius: '8px',
-            padding: '10px 14px',
-            pointerEvents: 'none',
-            zIndex: 100,
-            minWidth: '160px',
-            boxShadow: 'var(--shadow-lg), var(--shadow-glow)',
-            backdropFilter: 'blur(10px)',
-            color: 'var(--text-main)',
-            transition: 'left 0.1s ease, top 0.1s ease'
-          }}>
-            <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase' }}>
-              {hoveredPoint.data.matchStage === 'GROUP' ? 'ΦΑΣΗ ΟΜΙΛΩΝ' : 'ΝΟΚ-ΑΟΥΤ'}
-            </div>
-            <div style={{ fontSize: '0.85rem', fontWeight: 800, marginBottom: '6px', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Flag teamName={hoveredPoint.data.homeTeam} width={16} height={12} />
-              <span>{getTeamShortName(hoveredPoint.data.homeTeam)}</span>
-              <span style={{ margin: '0 2px', color: 'var(--text-muted)', fontSize: '0.75rem' }}>vs</span>
-              <span>{getTeamShortName(hoveredPoint.data.awayTeam)}</span>
-              <Flag teamName={hoveredPoint.data.awayTeam} width={16} height={12} />
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', fontSize: '0.8rem' }}>
-              <div>
-                <span style={{ color: 'var(--text-muted)' }}>Θέση:</span>{' '}
-                <span style={{ fontWeight: 700, color: '#fbbf24' }}>#{hoveredPoint.data.rank}</span>
+        {hoveredPoint && (() => {
+          const primaryData = hoveredPoint.data;
+          const compareData = comparePoints[hoveredPoint.index]?.data;
+
+          return (
+            <div style={{
+              position: 'absolute',
+              left: `${(hoveredPoint.x / viewBoxWidth) * 100}%`,
+              top: `${(hoveredPoint.y / viewBoxHeight) * 100 - 10}%`,
+              transform: 'translate(-50%, -100%)',
+              background: 'var(--tooltip-bg, rgba(15, 16, 26, 0.95))',
+              border: '1px solid var(--primary)',
+              borderRadius: '8px',
+              padding: '10px 14px',
+              pointerEvents: 'none',
+              zIndex: 100,
+              minWidth: '200px',
+              boxShadow: 'var(--shadow-lg), var(--shadow-glow)',
+              backdropFilter: 'blur(10px)',
+              color: 'var(--text-main)',
+              transition: 'left 0.1s ease, top 0.1s ease'
+            }}>
+              <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase' }}>
+                {primaryData.matchStage === 'GROUP' ? 'ΦΑΣΗ ΟΜΙΛΩΝ' : 'ΝΟΚ-ΑΟΥΤ'}
               </div>
-              <div>
-                <span style={{ color: 'var(--text-muted)' }}>Πόντοι:</span>{' '}
-                <span style={{ fontWeight: 700, color: '#06b6d4' }}>{hoveredPoint.data.points}</span>
+              <div style={{ fontSize: '0.85rem', fontWeight: 800, marginBottom: '10px', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Flag teamName={primaryData.homeTeam} width={16} height={12} />
+                <span>{getTeamShortName(primaryData.homeTeam)}</span>
+                <span style={{ margin: '0 2px', color: 'var(--text-muted)', fontSize: '0.75rem' }}>vs</span>
+                <span>{getTeamShortName(primaryData.awayTeam)}</span>
+                <Flag teamName={primaryData.awayTeam} width={16} height={12} />
+              </div>
+
+              {/* Data Table */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: primaryColor }}></div>
+                    <span style={{ fontWeight: 600 }}>Εσύ</span>
+                  </div>
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                    <div>
+                      <span style={{ color: 'var(--text-muted)', marginRight: '4px' }}>Θέση:</span>
+                      <span style={{ fontWeight: 700, color: '#fbbf24' }}>#{primaryData.rank}</span>
+                    </div>
+                    <div>
+                      <span style={{ color: 'var(--text-muted)', marginRight: '4px' }}>Πόντοι:</span>
+                      <span style={{ fontWeight: 700, color: '#06b6d4' }}>{primaryData.points}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {compareData && (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: compareColor }}></div>
+                      <span style={{ fontWeight: 600, color: 'var(--text-muted)' }}>{compareUserName}</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                      <div>
+                        <span style={{ color: 'var(--text-muted)', marginRight: '4px' }}>Θέση:</span>
+                        <span style={{ fontWeight: 700, color: '#fbbf24' }}>#{compareData.rank}</span>
+                      </div>
+                      <div>
+                        <span style={{ color: 'var(--text-muted)', marginRight: '4px' }}>Πόντοι:</span>
+                        <span style={{ fontWeight: 700, color: compareColor }}>{compareData.points}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
       </div>
     </div>
   );

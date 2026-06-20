@@ -8,14 +8,20 @@ import { Avatar } from '../components/Avatars';
 import HistoryChart from '../components/profile/HistoryChart';
 import StatsDashboard from '../components/profile/StatsDashboard';
 import AvatarSelector from '../components/profile/AvatarSelector';
-import { useProfileStats } from '../hooks/useApi';
+import { useProfileStats, useLeaderboardUsers, useUserHistory } from '../hooks/useApi';
 
 export default function Profile({ user, setUser }) {
   const [showAvatarGrid, setShowAvatarGrid] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
 
+  const [compareUserId, setCompareUserId] = useState('');
+
   const { data, isLoading, isError } = useProfileStats(user?.id);
+  const { data: usersData } = useLeaderboardUsers();
+  const { data: compareHistory } = useUserHistory(compareUserId);
+
+  const compareUser = usersData?.find(u => u.id === compareUserId);
 
   if (isLoading || !data) {
     return (
@@ -320,7 +326,16 @@ export default function Profile({ user, setUser }) {
         )}
       </div>
 
-      <HistoryChart history={rankHistory} />
+      <HistoryChart 
+        history={rankHistory} 
+        compareHistory={compareHistory}
+        compareUserName={compareUser?.username}
+        usersList={usersData?.filter(u => u.id !== user.id) || []}
+        onCompareSelect={setCompareUserId}
+        compareUserId={compareUserId}
+        userAvatar={user.avatar}
+        compareUserAvatar={compareUser?.avatar}
+      />
 
     </div>
   );
