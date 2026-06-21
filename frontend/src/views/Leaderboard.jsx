@@ -364,25 +364,31 @@ export default function Leaderboard({ currentUser }) {
                         <td style={{ padding: '18px 24px', textAlign: 'center', fontSize: '1.1rem', fontWeight: 700, color: isSelf ? 'var(--self-points-color, #818cf8)' : 'var(--points-color, #ffffff)' }}>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                              {user.recentPoints > 0 && (
-                                <span
-                                  title={`Κέρδισε ${user.recentPoints} πόντους στον τελευταίο αγώνα`}
-                                  style={{
-                                    position: 'absolute',
-                                    right: '100%',
-                                    marginRight: '8px',
-                                    fontSize: '0.75rem',
-                                    color: '#10b981',
-                                    background: 'rgba(16, 185, 129, 0.15)',
-                                    padding: '2px 6px',
-                                    borderRadius: '10px',
-                                    fontWeight: 800
-                                  }}
-                                  className="animate-fade-in"
-                                >
-                                  +{user.recentPoints}
-                                </span>
-                              )}
+                              {user.recentPoints > 0 && (() => {
+                                const isExact = user.currentExactStreak > 0;
+                                const textColor = isExact ? '#10b981' : '#3b82f6';
+                                const bgColor = isExact ? 'rgba(16, 185, 129, 0.15)' : 'rgba(59, 130, 246, 0.15)';
+                                
+                                return (
+                                  <span
+                                    title={`Κέρδισε ${user.recentPoints} πόντους στον τελευταίο αγώνα`}
+                                    style={{
+                                      position: 'absolute',
+                                      right: '100%',
+                                      marginRight: '8px',
+                                      fontSize: '0.75rem',
+                                      color: textColor,
+                                      background: bgColor,
+                                      padding: '2px 6px',
+                                      borderRadius: '10px',
+                                      fontWeight: 800
+                                    }}
+                                    className="animate-fade-in"
+                                  >
+                                    +{user.recentPoints}
+                                  </span>
+                                );
+                              })()}
                               <span>{user.totalPoints}</span>
                             </div>
                           </div>
