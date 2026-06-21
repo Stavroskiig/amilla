@@ -522,6 +522,11 @@ function ScorePointsList({ match }) {
     </div>
   );
 
+  const signHomePoints = match.homeOdds ? Math.round(10 * parseFloat(match.homeOdds)) : null;
+  const signDrawPoints = match.drawOdds ? Math.round(10 * parseFloat(match.drawOdds)) : null;
+  const signAwayPoints = match.awayOdds ? Math.round(10 * parseFloat(match.awayOdds)) : null;
+  const hasSignOdds = signHomePoints !== null && !isNaN(signHomePoints);
+
   return (
     <div style={{
       padding: '20px 24px',
@@ -530,6 +535,51 @@ function ScorePointsList({ match }) {
       borderBottomLeftRadius: 'calc(var(--radius-lg) - 1px)',
       borderBottomRightRadius: 'calc(var(--radius-lg) - 1px)'
     }}>
+      {hasSignOdds && (
+        <div style={{ marginBottom: '28px' }}>
+          <h4 style={{ fontSize: '0.9rem', marginBottom: '16px', color: 'var(--text-muted)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Award size={16} />
+            ΠΟΝΤΟΙ ΣΗΜΕΙΟΥ (1X2)
+          </h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
+            {[
+              { label: `1 (${match.homeTeam})`, points: signHomePoints },
+              { label: 'X (ΙΣΟΠΑΛΙΑ)', points: signDrawPoints },
+              { label: `2 (${match.awayTeam})`, points: signAwayPoints }
+            ].map((item, i) => (
+              <div key={i} style={{ 
+                padding: '8px 12px', 
+                borderRadius: 'var(--radius-sm)', 
+                border: '1px solid var(--others-border, rgba(255,255,255,0.03))', 
+                background: 'var(--others-card-bg, rgba(255, 255, 255, 0.05))', 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center', 
+                boxShadow: 'var(--others-shadow, none)'
+              }}>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={item.label}>
+                  {item.label}
+                </div>
+                <span style={{ 
+                  color: 'var(--success)', 
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  fontSize: '0.8rem', 
+                  fontWeight: 700,
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
+                  marginLeft: '8px'
+                }}>
+                  {item.points} pts
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <h4 style={{ fontSize: '0.9rem', marginBottom: '16px', color: 'var(--text-muted)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
         <Award size={16} />
         ΠΟΝΤΟΙ ΑΚΡΙΒΟΥΣ ΣΚΟΡ
