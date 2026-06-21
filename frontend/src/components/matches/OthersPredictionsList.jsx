@@ -1,7 +1,42 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Flag } from '../Countries';
+import { Share2 } from 'lucide-react';
+import html2canvas from 'html2canvas';
 
 export default function OthersPredictionsList({ match, othersPredictions, currentUserId, isKnockout }) {
+  const containerRef = useRef(null);
+
+  const handleShare = async () => {
+    if (!containerRef.current) return;
+    try {
+      const canvas = await html2canvas(containerRef.current, {
+        useCORS: true,
+        scale: 2,
+        backgroundColor: document.documentElement.getAttribute('data-theme') === 'wc26' ? '#f1f5f9' : '#0f111a'
+      });
+      const imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+      const file = new File([imageBlob], `predictions-${match.homeTeam}-${match.awayTeam}.png`, { type: 'image/png' });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: `Προβλέψεις: ${match.homeTeam} - ${match.awayTeam}`,
+          text: `Δες τι προβλέπουν οι άλλοι για το ${match.homeTeam} - ${match.awayTeam}!`,
+        });
+      } else {
+        const url = URL.createObjectURL(imageBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `predictions-${match.homeTeam}-${match.awayTeam}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    } catch (err) {
+      console.error('Error sharing image', err);
+    }
+  };
   if (!othersPredictions || othersPredictions.length === 0) {
     return (
       <div style={{
@@ -20,14 +55,38 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
   }
 
   return (
-    <div style={{
+    <div ref={containerRef} style={{
       background: 'var(--others-bg, rgba(10,11,16,0.4))',
       borderTop: '1px solid var(--border-color)',
       padding: '20px 24px'
     }}>
-      <h4 style={{ fontSize: '0.9rem', marginBottom: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>
-        ΠΡΟΒΛΕΨΕΙΣ ΑΛΛΩΝ ΧΡΗΣΤΩΝ
-      </h4>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+        <h4 style={{ fontSize: '0.9rem', margin: 0, color: 'var(--text-muted)', fontWeight: 600 }}>
+          ΠΡΟΒΛΕΨΕΙΣ ΑΛΛΩΝ ΧΡΗΣΤΩΝ
+        </h4>
+        <button
+          onClick={handleShare}
+          data-html2canvas-ignore="true"
+          title="Μοιράσου τις προβλέψεις"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '28px',
+            height: '28px',
+            background: 'var(--bg-surface, rgba(255,255,255,0.05))',
+            color: 'var(--text-muted)',
+            border: '1px solid var(--border-color)',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.color = 'var(--primary)'; e.currentTarget.style.borderColor = 'var(--primary)'; }}
+          onMouseOut={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.borderColor = 'var(--border-color)'; }}
+        >
+          <Share2 size={14} />
+        </button>
+      </div>
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
