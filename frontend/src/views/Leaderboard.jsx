@@ -290,6 +290,30 @@ export default function Leaderboard({ currentUser }) {
                                     <span>{user.currentStreak}</span>
                                   </span>
                                 )}
+                                {user.currentExactStreak >= 2 && (
+                                  <span
+                                    title={`Απίστευτος! ${user.currentExactStreak} συνεχόμενα ακριβή σκορ`}
+                                    style={{
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: '3px',
+                                      background: 'rgba(59, 130, 246, 0.15)',
+                                      color: '#3b82f6',
+                                      border: '1px solid rgba(59, 130, 246, 0.3)',
+                                      padding: '2px 6px',
+                                      borderRadius: '12px',
+                                      fontSize: '0.7rem',
+                                      fontWeight: 800,
+                                      boxShadow: '0 0 10px rgba(59, 130, 246, 0.25)',
+                                      animation: 'pulse 1.5s infinite',
+                                      fontFamily: 'var(--font-heading)'
+                                    }}
+                                    className="exact-streak-badge"
+                                  >
+                                    <Flame size={10} fill="#3b82f6" />
+                                    <span>{user.currentExactStreak}</span>
+                                  </span>
+                                )}
                               </div>
 
                               {/* Bottom Row: Exact Hits (mobile) & YOU Badge */}

@@ -132,6 +132,8 @@ public class MatchService implements ManageMatchUseCase {
             user.setCorrectOutcomes(0);
             user.setLongestStreak(0);
             user.setCurrentStreak(0);
+            user.setCurrentExactStreak(0);
+            user.setLongestExactStreak(0);
             user.setRecentPoints(0);
         }
 
@@ -209,6 +211,8 @@ public class MatchService implements ManageMatchUseCase {
             int[] streaks = calculateStreaks(user.getId(), allPreds, finishedMatches);
             user.setCurrentStreak(streaks[0]);
             user.setLongestStreak(streaks[1]);
+            user.setCurrentExactStreak(streaks[2]);
+            user.setLongestExactStreak(streaks[3]);
         }
 
         // Save users
@@ -322,7 +326,25 @@ public class MatchService implements ManageMatchUseCase {
 
         int currentStreak = 0;
         int longestStreak = 0;
+        int currentExactStreak = 0;
+        int longestExactStreak = 0;
         for (Prediction pred : userFinishedPreds) {
+            Match match = finishedMatches.stream().filter(m -> m.getId().equals(pred.getMatchId())).findFirst().orElse(null);
+            if (match != null) {
+                int actualHome = match.getHomeScore90() != null ? match.getHomeScore90() : 0;
+                int actualAway = match.getAwayScore90() != null ? match.getAwayScore90() : 0;
+                int predHome = pred.getPredictedHomeScore();
+                int predAway = pred.getPredictedAwayScore();
+                if (actualHome == predHome && actualAway == predAway) {
+                    currentExactStreak++;
+                    if (currentExactStreak > longestExactStreak) {
+                        longestExactStreak = currentExactStreak;
+                    }
+                } else {
+                    currentExactStreak = 0;
+                }
+            }
+
             if (pred.getPointsEarned() > 0) {
                 currentStreak++;
                 if (currentStreak > longestStreak) {
@@ -332,7 +354,7 @@ public class MatchService implements ManageMatchUseCase {
                 currentStreak = 0; // streak broken
             }
         }
-        return new int[]{currentStreak, longestStreak};
+        return new int[]{currentStreak, longestStreak, currentExactStreak, longestExactStreak};
     }
 
     @Override
@@ -409,6 +431,8 @@ public class MatchService implements ManageMatchUseCase {
             int[] streaks = calculateStreaks(user.getId(), allPreds, allFinishedMatches);
             user.setCurrentStreak(streaks[0]);
             user.setLongestStreak(streaks[1]);
+            user.setCurrentExactStreak(streaks[2]);
+            user.setLongestExactStreak(streaks[3]);
             userRepository.save(user);
         }
 

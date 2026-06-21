@@ -60,4 +60,12 @@ public class UserEntity {
     @Builder.Default
     @Column(name = "recent_points")
     private Integer recentPoints = 0;
+
+    @Builder.Default
+    @Column(name = "current_exact_streak")
+    private Integer currentExactStreak = 0;
+
+    @Builder.Default
+    @Column(name = "longest_exact_streak")
+    private Integer longestExactStreak = 0;
 }

@@ -29,4 +29,6 @@ public class User {
     private Integer exactHits;
     private Integer correctOutcomes;
     private Integer recentPoints;
+    private Integer currentExactStreak;
+    private Integer longestExactStreak;
 }
