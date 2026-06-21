@@ -45,10 +45,10 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
         padding: '20px 24px'
       }}>
         <h4 style={{ fontSize: '0.9rem', marginBottom: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>
-          ΠΡΟΒΛΕΨΕΙΣ ΑΛΛΩΝ ΧΡΗΣΤΩΝ
+          ΠΡΟΒΛΕΨΕΙΣ
         </h4>
         <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-          Δεν έχουν υποβληθεί άλλες προβλέψεις για αυτόν τον αγώνα.
+          Δεν έχουν υποβληθεί προβλέψεις για αυτόν τον αγώνα.
         </div>
       </div>
     );
@@ -62,7 +62,7 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
         <h4 style={{ fontSize: '0.9rem', margin: 0, color: 'var(--text-muted)', fontWeight: 600 }}>
-          ΠΡΟΒΛΕΨΕΙΣ ΑΛΛΩΝ ΧΡΗΣΤΩΝ
+          ΠΡΟΒΛΕΨΕΙΣ
         </h4>
         <button
           onClick={handleShare}
@@ -93,7 +93,7 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
         gap: '12px'
       }}>
         {othersPredictions
-          .filter(p => p.userId !== currentUserId)
+          .sort((a, b) => new Date(a.updatedAt || a.createdAt || 0) - new Date(b.updatedAt || b.createdAt || 0))
           .map((p, idx) => {
             let colors = {
               color: 'var(--others-score-color, #a5b4fc)',
@@ -138,11 +138,25 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                border: '1px solid var(--others-border, rgba(255,255,255,0.03))',
-                background: 'var(--others-card-bg, rgba(255, 255, 255, 0.05))',
+                border: p.userId === currentUserId ? '1px solid var(--primary, #6366f1)' : '1px solid var(--others-border, rgba(255,255,255,0.03))',
+                background: p.userId === currentUserId ? 'var(--primary-transparent, rgba(99, 102, 241, 0.1))' : 'var(--others-card-bg, rgba(255, 255, 255, 0.05))',
                 boxShadow: 'var(--others-shadow, none)'
               }}>
-                <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>{p.username || 'Χρήστης'}</span>
+                <span style={{ fontSize: '0.9rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {p.username || 'Χρήστης'}
+                  {p.userId === currentUserId && (
+                    <span className="badge self-badge" style={{
+                      background: 'rgba(99,102,241,0.2)',
+                      color: 'var(--self-badge-color, #a5b4fc)',
+                      fontSize: '0.65rem',
+                      padding: '2px 6px',
+                      borderRadius: '10px',
+                      lineHeight: 1
+                    }}>
+                      ΕΣΥ
+                    </span>
+                  )}
+                </span>
                 
                 <span style={{
                   fontWeight: 700,
