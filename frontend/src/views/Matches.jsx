@@ -123,7 +123,7 @@ export default function Matches({ user }) {
                   background: isActive ? 'var(--primary)' : 'transparent',
                   color: isActive ? '#ffffff' : 'var(--text-muted)',
                   border: 'none',
-                  padding: '6px 12px',
+                  padding: '6px 8px',
                   borderRadius: 'var(--radius-sm)',
                   fontSize: '0.85rem',
                   fontWeight: 600,
