@@ -13,7 +13,15 @@ export default function MatchCountdown({ match }) {
   const getCountdownContent = () => {
     const kickoff = new Date(match.kickoffTime).getTime();
     const diffMs = kickoff - now;
-    if (diffMs < 0) return <span>Σε εξέλιξη</span>;
+    
+    if (match.status === 'LIVE' || diffMs < 0) {
+      return (
+        <span className="badge badge-live" style={{ fontSize: '0.85rem', fontWeight: 700, padding: '4px 8px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'currentColor', animation: 'pulse 1.5s infinite' }}></div>
+          LIVE
+        </span>
+      );
+    }
 
     const diffMins = Math.floor(diffMs / 60000);
     if (diffMins < 5) return (

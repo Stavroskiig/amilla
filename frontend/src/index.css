@@ -705,6 +705,16 @@ h6 {
   }
 }
 
+.submit-success-glow {
+  animation: successFlash 1.5s ease-out;
+}
+
+@keyframes successFlash {
+  0% { box-shadow: var(--shadow-md); border-color: var(--border-color); }
+  20% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); border-color: var(--success); }
+  100% { box-shadow: var(--shadow-md); border-color: var(--border-color); }
+}
+
 /* Score Input */
 .score-box {
   width: 45px;

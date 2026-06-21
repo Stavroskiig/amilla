@@ -27,6 +27,7 @@ export default function MatchCard({
   const { mutate: submitPrediction, isPending: submitting } = useSubmitMatchPrediction();
 
   const finished = match.status === 'FINISHED';
+  const isLive = match.status === 'LIVE';
   const isKnockout = match.matchStage !== 'GROUP';
 
   const isMatchLocked = (() => {
@@ -156,7 +157,7 @@ export default function MatchCard({
   };
 
   return (
-    <div className="glass-card" style={{ padding: '0px', overflow: 'visible' }}>
+    <div className={`glass-card ${success ? 'submit-success-glow' : ''}`} style={{ padding: '0px', overflow: 'visible' }}>
       {/* Match Card Header Banner */}
       <div className="match-card-header" style={{ borderTopLeftRadius: 'calc(var(--radius-lg) - 1px)', borderTopRightRadius: 'calc(var(--radius-lg) - 1px)' }}>
         <div className="match-stage-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -429,18 +430,32 @@ export default function MatchCard({
       )}
 
       {/* Expanded Area: What others predicted */}
-      {expanded && (
-        <OthersPredictionsList
-          match={match}
-          othersPredictions={othersPredictions}
-          currentUserId={currentUserId}
-          isKnockout={isKnockout}
-        />
-      )}
+      <div style={{
+        display: 'grid',
+        gridTemplateRows: expanded ? '1fr' : '0fr',
+        transition: 'grid-template-rows 0.3s ease-out, opacity 0.3s ease',
+        opacity: expanded ? 1 : 0
+      }}>
+        <div style={{ overflow: 'hidden' }}>
+          <OthersPredictionsList
+            match={match}
+            othersPredictions={othersPredictions}
+            currentUserId={currentUserId}
+            isKnockout={isKnockout}
+          />
+        </div>
+      </div>
 
-      {expandedPoints && (
-        <ScorePointsList match={match} />
-      )}
+      <div style={{
+        display: 'grid',
+        gridTemplateRows: expandedPoints ? '1fr' : '0fr',
+        transition: 'grid-template-rows 0.3s ease-out, opacity 0.3s ease',
+        opacity: expandedPoints ? 1 : 0
+      }}>
+        <div style={{ overflow: 'hidden' }}>
+          <ScorePointsList match={match} />
+        </div>
+      </div>
     </div>
   );
 }
