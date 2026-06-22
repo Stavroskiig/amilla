@@ -81,7 +81,8 @@ public class PredictionService implements SubmitPredictionUseCase {
                 .min(Comparator.naturalOrder())
                 .orElse(Instant.now().plus(30, ChronoUnit.DAYS));
 
-        predictionDomainService.validateLongTermPredictionAllowed(groupStageEnd, Instant.now());
+        Instant now = Instant.now();
+        Instant topScorerCutoff = Instant.parse("2026-06-18T16:00:00Z");
 
         LongTermPrediction prediction = longTermPredictionRepository.findByUserId(userId)
                 .orElse(LongTermPrediction.builder()
@@ -90,13 +91,17 @@ public class PredictionService implements SubmitPredictionUseCase {
                         .build());
 
         if (championTeam != null && !championTeam.trim().isEmpty()) {
+            predictionDomainService.validateLongTermPredictionAllowed(groupStageEnd, now);
             Double odds = null;
             try {
-                org.springframework.core.io.ClassPathResource resource = new org.springframework.core.io.ClassPathResource("champion-odds-seed.json");
+                org.springframework.core.io.ClassPathResource resource = new org.springframework.core.io.ClassPathResource(
+                        "champion-odds-seed.json");
                 if (resource.exists()) {
                     try (java.io.InputStream is = resource.getInputStream()) {
                         com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-                        java.util.Map<String, Double> championOddsMap = mapper.readValue(is, new com.fasterxml.jackson.core.type.TypeReference<java.util.Map<String, Double>>() {});
+                        java.util.Map<String, Double> championOddsMap = mapper.readValue(is,
+                                new com.fasterxml.jackson.core.type.TypeReference<java.util.Map<String, Double>>() {
+                                });
                         odds = championOddsMap.get(championTeam);
                     }
                 }
@@ -109,13 +114,17 @@ public class PredictionService implements SubmitPredictionUseCase {
         }
 
         if (predictedTopScorer != null && !predictedTopScorer.trim().isEmpty()) {
+            predictionDomainService.validateTopScorerPredictionAllowed(topScorerCutoff, now);
             Double odds = null;
             try {
-                org.springframework.core.io.ClassPathResource resource = new org.springframework.core.io.ClassPathResource("topscorer-odds-seed.json");
+                org.springframework.core.io.ClassPathResource resource = new org.springframework.core.io.ClassPathResource(
+                        "topscorer-odds-seed.json");
                 if (resource.exists()) {
                     try (java.io.InputStream is = resource.getInputStream()) {
                         com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-                        java.util.Map<String, Double> topScorerOddsMap = mapper.readValue(is, new com.fasterxml.jackson.core.type.TypeReference<java.util.Map<String, Double>>() {});
+                        java.util.Map<String, Double> topScorerOddsMap = mapper.readValue(is,
+                                new com.fasterxml.jackson.core.type.TypeReference<java.util.Map<String, Double>>() {
+                                });
                         odds = topScorerOddsMap.get(predictedTopScorer);
                     }
                 }
@@ -174,7 +183,9 @@ public class PredictionService implements SubmitPredictionUseCase {
                 .min(Comparator.naturalOrder())
                 .orElse(Instant.now().plus(30, ChronoUnit.DAYS));
 
-        predictionDomainService.validateOtherLongTermPredictionsVisibility(groupStageEnd, Instant.now());
+        Instant topScorerCutoff = Instant.parse("2024-06-18T16:00:00Z");
+        predictionDomainService.validateOtherLongTermPredictionsVisibility(groupStageEnd, topScorerCutoff,
+                Instant.now());
 
         List<LongTermPrediction> predictions = longTermPredictionRepository.findAll();
         for (LongTermPrediction p : predictions) {

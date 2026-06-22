@@ -15,6 +15,7 @@ export default function LongTerm({ user }) {
     return localStorage.getItem('amilla_longterm_tab') || 'champion';
   }); // 'champion' | 'topscorer'
   const [locked, setLocked] = useState(false);
+  const [topScorerLocked, setTopScorerLocked] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [tsSuccess, setTsSuccess] = useState(false);
@@ -103,6 +104,11 @@ export default function LongTerm({ user }) {
 
         if (Date.now() > groupEnd.getTime()) {
           setLocked(true);
+        }
+
+        const tsCutoff = new Date('2024-06-18T16:00:00Z').getTime();
+        if (Date.now() > tsCutoff) {
+          setTopScorerLocked(true);
         }
       }
     }
@@ -568,7 +574,7 @@ export default function LongTerm({ user }) {
               <div className="form-group" style={{ position: 'relative' }}>
                 <label className="form-label">Η Πρόβλεψή σας</label>
 
-                <Combobox value={topScorer} onChange={setTopScorer} disabled={locked}>
+                <Combobox value={topScorer} onChange={setTopScorer} disabled={topScorerLocked}>
                   <div style={{ position: 'relative' }}>
                     <ComboboxInput
                       className="combobox-input"
@@ -597,7 +603,7 @@ export default function LongTerm({ user }) {
                         <Search size={16} color="var(--text-muted)" />
                       </div>
                     )}
-                    <ComboboxButton style={{ position: 'absolute', inset: '0 0 0 auto', padding: '0 12px', display: 'flex', alignItems: 'center', background: 'transparent', border: 'none', cursor: locked ? 'not-allowed' : 'pointer' }}>
+                    <ComboboxButton style={{ position: 'absolute', inset: '0 0 0 auto', padding: '0 12px', display: 'flex', alignItems: 'center', background: 'transparent', border: 'none', cursor: topScorerLocked ? 'not-allowed' : 'pointer' }}>
                       <ChevronDown size={20} color="var(--text-muted)" />
                     </ComboboxButton>
 
@@ -662,7 +668,24 @@ export default function LongTerm({ user }) {
 
 
 
-              {!locked && (
+              {topScorerLocked && (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  fontSize: '0.85rem',
+                  color: 'var(--danger)',
+                  textAlign: 'center',
+                  fontWeight: 500,
+                  marginTop: '10px'
+                }}>
+                  <Lock size={16} />
+                  <span>Οι προβλέψεις κλείδωσαν οριστικά.</span>
+                </div>
+              )}
+
+              {!topScorerLocked && (
                 <button
                   type="submit"
                   disabled={submitting || !(topScorer || '').trim() || uppercaseNoAccents((topScorer || '').trim()) === uppercaseNoAccents(savedTopScorer || '')}
