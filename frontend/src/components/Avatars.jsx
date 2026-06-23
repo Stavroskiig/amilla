@@ -111,7 +111,7 @@ export const AVATARS = [
   },
   {
     id: 'avatar_11',
-    name: 'Γάτα στα Δοκάρια',
+    name: 'Γάτος',
     description: 'Αιλουροειδές κάτω από τα δοκάρια, δεν περνάει τίποτα.',
     gradient: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)',
     icon: Cat,
