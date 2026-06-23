@@ -18,6 +18,7 @@ public class GlobalStatsDto {
     // 2. Match Superlatives
     private MatchStatDto mostPredictableMatch;
     private MatchStatDto biggestUpset;
+    private List<MatchStatDto> zeroSuccessMatches;
 
     // 3. Hall of Fame
     private UserStatDto theOracle; // Highest exact hit rate
@@ -44,6 +45,23 @@ public class GlobalStatsDto {
 
     // 7. Player Comparisons
     private List<PlayerAvgPointsDto> playerAveragePoints;
+    
+    // 8. Golden Predictions
+    private List<GoldenPredictionDto> goldenPredictions;
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GoldenPredictionDto {
+        private String matchId;
+        private String homeTeam;
+        private String awayTeam;
+        private Integer homeScore;
+        private Integer awayScore;
+        private Integer pointsEarned;
+        private List<UserStatDto> users;
+    }
 
     @Data
     @Builder

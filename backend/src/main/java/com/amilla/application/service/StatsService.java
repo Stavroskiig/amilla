@@ -59,6 +59,9 @@ public class StatsService {
 
                 // Additional Stats (Hall of Fame additions & Hall of Shame)
                 calculateAdditionalStats(stats, users, predictions, matches);
+                
+                // Golden Predictions
+                calculateGoldenPredictions(stats, users, predictions, matches);
 
                 // 4. Global Averages
                 calculateGlobalAverages(stats, predictions, users);
@@ -185,6 +188,8 @@ public class StatsService {
                 GlobalStatsDto.MatchStatDto biggestUpset = null;
                 double highestRate = -1.0;
                 double lowestRate = Double.MAX_VALUE;
+                
+                List<GlobalStatsDto.MatchStatDto> zeroSuccessList = new ArrayList<>();
 
                 for (Match m : finishedMatches) {
                         List<Prediction> matchPreds = predsByMatch.getOrDefault(m.getId(), Collections.emptyList());
@@ -237,17 +242,22 @@ public class StatsService {
                                 }
                         }
 
-                        if (successRate < lowestRate) {
-                                lowestRate = successRate;
-                                biggestUpset = dto;
-                        } else if (successRate == lowestRate && biggestUpset != null) {
-                                if (matchPreds.size() > biggestUpset.getTotalPredictions()) {
-                                        biggestUpset = dto;
-                                }
+                        if (exactCount == 0 && correctResultCount == 0) {
+                            zeroSuccessList.add(dto);
+                        } else {
+                            if (successRate < lowestRate) {
+                                    lowestRate = successRate;
+                                    biggestUpset = dto;
+                            } else if (successRate == lowestRate && biggestUpset != null) {
+                                    if (matchPreds.size() > biggestUpset.getTotalPredictions()) {
+                                            biggestUpset = dto;
+                                    }
+                            }
                         }
                 }
 
                 stats.setMostPredictableMatch(mostPredictable);
+                stats.setZeroSuccessMatches(zeroSuccessList);
 
                 // Only set biggest upset if we have more than one finished match (to avoid
                 // duplicating the same match)
@@ -695,5 +705,59 @@ public class StatsService {
                                                 .build());
                         }
                 }
+        }
+        
+        private void calculateGoldenPredictions(GlobalStatsDto stats, List<User> users, List<Prediction> predictions, List<Match> matches) {
+                Map<String, Match> finishedMatchesMap = matches.stream()
+                                .filter(m -> "FINISHED".equalsIgnoreCase(m.getStatus()))
+                                .collect(Collectors.toMap(Match::getId, m -> m));
+                                
+                Map<String, User> userMap = users.stream().collect(Collectors.toMap(u -> u.getId().toString(), u -> u));
+
+                Map<String, List<Prediction>> predsByMatch = predictions.stream()
+                                .collect(Collectors.groupingBy(Prediction::getMatchId));
+
+                List<GlobalStatsDto.GoldenPredictionDto> goldenList = new ArrayList<>();
+
+                for (Map.Entry<String, List<Prediction>> entry : predsByMatch.entrySet()) {
+                        Match m = finishedMatchesMap.get(entry.getKey());
+                        if (m == null || m.getHomeScore90() == null || m.getAwayScore90() == null) continue;
+
+                        List<GlobalStatsDto.UserStatDto> matchGoldenUsers = new ArrayList<>();
+                        Integer points = 0;
+
+                        for (Prediction p : entry.getValue()) {
+                                if (p.getPredictedHomeScore() == m.getHomeScore90() && p.getPredictedAwayScore() == m.getAwayScore90()) {
+                                        User u = userMap.get(p.getUserId().toString());
+                                        if (u != null && p.getPointsEarned() > 0) {
+                                                points = p.getPointsEarned();
+                                                matchGoldenUsers.add(GlobalStatsDto.UserStatDto.builder()
+                                                        .username(u.getUsername())
+                                                        .avatar(u.getAvatar())
+                                                        .build());
+                                        }
+                                }
+                        }
+
+                        if (!matchGoldenUsers.isEmpty()) {
+                                goldenList.add(GlobalStatsDto.GoldenPredictionDto.builder()
+                                        .matchId(m.getId())
+                                        .homeTeam(m.getHomeTeam())
+                                        .awayTeam(m.getAwayTeam())
+                                        .homeScore(m.getHomeScore90())
+                                        .awayScore(m.getAwayScore90())
+                                        .pointsEarned(points)
+                                        .users(matchGoldenUsers)
+                                        .build());
+                        }
+                }
+
+                // Sort by pointsEarned descending, take top 3
+                goldenList.sort(Comparator.comparing(GlobalStatsDto.GoldenPredictionDto::getPointsEarned).reversed());
+                if (goldenList.size() > 3) {
+                        goldenList = goldenList.subList(0, 3);
+                }
+
+                stats.setGoldenPredictions(goldenList);
         }
 }

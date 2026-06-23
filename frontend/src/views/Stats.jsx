@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar } from '../components/Avatars';
 import { Flag, getTeamShortName, getTeamColor } from '../components/Countries';
-import { TrendingUp, Award, BarChart2, Zap, Target, Flame, Skull } from 'lucide-react';
+import { TrendingUp, Award, BarChart2, Zap, Target, Flame, Skull, ChevronLeft, ChevronRight, Trash, Coins } from 'lucide-react';
 import './Stats.css';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
@@ -10,6 +10,8 @@ const API_URL = import.meta.env.VITE_API_URL || '';
 export default function Stats({ user }) {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [zeroMatchIndex, setZeroMatchIndex] = useState(0);
+  const [goldenMatchIndex, setGoldenMatchIndex] = useState(0);
 
   useEffect(() => {
     fetchStats();
@@ -238,6 +240,116 @@ export default function Stats({ user }) {
           </div>
         </div>
 
+        {/* Combined Carousels */}
+        {(stats.zeroSuccessMatches?.length > 0 || stats.goldenPredictions?.length > 0) && (
+          <div className="stats-grid-2" style={{ marginTop: '-8px' }}>
+            {/* Zero Successes Carousel */}
+            {stats.zeroSuccessMatches?.length > 0 && (
+              <div className="glass superlative-card" style={{ height: '100%' }}>
+                <h2 className="superlative-title" style={{ color: 'var(--text-muted)' }}>
+                  <Trash size={20} /> Ο Απόλυτος Κουβάς
+                </h2>
+                <div className="superlative-box" style={{ border: '1px solid var(--border-color)', position: 'relative' }}>
+                  <div style={{ position: 'absolute', left: '8px', top: '50%', transform: 'translateY(-50%)', zIndex: 2 }}>
+                    <button
+                      onClick={() => setZeroMatchIndex((prev) => (prev - 1 + stats.zeroSuccessMatches.length) % stats.zeroSuccessMatches.length)}
+                      style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px' }}
+                    >
+                      <ChevronLeft size={24} />
+                    </button>
+                  </div>
+
+                  <div className="superlative-match" style={{ padding: '0 40px' }}>
+                    <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Flag teamName={stats.zeroSuccessMatches[zeroMatchIndex].homeTeam} width={24} height={18} />
+                      {getTeamShortName(stats.zeroSuccessMatches[zeroMatchIndex].homeTeam)}
+                    </span>
+                    <span className="superlative-score">{stats.zeroSuccessMatches[zeroMatchIndex].homeScore} - {stats.zeroSuccessMatches[zeroMatchIndex].awayScore}</span>
+                    <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {getTeamShortName(stats.zeroSuccessMatches[zeroMatchIndex].awayTeam)}
+                      <Flag teamName={stats.zeroSuccessMatches[zeroMatchIndex].awayTeam} width={24} height={18} />
+                    </span>
+                  </div>
+
+                  <div style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', zIndex: 2 }}>
+                    <button
+                      onClick={() => setZeroMatchIndex((prev) => (prev + 1) % stats.zeroSuccessMatches.length)}
+                      style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px' }}
+                    >
+                      <ChevronRight size={24} />
+                    </button>
+                  </div>
+
+                  <div className="superlative-avg">
+                    Κανείς δεν πήρε πόντο από {stats.zeroSuccessMatches[zeroMatchIndex].totalPredictions} προβλέψεις!
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: 'auto' }}>
+                      {zeroMatchIndex + 1} από {stats.zeroSuccessMatches.length}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Golden Predictions Carousel */}
+            {stats.goldenPredictions?.length > 0 && (
+              <div className="glass superlative-card" style={{ height: '100%', border: '1px solid var(--warning-glow)' }}>
+                <h2 className="superlative-title" style={{ color: 'var(--warning)' }}>
+                  <Coins size={20} /> Το Χρυσό Ακριβές Σκορ
+                </h2>
+                <div className="superlative-box" style={{ border: '1px solid var(--warning-glow)', position: 'relative' }}>
+                  <div style={{ position: 'absolute', left: '8px', top: '50%', transform: 'translateY(-50%)', zIndex: 2 }}>
+                    <button
+                      onClick={() => setGoldenMatchIndex((prev) => (prev - 1 + stats.goldenPredictions.length) % stats.goldenPredictions.length)}
+                      style={{ background: 'transparent', border: 'none', color: 'var(--warning)', cursor: 'pointer', padding: '4px' }}
+                    >
+                      <ChevronLeft size={24} />
+                    </button>
+                  </div>
+
+                  <div className="superlative-match" style={{ padding: '0 40px' }}>
+                    <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Flag teamName={stats.goldenPredictions[goldenMatchIndex].homeTeam} width={24} height={18} />
+                      {getTeamShortName(stats.goldenPredictions[goldenMatchIndex].homeTeam)}
+                    </span>
+                    <span className="superlative-score" style={{ color: 'var(--warning)' }}>{stats.goldenPredictions[goldenMatchIndex].homeScore} - {stats.goldenPredictions[goldenMatchIndex].awayScore}</span>
+                    <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {getTeamShortName(stats.goldenPredictions[goldenMatchIndex].awayTeam)}
+                      <Flag teamName={stats.goldenPredictions[goldenMatchIndex].awayTeam} width={24} height={18} />
+                    </span>
+                  </div>
+
+                  <div style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', zIndex: 2 }}>
+                    <button
+                      onClick={() => setGoldenMatchIndex((prev) => (prev + 1) % stats.goldenPredictions.length)}
+                      style={{ background: 'transparent', border: 'none', color: 'var(--warning)', cursor: 'pointer', padding: '4px' }}
+                    >
+                      <ChevronRight size={24} />
+                    </button>
+                  </div>
+
+                  <div className="superlative-avg">
+                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '12px' }}>
+                      {stats.goldenPredictions[goldenMatchIndex].users.map((u, idx) => (
+                        <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <Avatar id={u.avatar} size={24} />
+                          <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{u.username}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <span>
+                      {stats.goldenPredictions[goldenMatchIndex].users.length === 1 ? 'Κέρδισε ' : 'Κέρδισαν '}
+                      <span style={{ color: 'var(--warning)', fontWeight: 700, fontSize: '1.1rem' }}>+{stats.goldenPredictions[goldenMatchIndex].pointsEarned} pts</span> από αυτήν την πρόβλεψη!
+                    </span>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: 'auto' }}>
+                      {goldenMatchIndex + 1} από {stats.goldenPredictions.length}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Hall of Fame */}
         <div className="glass superlative-card">
           <h2 className="superlative-title" style={{ color: 'var(--warning)' }}>
@@ -268,7 +380,7 @@ export default function Stats({ user }) {
                 <div className="hof-stat" style={{ color: 'var(--primary)', background: 'var(--primary-glow)' }}>
                   {stats.mrConsistent.statValue}
                 </div>
-                <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px', lineHeight: '1.2', whiteSpace: 'nowrap' }}>Το μεγαλύτερο σερί που καταγράφηκε</p>
+                <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px', lineHeight: '1.2', whiteSpace: 'nowrap' }}>Το μεγαλύτερο σερί σημείων</p>
               </div>
             )}
 

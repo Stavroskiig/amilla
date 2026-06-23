@@ -141,6 +141,8 @@
 .superlative-card {
   padding: 24px;
   border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
 }
 
 .superlative-title {
@@ -156,6 +158,9 @@
   background: var(--superlative-bg, rgba(26, 27, 38, 0.5));
   padding: 16px;
   border-radius: var(--radius-md);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .superlative-match {
@@ -182,9 +187,15 @@
   font-size: 0.875rem;
   text-align: center;
   color: var(--text-muted);
-  margin-top: 8px;
+  margin-top: 16px;
   border-top: 1px solid var(--border-color);
-  padding-top: 8px;
+  padding-top: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 }
 
 .hof-list {
