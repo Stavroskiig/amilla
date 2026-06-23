@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { BarChartBig, Trophy, ClockFading, LogOut, Calendar, ShieldAlert, Award, Compass, User, PieChart, Info, Bell, TrendingUp, Palette } from 'lucide-react';
+import { BarChartBig, Trophy, ClockFading, LogOut, Calendar, ShieldAlert, Award, User, PieChart, Info, Bell, TrendingUp, Palette } from 'lucide-react';
 
 import wc26Logo from '../assets/wc26-logo.svg';
 import { Avatar } from './Avatars';
@@ -50,8 +50,7 @@ export default function Navbar({ user, onLogout, theme, toggleTheme }) {
 
         <div className="nav-logo" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <NavLink to="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: 'inherit' }}>
-            <Compass size={24} style={theme === 'wc26' ? { color: '#000000' } : {}} className={theme !== 'wc26' ? 'text-indigo-400' : ''} />
-            <span className={theme === 'wc26' ? "hide-on-mobile" : ""} style={theme === 'wc26' ? {
+            <span style={theme === 'wc26' ? {
               background: 'linear-gradient(to right, #0f172a, #334155)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',

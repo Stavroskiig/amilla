@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Compass, LogIn, UserPlus, Mail, Lock, User as UserIcon, Key } from 'lucide-react';
+import { LogIn, UserPlus, Mail, Lock, User as UserIcon, Key } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
@@ -108,21 +108,7 @@ export default function Auth({ onLoginSuccess }) {
         }} />
 
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '64px',
-            height: '64px',
-            borderRadius: '16px',
-            background: 'linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(6,182,212,0.2) 100%)',
-            border: '1px solid rgba(99,102,241,0.3)',
-            marginBottom: '16px',
-            boxShadow: 'var(--shadow-glow)'
-          }}>
-            <Compass size={32} style={{ color: '#818cf8' }} />
-          </div>
-          <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '6px' }}>Amilla</h1>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '6px' }}>Amilla</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
             {isLogin ? 'Σύνδεση στο παιχνίδι προβλέψεων' : 'Δημιουργία λογαριασμού παίκτη'}
           </p>
