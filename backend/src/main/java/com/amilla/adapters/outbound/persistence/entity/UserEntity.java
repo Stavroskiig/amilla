@@ -68,4 +68,8 @@ public class UserEntity {
     @Builder.Default
     @Column(name = "longest_exact_streak")
     private Integer longestExactStreak = 0;
+
+    @Builder.Default
+    @Column(name = "recent_was_exact")
+    private Boolean recentWasExact = false;
 }

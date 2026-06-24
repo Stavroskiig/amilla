@@ -75,6 +75,7 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
                 .recentPoints(entity.getRecentPoints())
                 .currentExactStreak(entity.getCurrentExactStreak())
                 .longestExactStreak(entity.getLongestExactStreak())
+                .recentWasExact(entity.getRecentWasExact())
                 .build();
     }
 
@@ -96,6 +97,7 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
                 .recentPoints(domain.getRecentPoints())
                 .currentExactStreak(domain.getCurrentExactStreak())
                 .longestExactStreak(domain.getLongestExactStreak())
+                .recentWasExact(domain.getRecentWasExact())
                 .build();
     }
 }

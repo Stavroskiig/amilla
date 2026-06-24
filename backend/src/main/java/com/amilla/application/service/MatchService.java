@@ -156,6 +156,7 @@ public class MatchService implements ManageMatchUseCase {
             if (isLastMatch) {
                 for (User u : users) {
                     u.setRecentPoints(0);
+                    u.setRecentWasExact(false);
                 }
             }
             
@@ -238,14 +239,18 @@ public class MatchService implements ManageMatchUseCase {
                     .findFirst()
                     .ifPresent(u -> {
                         u.setTotalPoints(u.getTotalPoints() + pts);
-                        if (isLastMatch) {
-                            u.setRecentPoints((u.getRecentPoints() != null ? u.getRecentPoints() : 0) + pts);
-                        }
                         
                         int actualHome = match.getHomeScore90() != null ? match.getHomeScore90() : 0;
                         int actualAway = match.getAwayScore90() != null ? match.getAwayScore90() : 0;
                         int predHome = pred.getPredictedHomeScore();
                         int predAway = pred.getPredictedAwayScore();
+                        
+                        if (isLastMatch) {
+                            u.setRecentPoints((u.getRecentPoints() != null ? u.getRecentPoints() : 0) + pts);
+                            if (actualHome == predHome && actualAway == predAway) {
+                                u.setRecentWasExact(true);
+                            }
+                        }
                         
                         if (actualHome == predHome && actualAway == predAway) {
                             u.setExactHits((u.getExactHits() != null ? u.getExactHits() : 0) + 1);
@@ -392,6 +397,7 @@ public class MatchService implements ManageMatchUseCase {
             User u = usersBefore.get(i);
             u.setPreviousRank(i + 1);
             u.setRecentPoints(0);
+            u.setRecentWasExact(false);
             userRepository.save(u);
         }
 
@@ -403,12 +409,16 @@ public class MatchService implements ManageMatchUseCase {
             // Update user points
             userRepository.findById(pred.getUserId()).ifPresent(user -> {
                 user.setTotalPoints(user.getTotalPoints() + pts);
-                user.setRecentPoints((user.getRecentPoints() != null ? user.getRecentPoints() : 0) + pts);
                 
                 int actualHome = match.getHomeScore90() != null ? match.getHomeScore90() : 0;
                 int actualAway = match.getAwayScore90() != null ? match.getAwayScore90() : 0;
                 int predHome = pred.getPredictedHomeScore();
                 int predAway = pred.getPredictedAwayScore();
+                
+                user.setRecentPoints((user.getRecentPoints() != null ? user.getRecentPoints() : 0) + pts);
+                if (actualHome == predHome && actualAway == predAway) {
+                    user.setRecentWasExact(true);
+                }
                 
                 if (actualHome == predHome && actualAway == predAway) {
                     user.setExactHits((user.getExactHits() != null ? user.getExactHits() : 0) + 1);

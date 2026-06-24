@@ -365,7 +365,7 @@ export default function Leaderboard({ currentUser }) {
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                               {user.recentPoints > 0 && (() => {
-                                const isExact = user.currentExactStreak > 0;
+                                const isExact = user.recentWasExact || false;
                                 const textColor = isExact ? '#10b981' : '#3b82f6';
                                 const bgColor = isExact ? 'rgba(16, 185, 129, 0.15)' : 'rgba(59, 130, 246, 0.15)';
                                 

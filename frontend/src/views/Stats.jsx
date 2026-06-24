@@ -194,11 +194,11 @@ export default function Stats({ user }) {
                 <div className="superlative-match">
                   <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <Flag teamName={stats.mostPredictableMatch.homeTeam} width={24} height={18} />
-                    {getTeamShortName(stats.mostPredictableMatch.homeTeam)}
+                    <span className="superlative-team-name">{getTeamShortName(stats.mostPredictableMatch.homeTeam)}</span>
                   </span>
                   <span className="superlative-score">{stats.mostPredictableMatch.homeScore} - {stats.mostPredictableMatch.awayScore}</span>
                   <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    {getTeamShortName(stats.mostPredictableMatch.awayTeam)}
+                    <span className="superlative-team-name">{getTeamShortName(stats.mostPredictableMatch.awayTeam)}</span>
                     <Flag teamName={stats.mostPredictableMatch.awayTeam} width={24} height={18} />
                   </span>
                 </div>
@@ -221,11 +221,11 @@ export default function Stats({ user }) {
                 <div className="superlative-match">
                   <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <Flag teamName={stats.biggestUpset.homeTeam} width={24} height={18} />
-                    {getTeamShortName(stats.biggestUpset.homeTeam)}
+                    <span className="superlative-team-name">{getTeamShortName(stats.biggestUpset.homeTeam)}</span>
                   </span>
                   <span className="superlative-score">{stats.biggestUpset.homeScore} - {stats.biggestUpset.awayScore}</span>
                   <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    {getTeamShortName(stats.biggestUpset.awayTeam)}
+                    <span className="superlative-team-name">{getTeamShortName(stats.biggestUpset.awayTeam)}</span>
                     <Flag teamName={stats.biggestUpset.awayTeam} width={24} height={18} />
                   </span>
                 </div>
@@ -259,14 +259,14 @@ export default function Stats({ user }) {
                     </button>
                   </div>
 
-                  <div className="superlative-match" style={{ padding: '0 40px' }}>
+                  <div className="superlative-match" style={{ padding: '0 24px' }}>
                     <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <Flag teamName={stats.zeroSuccessMatches[zeroMatchIndex].homeTeam} width={24} height={18} />
-                      {getTeamShortName(stats.zeroSuccessMatches[zeroMatchIndex].homeTeam)}
+                      <span className="superlative-team-name">{getTeamShortName(stats.zeroSuccessMatches[zeroMatchIndex].homeTeam)}</span>
                     </span>
                     <span className="superlative-score">{stats.zeroSuccessMatches[zeroMatchIndex].homeScore} - {stats.zeroSuccessMatches[zeroMatchIndex].awayScore}</span>
                     <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      {getTeamShortName(stats.zeroSuccessMatches[zeroMatchIndex].awayTeam)}
+                      <span className="superlative-team-name">{getTeamShortName(stats.zeroSuccessMatches[zeroMatchIndex].awayTeam)}</span>
                       <Flag teamName={stats.zeroSuccessMatches[zeroMatchIndex].awayTeam} width={24} height={18} />
                     </span>
                   </div>
@@ -306,14 +306,14 @@ export default function Stats({ user }) {
                     </button>
                   </div>
 
-                  <div className="superlative-match" style={{ padding: '0 40px' }}>
+                  <div className="superlative-match" style={{ padding: '0 24px' }}>
                     <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <Flag teamName={stats.goldenPredictions[goldenMatchIndex].homeTeam} width={24} height={18} />
-                      {getTeamShortName(stats.goldenPredictions[goldenMatchIndex].homeTeam)}
+                      <span className="superlative-team-name">{getTeamShortName(stats.goldenPredictions[goldenMatchIndex].homeTeam)}</span>
                     </span>
                     <span className="superlative-score" style={{ color: 'var(--warning)' }}>{stats.goldenPredictions[goldenMatchIndex].homeScore} - {stats.goldenPredictions[goldenMatchIndex].awayScore}</span>
                     <span className="superlative-team" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      {getTeamShortName(stats.goldenPredictions[goldenMatchIndex].awayTeam)}
+                      <span className="superlative-team-name">{getTeamShortName(stats.goldenPredictions[goldenMatchIndex].awayTeam)}</span>
                       <Flag teamName={stats.goldenPredictions[goldenMatchIndex].awayTeam} width={24} height={18} />
                     </span>
                   </div>

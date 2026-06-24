@@ -31,4 +31,5 @@ public class User {
     private Integer recentPoints;
     private Integer currentExactStreak;
     private Integer longestExactStreak;
+    private Boolean recentWasExact;
 }
