@@ -489,9 +489,10 @@ export default function Stats({ user }) {
                     <Avatar id={stats.soulmates.avatar2} size={40} />
                   </div>
                 </div>
-                <div className="hof-info">
+                <div className="hof-info" style={{ gap: '2px' }}>
                   <p className="hof-role" style={{ color: 'var(--danger)' }}>ΟΙ ΑΝΤΙΓΡΑΦΕΙΣ</p>
-                  <p className="hof-name">{stats.soulmates.username1} & {stats.soulmates.username2}</p>
+                  <p className="hof-name">{stats.soulmates.username1}</p>
+                  <p className="hof-name">& {stats.soulmates.username2}</p>
                 </div>
                 <div className="hof-stat" style={{ color: 'var(--danger)', background: 'var(--danger-glow)' }}>
                   {stats.soulmates.statValue}
