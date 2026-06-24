@@ -3,9 +3,9 @@
   "name": "Amilla Predictions App",
   "icons": [
     {
-      "src": "/favicon.ico",
-      "type": "image/x-icon",
-      "sizes": "256x256",
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
       "purpose": "any"
     },
     {

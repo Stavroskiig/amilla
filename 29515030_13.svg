@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 27.5.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="-150 -460 1250 1260"
+	 viewBox="-525 -830 2000 2000" style="enable-background:new -525 -830 2000 2000;"
 	 xml:space="preserve">
 <defs>
   <linearGradient id="brand-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -9,8 +9,9 @@
     <stop offset="100%" stop-color="#0B0C10" />
   </linearGradient>
 </defs>
+<rect x="-525" y="-830" style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#brand-gradient);" width="2000" height="2000"/>
 <g>
-	<path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#brand-gradient);" d="M600.3,-414.45 A4000,4000 0 0,1 936.7,-216.5 Q1066,-140.5 1066,9.5
+	<path style="fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;" d="M600.3,-414.45 A4000,4000 0 0,1 936.7,-216.5 Q1066,-140.5 1066,9.5
 		A4000,4000 0 0,1 1066,466.5 Q1066,546.5 989.2,524.1 L910.251,500.831
 		L711.684-72.415
 		c-29.905-86.334-152.001-86.336-181.91-0.003L247.579,742.158c-20.364,58.783-90.266,83.04-142.746,49.633
