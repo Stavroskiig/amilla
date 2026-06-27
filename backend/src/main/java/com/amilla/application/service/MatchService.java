@@ -365,11 +365,27 @@ public class MatchService implements ManageMatchUseCase {
     @Override
     public Prediction adminOverridePrediction(UUID userId, String matchId, int homeScore, int awayScore, String qualifier) {
         log.info("Admin override prediction for user {} match {}", userId, matchId);
+        Match match = matchRepository.findById(matchId).orElseThrow(() -> new IllegalArgumentException("Match not found"));
+        boolean isKnockout = !"GROUP".equalsIgnoreCase(match.getMatchStage());
+        if (isKnockout) {
+            if (homeScore == awayScore && (qualifier == null || qualifier.trim().isEmpty())) {
+                throw new IllegalArgumentException("Πρέπει να επιλέξετε ομάδα που θα προκριθεί σε αγώνα νοκ-άουτ (ισοπαλία)!");
+            }
+            if (homeScore > awayScore) {
+                qualifier = match.getHomeTeam();
+            } else if (awayScore > homeScore) {
+                qualifier = match.getAwayTeam();
+            }
+        } else {
+            qualifier = null;
+        }
+
         Prediction prediction = predictionRepository.findByUserIdAndMatchId(userId, matchId)
-                .orElse(Prediction.builder()
+                .orElseGet(() -> Prediction.builder()
                         .id(UUID.randomUUID())
                         .userId(userId)
                         .matchId(matchId)
+                        .createdAt(Instant.now())
                         .build());
 
         prediction.setPredictedHomeScore(homeScore);

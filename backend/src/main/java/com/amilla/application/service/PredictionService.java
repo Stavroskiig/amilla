@@ -52,6 +52,20 @@ public class PredictionService implements SubmitPredictionUseCase {
 
         predictionDomainService.validatePredictionSubmissionAllowed(match, Instant.now());
 
+        boolean isKnockout = !"GROUP".equalsIgnoreCase(match.getMatchStage());
+        if (isKnockout) {
+            if (homeScore == awayScore && (qualifier == null || qualifier.trim().isEmpty())) {
+                throw new IllegalArgumentException("Πρέπει να επιλέξετε την ομάδα που θα προκριθεί!");
+            }
+            if (homeScore > awayScore) {
+                qualifier = match.getHomeTeam();
+            } else if (awayScore > homeScore) {
+                qualifier = match.getAwayTeam();
+            }
+        } else {
+            qualifier = null;
+        }
+
         Prediction prediction = predictionRepository.findByUserIdAndMatchId(userId, matchId)
                 .orElseGet(() -> Prediction.builder()
                         .id(UUID.randomUUID())

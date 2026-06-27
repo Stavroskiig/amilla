@@ -96,6 +96,11 @@ export default function MatchCard({
     const cleanHome = matchPred.home === '' ? 0 : matchPred.home;
     const cleanAway = matchPred.away === '' ? 0 : matchPred.away;
 
+    if (isKnockout && cleanHome === cleanAway && !matchPred.qualifier) {
+      setErrorMsg('Πρέπει να επιλέξετε την ομάδα που θα προκριθεί!');
+      return;
+    }
+
     submitPrediction({
       matchId: match.id,
       home: cleanHome,
@@ -478,13 +483,13 @@ function ScorePointsList({ match }) {
           else awayWins.push({ score, points });
         }
       });
-      
+
       const sortByPoints = (a, b) => a.points - b.points;
       homeWins.sort(sortByPoints);
       draws.sort(sortByPoints);
       awayWins.sort(sortByPoints);
     }
-  } catch (err) {}
+  } catch (err) { }
 
   const renderScoreCol = (title, items) => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -493,24 +498,24 @@ function ScorePointsList({ match }) {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
         {items.map(s => (
-          <div key={s.score} style={{ 
-            padding: '8px 12px', 
-            borderRadius: 'var(--radius-sm)', 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center', 
-            border: '1px solid var(--others-border, rgba(255,255,255,0.03))', 
+          <div key={s.score} style={{
+            padding: '8px 12px',
+            borderRadius: 'var(--radius-sm)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            border: '1px solid var(--others-border, rgba(255,255,255,0.03))',
             background: 'var(--others-card-bg, rgba(255, 255, 255, 0.05))',
             boxShadow: 'var(--others-shadow, none)'
           }}>
             <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-main)', whiteSpace: 'nowrap' }}>{s.score}</span>
-            <span style={{ 
-              color: 'var(--success)', 
+            <span style={{
+              color: 'var(--success)',
               background: 'rgba(16, 185, 129, 0.15)',
               border: '1px solid rgba(16, 185, 129, 0.3)',
               padding: '2px 6px',
               borderRadius: '4px',
-              fontSize: '0.8rem', 
+              fontSize: '0.8rem',
               fontWeight: 700,
               whiteSpace: 'nowrap'
             }}>
@@ -547,26 +552,26 @@ function ScorePointsList({ match }) {
               { label: 'X (ΙΣΟΠΑΛΙΑ)', points: signDrawPoints },
               { label: `2 (${match.awayTeam})`, points: signAwayPoints }
             ].map((item, i) => (
-              <div key={i} style={{ 
-                padding: '8px 12px', 
-                borderRadius: 'var(--radius-sm)', 
-                border: '1px solid var(--others-border, rgba(255,255,255,0.03))', 
-                background: 'var(--others-card-bg, rgba(255, 255, 255, 0.05))', 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center', 
+              <div key={i} style={{
+                padding: '8px 12px',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--others-border, rgba(255,255,255,0.03))',
+                background: 'var(--others-card-bg, rgba(255, 255, 255, 0.05))',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
                 boxShadow: 'var(--others-shadow, none)'
               }}>
                 <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={item.label}>
                   {item.label}
                 </div>
-                <span style={{ 
-                  color: 'var(--success)', 
+                <span style={{
+                  color: 'var(--success)',
                   background: 'rgba(16, 185, 129, 0.15)',
                   border: '1px solid rgba(16, 185, 129, 0.3)',
                   padding: '2px 6px',
                   borderRadius: '4px',
-                  fontSize: '0.8rem', 
+                  fontSize: '0.8rem',
                   fontWeight: 700,
                   whiteSpace: 'nowrap',
                   flexShrink: 0,
