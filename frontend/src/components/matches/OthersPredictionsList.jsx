@@ -157,7 +157,7 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
                     </span>
                   )}
                 </span>
-                
+
                 <span style={{
                   fontWeight: 700,
                   color: colors.color,
@@ -173,8 +173,8 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
                   <span>{p.predictedHomeScore} - {p.predictedAwayScore}</span>
                   {isKnockout && p.predictedQualifier && (
                     <span style={{ display: 'flex', alignItems: 'center', marginLeft: '2px' }} title={p.predictedQualifier}>
-                      (<Flag teamName={p.predictedQualifier} width={18} height={12} />
-                      {p.predictedQualificationMethod === 'EXTRA_TIME' ? ' - Παρ.' : p.predictedQualificationMethod === 'PENALTIES' ? ' - Πεν.' : ''})
+                      (<Flag teamName={p.predictedQualifier} width={18} height={12} style={{ marginLeft: '4px', marginRight: '4px' }} />
+                      {p.predictedQualificationMethod === 'EXTRA_TIME' ? 'ΠΑΡ' : p.predictedQualificationMethod === 'PENALTIES' ? 'ΠΕΝ' : ''})
                     </span>
                   )}
                 </span>

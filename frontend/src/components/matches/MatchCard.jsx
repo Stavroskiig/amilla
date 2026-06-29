@@ -275,16 +275,16 @@ export default function MatchCard({
         {/* Score Input Box / Prediction Status */}
         {!finished && (
           <div className="mobile-only-flex" style={{ width: '100%', justifyContent: 'center' }}>
-              <PredictionInput
-                match={match}
-                matchPred={matchPred}
-                handleScoreChange={handleScoreChange}
-                handleQualifierChange={handleQualifierChange}
-                handleQualificationMethodChange={handleQualificationMethodChange}
-                isLocked={isMatchLocked}
-                isPredictionTooFar={isPredictionTooFar}
-                isKnockout={isKnockout}
-              />
+            <PredictionInput
+              match={match}
+              matchPred={matchPred}
+              handleScoreChange={handleScoreChange}
+              handleQualifierChange={handleQualifierChange}
+              handleQualificationMethodChange={handleQualificationMethodChange}
+              isLocked={isMatchLocked}
+              isPredictionTooFar={isPredictionTooFar}
+              isKnockout={isKnockout}
+            />
           </div>
         )}
 
@@ -415,8 +415,8 @@ export default function MatchCard({
                 <span>{matchPred.savedHome} - {matchPred.savedAway}</span>
                 {isKnockout && matchPred.savedQualifier && (
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: '2px' }} title={matchPred.savedQualifier}>
-                    (<Flag teamName={matchPred.savedQualifier} width={18} height={12} />
-                    {matchPred.savedPredictedQualificationMethod === 'EXTRA_TIME' ? ' - Παρ.' : matchPred.savedPredictedQualificationMethod === 'PENALTIES' ? ' - Πεν.' : ''})
+                    (<Flag teamName={matchPred.savedQualifier} width={18} height={12} style={{ marginLeft: '4px', marginRight: '4px' }} />
+                    {matchPred.savedPredictedQualificationMethod === 'EXTRA_TIME' ? 'ΠΑΡ' : matchPred.savedPredictedQualificationMethod === 'PENALTIES' ? 'ΠΕΝ' : ''})
                   </span>
                 )}
               </strong>
