@@ -71,16 +71,10 @@ public class PointCalculatorService {
                         advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
                     }
                 } else {
-                    // They predicted a 90-min win (implies REGULAR_TIME). They only get advance points if it actually ended in REGULAR_TIME.
+                    // They predicted a 90-min win (implies REGULAR_TIME). They also get regular time advance points!
                     if (correctlyPredictedMethod) {
-                        if (scorePoints > 0) {
-                            // Their predicted team won in 90 mins, and they got score points for it. No double dipping.
-                            advancePoints = 0;
-                        } else {
-                            // Consolation fallback (though mathematically rare in regular time wins)
-                            double advanceOdds = getAdvanceOddsWithMethod(match, prediction.getPredictedQualifier(), prediction.getPredictedQualificationMethod());
-                            advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
-                        }
+                        double advanceOdds = getAdvanceOddsWithMethod(match, prediction.getPredictedQualifier(), prediction.getPredictedQualificationMethod());
+                        advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
                     }
                 }
             }

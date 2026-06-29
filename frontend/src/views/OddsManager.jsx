@@ -145,6 +145,8 @@ function ExactScoreModal({ match, currentOddsJson, onSave, onClose, isEditable =
 
 function QualifierOddsModal({ match, currentOddsJson, onSave, onClose, isEditable = true }) {
   const [odds, setOdds] = useState({
+    HOME_REGULAR_TIME: '',
+    AWAY_REGULAR_TIME: '',
     HOME_EXTRA_TIME: '',
     AWAY_EXTRA_TIME: '',
     HOME_PENALTIES: '',
@@ -157,6 +159,8 @@ function QualifierOddsModal({ match, currentOddsJson, onSave, onClose, isEditabl
     try {
       const parsed = currentOddsJson ? JSON.parse(currentOddsJson) : {};
       setOdds({
+        HOME_REGULAR_TIME: parsed.HOME_REGULAR_TIME?.toString() || '',
+        AWAY_REGULAR_TIME: parsed.AWAY_REGULAR_TIME?.toString() || '',
         HOME_EXTRA_TIME: parsed.HOME_EXTRA_TIME?.toString() || '',
         AWAY_EXTRA_TIME: parsed.AWAY_EXTRA_TIME?.toString() || '',
         HOME_PENALTIES: parsed.HOME_PENALTIES?.toString() || '',
@@ -207,6 +211,8 @@ function QualifierOddsModal({ match, currentOddsJson, onSave, onClose, isEditabl
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '24px' }}>
           {[
+            { label: `${match.homeTeam} - Καν. Διάρκεια`, objKey: 'HOME_REGULAR_TIME' },
+            { label: `${match.awayTeam} - Καν. Διάρκεια`, objKey: 'AWAY_REGULAR_TIME' },
             { label: `${match.homeTeam} - Παράταση`, objKey: 'HOME_EXTRA_TIME' },
             { label: `${match.awayTeam} - Παράταση`, objKey: 'AWAY_EXTRA_TIME' },
             { label: `${match.homeTeam} - Πέναλτι`, objKey: 'HOME_PENALTIES' },

@@ -638,16 +638,28 @@ function ScorePointsList({ match }) {
                 for (const [key, value] of Object.entries(parsed)) {
                   const pts = Math.round(10 * parseFloat(value));
                   if (!isNaN(pts)) {
-                    // key format: "Greece_REGULAR_TIME"
+                    // key format: "HOME_REGULAR_TIME"
                     const parts = key.split('_');
                     const method = parts.slice(1).join('_');
-                    const team = parts[0];
+                    const teamKey = parts[0];
+                    const teamName = teamKey === 'HOME' ? match.homeTeam : (teamKey === 'AWAY' ? match.awayTeam : teamKey);
+
                     let methodLabel = '';
                     if (method === 'REGULAR_TIME') methodLabel = 'Καν. Διάρκεια';
                     else if (method === 'EXTRA_TIME') methodLabel = 'Παράταση';
                     else if (method === 'PENALTIES') methodLabel = 'Πέναλτι';
                     else methodLabel = method;
-                    items.push({ label: `${team} - ${methodLabel}`, points: pts });
+
+                    items.push({
+                      titleStr: `${teamName}  ${methodLabel}`,
+                      label: (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <Flag teamName={teamName} width={20} height={14} />
+                          <span>{methodLabel}</span>
+                        </div>
+                      ),
+                      points: pts
+                    });
                   }
                 }
                 return items.map((item, i) => (
@@ -661,7 +673,7 @@ function ScorePointsList({ match }) {
                     alignItems: 'center',
                     boxShadow: 'var(--others-shadow, none)'
                   }}>
-                    <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={item.label}>
+                    <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={item.titleStr}>
                       {item.label}
                     </div>
                     <span style={{
