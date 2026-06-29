@@ -42,11 +42,12 @@ export default function MatchCard({
     return Date.now() < openTime;
   })();
 
-  const matchPred = predictionData || { home: '', away: '', qualifier: '', savedHome: null, savedAway: null, savedQualifier: null, pointsEarned: 0 };
+  const matchPred = predictionData || { home: '', away: '', qualifier: '', predictedQualificationMethod: '', savedHome: null, savedAway: null, savedQualifier: null, savedPredictedQualificationMethod: null, pointsEarned: 0 };
   const hasChanges =
     matchPred.home !== matchPred.savedHome ||
     matchPred.away !== matchPred.savedAway ||
-    matchPred.qualifier !== matchPred.savedQualifier;
+    matchPred.qualifier !== matchPred.savedQualifier ||
+    matchPred.predictedQualificationMethod !== matchPred.savedPredictedQualificationMethod;
 
   const isValidPrediction = matchPred.home !== '' && matchPred.away !== '';
 
@@ -59,11 +60,13 @@ export default function MatchCard({
       const newAway = team === 'away' ? cleanVal : currentPred.away;
 
       let newQualifier = currentPred.qualifier;
+      let newPredictedQualificationMethod = currentPred.predictedQualificationMethod;
 
       if (isKnockout) {
         if (newHome !== '' && newAway !== '' && newHome !== newAway) {
           // Winning score, auto-select winner
           newQualifier = newHome > newAway ? match.homeTeam : match.awayTeam;
+          newPredictedQualificationMethod = 'REGULAR_TIME';
         }
       }
 
@@ -72,7 +75,8 @@ export default function MatchCard({
         [matchId]: {
           ...currentPred,
           [team]: cleanVal,
-          qualifier: newQualifier
+          qualifier: newQualifier,
+          predictedQualificationMethod: newPredictedQualificationMethod
         }
       };
     });
@@ -88,6 +92,16 @@ export default function MatchCard({
     }));
   };
 
+  const handleQualificationMethodChange = (matchId, val) => {
+    setPredictions(prev => ({
+      ...prev,
+      [matchId]: {
+        ...prev[matchId],
+        predictedQualificationMethod: val
+      }
+    }));
+  };
+
   const handleSubmit = () => {
     if (finished) return;
     setErrorMsg('');
@@ -96,16 +110,23 @@ export default function MatchCard({
     const cleanHome = matchPred.home === '' ? 0 : matchPred.home;
     const cleanAway = matchPred.away === '' ? 0 : matchPred.away;
 
-    if (isKnockout && cleanHome === cleanAway && !matchPred.qualifier) {
-      setErrorMsg('Πρέπει να επιλέξετε την ομάδα που θα προκριθεί!');
-      return;
+    if (isKnockout && cleanHome === cleanAway) {
+      if (!matchPred.qualifier) {
+        setErrorMsg('Πρέπει να επιλέξετε την ομάδα που θα προκριθεί!');
+        return;
+      }
+      if (!matchPred.predictedQualificationMethod) {
+        setErrorMsg('Πρέπει να επιλέξετε τον τρόπο πρόκρισης (Παράταση ή Πέναλτι)!');
+        return;
+      }
     }
 
     submitPrediction({
       matchId: match.id,
       home: cleanHome,
       away: cleanAway,
-      qualifier: matchPred.qualifier
+      qualifier: matchPred.qualifier,
+      predictedQualificationMethod: matchPred.predictedQualificationMethod
     }, {
       onSuccess: (data) => {
         setPredictions(prev => ({
@@ -117,6 +138,7 @@ export default function MatchCard({
             savedHome: cleanHome,
             savedAway: cleanAway,
             savedQualifier: matchPred.qualifier || '',
+            savedPredictedQualificationMethod: matchPred.predictedQualificationMethod || '',
             pointsEarned: data.pointsEarned
           }
         }));
@@ -234,6 +256,7 @@ export default function MatchCard({
                     matchPred={matchPred}
                     handleScoreChange={handleScoreChange}
                     handleQualifierChange={handleQualifierChange}
+                    handleQualificationMethodChange={handleQualificationMethodChange}
                     isLocked={isMatchLocked}
                     isPredictionTooFar={isPredictionTooFar}
                     isKnockout={isKnockout}
@@ -252,15 +275,16 @@ export default function MatchCard({
         {/* Score Input Box / Prediction Status */}
         {!finished && (
           <div className="mobile-only-flex" style={{ width: '100%', justifyContent: 'center' }}>
-            <PredictionInput
-              match={match}
-              matchPred={matchPred}
-              handleScoreChange={handleScoreChange}
-              handleQualifierChange={handleQualifierChange}
-              isLocked={isMatchLocked}
-              isPredictionTooFar={isPredictionTooFar}
-              isKnockout={isKnockout}
-            />
+              <PredictionInput
+                match={match}
+                matchPred={matchPred}
+                handleScoreChange={handleScoreChange}
+                handleQualifierChange={handleQualifierChange}
+                handleQualificationMethodChange={handleQualificationMethodChange}
+                isLocked={isMatchLocked}
+                isPredictionTooFar={isPredictionTooFar}
+                isKnockout={isKnockout}
+              />
           </div>
         )}
 
@@ -391,7 +415,8 @@ export default function MatchCard({
                 <span>{matchPred.savedHome} - {matchPred.savedAway}</span>
                 {isKnockout && matchPred.savedQualifier && (
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: '2px' }} title={matchPred.savedQualifier}>
-                    (<Flag teamName={matchPred.savedQualifier} width={18} height={12} />)
+                    (<Flag teamName={matchPred.savedQualifier} width={18} height={12} />
+                    {matchPred.savedPredictedQualificationMethod === 'EXTRA_TIME' ? ' - Παρ.' : matchPred.savedPredictedQualificationMethod === 'PENALTIES' ? ' - Πεν.' : ''})
                   </span>
                 )}
               </strong>
@@ -597,6 +622,70 @@ function ScorePointsList({ match }) {
         </div>
       ) : (
         <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Δεν υπάρχουν διαθέσιμα σκορ για αυτόν τον αγώνα.</div>
+      )}
+
+      {match.matchStage !== 'GROUP' && match.qualifierOddsJson && (
+        <div style={{ marginTop: '28px' }}>
+          <h4 style={{ fontSize: '0.9rem', marginBottom: '16px', color: 'var(--text-muted)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Award size={16} />
+            ΠΟΝΤΟΙ ΠΡΟΚΡΙΣΗΣ
+          </h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
+            {(() => {
+              try {
+                const parsed = JSON.parse(match.qualifierOddsJson);
+                const items = [];
+                for (const [key, value] of Object.entries(parsed)) {
+                  const pts = Math.round(10 * parseFloat(value));
+                  if (!isNaN(pts)) {
+                    // key format: "Greece_REGULAR_TIME"
+                    const parts = key.split('_');
+                    const method = parts.slice(1).join('_');
+                    const team = parts[0];
+                    let methodLabel = '';
+                    if (method === 'REGULAR_TIME') methodLabel = 'Καν. Διάρκεια';
+                    else if (method === 'EXTRA_TIME') methodLabel = 'Παράταση';
+                    else if (method === 'PENALTIES') methodLabel = 'Πέναλτι';
+                    else methodLabel = method;
+                    items.push({ label: `${team} - ${methodLabel}`, points: pts });
+                  }
+                }
+                return items.map((item, i) => (
+                  <div key={i} style={{
+                    padding: '8px 12px',
+                    borderRadius: 'var(--radius-sm)',
+                    border: '1px solid var(--others-border, rgba(255,255,255,0.03))',
+                    background: 'var(--others-card-bg, rgba(255, 255, 255, 0.05))',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    boxShadow: 'var(--others-shadow, none)'
+                  }}>
+                    <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={item.label}>
+                      {item.label}
+                    </div>
+                    <span style={{
+                      color: 'var(--success)',
+                      background: 'rgba(16, 185, 129, 0.15)',
+                      border: '1px solid rgba(16, 185, 129, 0.3)',
+                      padding: '2px 6px',
+                      borderRadius: '4px',
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      whiteSpace: 'nowrap',
+                      flexShrink: 0,
+                      marginLeft: '8px'
+                    }}>
+                      {item.points} pts
+                    </span>
+                  </div>
+                ));
+              } catch (e) {
+                return null;
+              }
+            })()}
+          </div>
+        </div>
       )}
     </div>
   );

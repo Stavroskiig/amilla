@@ -46,7 +46,7 @@ public class PredictionService implements SubmitPredictionUseCase {
 
     @Override
     public Prediction submitMatchPrediction(UUID userId, String matchId, int homeScore, int awayScore,
-            String qualifier) {
+            String qualifier, String predictedQualificationMethod) {
         Match match = matchRepository.findById(matchId)
                 .orElseThrow(() -> new IllegalArgumentException("Match not found: " + matchId));
 
@@ -54,16 +54,23 @@ public class PredictionService implements SubmitPredictionUseCase {
 
         boolean isKnockout = !"GROUP".equalsIgnoreCase(match.getMatchStage());
         if (isKnockout) {
-            if (homeScore == awayScore && (qualifier == null || qualifier.trim().isEmpty())) {
-                throw new IllegalArgumentException("Πρέπει να επιλέξετε την ομάδα που θα προκριθεί!");
+            if (homeScore == awayScore && (qualifier == null || qualifier.trim().isEmpty() || predictedQualificationMethod == null || predictedQualificationMethod.trim().isEmpty())) {
+                throw new IllegalArgumentException("Πρέπει να επιλέξετε ομάδα και τρόπο πρόκρισης (Παράταση/Πέναλτι)!");
             }
             if (homeScore > awayScore) {
                 qualifier = match.getHomeTeam();
+                predictedQualificationMethod = "REGULAR_TIME";
             } else if (awayScore > homeScore) {
                 qualifier = match.getAwayTeam();
+                predictedQualificationMethod = "REGULAR_TIME";
+            } else {
+                if (!"EXTRA_TIME".equals(predictedQualificationMethod) && !"PENALTIES".equals(predictedQualificationMethod)) {
+                    throw new IllegalArgumentException("Μη έγκυρος τρόπος πρόκρισης.");
+                }
             }
         } else {
             qualifier = null;
+            predictedQualificationMethod = null;
         }
 
         Prediction prediction = predictionRepository.findByUserIdAndMatchId(userId, matchId)
@@ -77,6 +84,7 @@ public class PredictionService implements SubmitPredictionUseCase {
         prediction.setPredictedHomeScore(homeScore);
         prediction.setPredictedAwayScore(awayScore);
         prediction.setPredictedQualifier(qualifier);
+        prediction.setPredictedQualificationMethod(predictedQualificationMethod);
         prediction.setUpdatedAt(Instant.now());
 
         return predictionRepository.save(prediction);

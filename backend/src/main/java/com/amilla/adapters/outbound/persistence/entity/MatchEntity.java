@@ -67,6 +67,12 @@ public class MatchEntity {
     @Column(name = "exact_score_odds_json", columnDefinition = "TEXT")
     private String exactScoreOddsJson;
 
+    @Column(name = "qualifier_odds_json", columnDefinition = "TEXT")
+    private String qualifierOddsJson;
+
+    @Column(name = "qualification_method")
+    private String qualificationMethod; // "REGULAR_TIME", "EXTRA_TIME", "PENALTIES"
+
     @Column(name = "odds_last_updated_at")
     private Instant oddsLastUpdatedAt;
 

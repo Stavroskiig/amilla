@@ -39,6 +39,9 @@ public class PredictionEntity {
     @Column(name = "predicted_qualifier")
     private String predictedQualifier;
 
+    @Column(name = "predicted_qualification_method")
+    private String predictedQualificationMethod;
+
     @Column(name = "points_earned", nullable = false)
     private int pointsEarned;
 

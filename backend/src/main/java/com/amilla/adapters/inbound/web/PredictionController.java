@@ -39,7 +39,8 @@ public class PredictionController {
                 request.getMatchId(),
                 request.getPredictedHomeScore(),
                 request.getPredictedAwayScore(),
-                request.getPredictedQualifier()
+                request.getPredictedQualifier(),
+                request.getPredictedQualificationMethod()
         );
         return ResponseEntity.ok(prediction);
     }

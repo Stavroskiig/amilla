@@ -11,4 +11,5 @@ public class PredictionOverrideRequest {
     private int homeScore;
     private int awayScore;
     private String qualifier;
+    private String predictedQualificationMethod;
 }

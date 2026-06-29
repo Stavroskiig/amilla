@@ -57,9 +57,11 @@ export const useMyPredictions = () => {
           home: pred.predictedHomeScore,
           away: pred.predictedAwayScore,
           qualifier: pred.predictedQualifier || '',
+          predictedQualificationMethod: pred.predictedQualificationMethod || '',
           savedHome: pred.predictedHomeScore,
           savedAway: pred.predictedAwayScore,
           savedQualifier: pred.predictedQualifier || '',
+          savedPredictedQualificationMethod: pred.predictedQualificationMethod || '',
           pointsEarned: pred.pointsEarned
         };
       });
@@ -71,7 +73,7 @@ export const useMyPredictions = () => {
 export const useSubmitMatchPrediction = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ matchId, home, away, qualifier }) => {
+    mutationFn: async ({ matchId, home, away, qualifier, predictedQualificationMethod }) => {
       const res = await fetch(API_URL + '/api/predictions/match', {
         method: 'POST',
         headers: getAuthHeaders(),
@@ -79,7 +81,8 @@ export const useSubmitMatchPrediction = () => {
           matchId,
           predictedHomeScore: home,
           predictedAwayScore: away,
-          predictedQualifier: qualifier || null
+          predictedQualifier: qualifier || null,
+          predictedQualificationMethod: predictedQualificationMethod || null
         })
       });
       const data = await res.json();

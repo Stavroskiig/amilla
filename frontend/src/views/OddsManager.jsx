@@ -143,6 +143,105 @@ function ExactScoreModal({ match, currentOddsJson, onSave, onClose, isEditable =
   return createPortal(modalContent, document.body);
 }
 
+function QualifierOddsModal({ match, currentOddsJson, onSave, onClose, isEditable = true }) {
+  const [odds, setOdds] = useState({
+    HOME_EXTRA_TIME: '',
+    AWAY_EXTRA_TIME: '',
+    HOME_PENALTIES: '',
+    AWAY_PENALTIES: ''
+  });
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    try {
+      const parsed = currentOddsJson ? JSON.parse(currentOddsJson) : {};
+      setOdds({
+        HOME_EXTRA_TIME: parsed.HOME_EXTRA_TIME?.toString() || '',
+        AWAY_EXTRA_TIME: parsed.AWAY_EXTRA_TIME?.toString() || '',
+        HOME_PENALTIES: parsed.HOME_PENALTIES?.toString() || '',
+        AWAY_PENALTIES: parsed.AWAY_PENALTIES?.toString() || ''
+      });
+    } catch (e) {
+      // ignore
+    }
+  }, [currentOddsJson]);
+
+  const handleChange = (key, val) => {
+    setOdds(prev => ({ ...prev, [key]: val }));
+  };
+
+  const handleSave = async () => {
+    setError('');
+    const obj = {};
+    for (const [k, v] of Object.entries(odds)) {
+      const strVal = String(v);
+      if (strVal.trim() !== '') {
+        const parsedOdds = parseFloat(strVal);
+        if (isNaN(parsedOdds) || parsedOdds <= 1) {
+          setError(`Η απόδοση είναι άκυρη (πρέπει να είναι > 1).`);
+          return;
+        }
+        obj[k] = parsedOdds;
+      }
+    }
+    setIsSaving(true);
+    await onSave(JSON.stringify(obj));
+    setIsSaving(false);
+  };
+
+  const modalContent = (
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000, padding: '12px' }}>
+      <div className="glass-card animate-fade-in" style={{ width: '100%', maxWidth: '500px', padding: '20px', position: 'relative' }}>
+        <button onClick={onClose} style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
+          <X size={24} />
+        </button>
+
+        <h2 style={{ marginTop: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <List size={20} />
+          Τρόπος Πρόκρισης
+        </h2>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
+          {match.homeTeam} - {match.awayTeam}
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '24px' }}>
+          {[
+            { label: `${match.homeTeam} - Παράταση`, objKey: 'HOME_EXTRA_TIME' },
+            { label: `${match.awayTeam} - Παράταση`, objKey: 'AWAY_EXTRA_TIME' },
+            { label: `${match.homeTeam} - Πέναλτι`, objKey: 'HOME_PENALTIES' },
+            { label: `${match.awayTeam} - Πέναλτι`, objKey: 'AWAY_PENALTIES' }
+          ].map(({ label, objKey }) => (
+            <div key={objKey} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--border-color)' }}>
+              <span style={{ color: 'var(--text-main)', fontSize: '0.9rem' }}>{label}</span>
+              <input type="text" inputMode="decimal" value={odds[objKey]} onChange={(e) => handleChange(objKey, e.target.value.replace(/,/g, '.'))} disabled={!isEditable} placeholder="-" style={{ width: '80px', padding: '6px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.1))', border: '1px solid var(--border-color)', color: 'var(--text-main)', textAlign: 'center', opacity: isEditable ? 1 : 0.7 }} />
+            </div>
+          ))}
+        </div>
+
+        {error && (
+          <div style={{ color: 'var(--danger-text, #ef4444)', fontSize: '0.85rem', marginBottom: '16px', padding: '8px', background: 'var(--danger-bg, rgba(239,68,68,0.1))', borderRadius: '4px', border: '1px solid var(--danger-border, rgba(239,68,68,0.2))' }}>
+            {error}
+          </div>
+        )}
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
+          <button className="btn btn-secondary" onClick={onClose} disabled={isSaving}>
+            {isEditable ? 'Ακύρωση' : 'Κλείσιμο'}
+          </button>
+          {isEditable && (
+            <button className="btn btn-primary" onClick={handleSave} disabled={isSaving}>
+              {isSaving ? <RefreshCw size={16} className="animate-spin" /> : 'Αποθήκευση'}
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  return createPortal(modalContent, document.body);
+}
+
 export default function OddsManager() {
   const queryClient = useQueryClient();
   const [matches, setMatches] = useState([]);
@@ -151,6 +250,7 @@ export default function OddsManager() {
   const [savedMatchId, setSavedMatchId] = useState(null);
   const [filterStage, setFilterStage] = useState('ALL');
   const [editingExactScoreMatch, setEditingExactScoreMatch] = useState(null);
+  const [editingQualifierMatch, setEditingQualifierMatch] = useState(null);
 
   useEffect(() => {
     fetchMatches();
@@ -173,7 +273,8 @@ export default function OddsManager() {
             awayOdds: m.awayOdds || '',
             homeAdvanceOdds: m.homeAdvanceOdds || '',
             awayAdvanceOdds: m.awayAdvanceOdds || '',
-            exactScoreOddsJson: m.exactScoreOddsJson || ''
+            exactScoreOddsJson: m.exactScoreOddsJson || '',
+            qualifierOddsJson: m.qualifierOddsJson || ''
           };
         });
         setMatchOdds(oddsMap);
@@ -193,10 +294,11 @@ export default function OddsManager() {
     }));
   };
 
-  const saveOdds = async (matchId, overrideExactScoreOddsJson = undefined) => {
+  const saveOdds = async (matchId, overrideExactScoreOddsJson = undefined, overrideQualifierOddsJson = undefined) => {
     setSavingMatchId(matchId);
     const odds = matchOdds[matchId];
     const exactScoresJsonToSave = overrideExactScoreOddsJson !== undefined ? overrideExactScoreOddsJson : odds.exactScoreOddsJson;
+    const qualifierOddsJsonToSave = overrideQualifierOddsJson !== undefined ? overrideQualifierOddsJson : odds.qualifierOddsJson;
 
     try {
       const token = localStorage.getItem('token');
@@ -212,7 +314,8 @@ export default function OddsManager() {
           awayOdds: odds.awayOdds === '' ? null : parseFloat(odds.awayOdds),
           homeAdvanceOdds: odds.homeAdvanceOdds === '' ? null : parseFloat(odds.homeAdvanceOdds),
           awayAdvanceOdds: odds.awayAdvanceOdds === '' ? null : parseFloat(odds.awayAdvanceOdds),
-          exactScoreOddsJson: exactScoresJsonToSave === '' ? null : exactScoresJsonToSave
+          exactScoreOddsJson: exactScoresJsonToSave === '' ? null : exactScoresJsonToSave,
+          qualifierOddsJson: qualifierOddsJsonToSave === '' ? null : qualifierOddsJsonToSave
         })
       });
 
@@ -279,7 +382,7 @@ export default function OddsManager() {
               }
 
               return filteredMatches.map(match => {
-                const odds = matchOdds[match.id] || { homeOdds: '', drawOdds: '', awayOdds: '', homeAdvanceOdds: '', awayAdvanceOdds: '', exactScoreOddsJson: '' };
+                const odds = matchOdds[match.id] || { homeOdds: '', drawOdds: '', awayOdds: '', homeAdvanceOdds: '', awayAdvanceOdds: '', exactScoreOddsJson: '', qualifierOddsJson: '' };
                 const isKnockout = match.matchStage !== 'GROUP';
                 const isEditable = match.status === 'SCHEDULED';
 
@@ -321,14 +424,10 @@ export default function OddsManager() {
                       {isKnockout && (
                         <>
                           <div style={{ width: '1px', height: '30px', background: 'var(--border-color)', margin: '0 8px', marginBottom: '2px' }} />
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
-                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Πρόκρ 1</span>
-                            <input type="text" inputMode="decimal" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.1))', border: '1px solid var(--border-color)', color: 'var(--text-main)', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.homeAdvanceOdds} onChange={(e) => handleOddsChange(match.id, 'homeAdvanceOdds', e.target.value.replace(/,/g, '.'))} />
-                          </div>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
-                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Πρόκρ 2</span>
-                            <input type="text" inputMode="decimal" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.1))', border: '1px solid var(--border-color)', color: 'var(--text-main)', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.awayAdvanceOdds} onChange={(e) => handleOddsChange(match.id, 'awayAdvanceOdds', e.target.value.replace(/,/g, '.'))} />
-                          </div>
+                          <button className="btn btn-secondary" onClick={() => setEditingQualifierMatch(match)} style={{ padding: '0', width: '132px', justifyContent: 'center', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px', height: '36px' }}>
+                            <List size={16} />
+                            Πρόκριση
+                          </button>
                         </>
                       )}
 
@@ -355,11 +454,25 @@ export default function OddsManager() {
           currentOddsJson={matchOdds[editingExactScoreMatch.id]?.exactScoreOddsJson || ''}
           onSave={async (jsonStr) => {
             handleOddsChange(editingExactScoreMatch.id, 'exactScoreOddsJson', jsonStr);
-            await saveOdds(editingExactScoreMatch.id, jsonStr);
+            await saveOdds(editingExactScoreMatch.id, jsonStr, undefined);
             setEditingExactScoreMatch(null);
           }}
           onClose={() => setEditingExactScoreMatch(null)}
           isEditable={editingExactScoreMatch.status === 'SCHEDULED'}
+        />
+      )}
+
+      {editingQualifierMatch && (
+        <QualifierOddsModal
+          match={editingQualifierMatch}
+          currentOddsJson={matchOdds[editingQualifierMatch.id]?.qualifierOddsJson || ''}
+          onSave={async (jsonStr) => {
+            handleOddsChange(editingQualifierMatch.id, 'qualifierOddsJson', jsonStr);
+            await saveOdds(editingQualifierMatch.id, undefined, jsonStr);
+            setEditingQualifierMatch(null);
+          }}
+          onClose={() => setEditingQualifierMatch(null)}
+          isEditable={editingQualifierMatch.status === 'SCHEDULED'}
         />
       )}
     </div>

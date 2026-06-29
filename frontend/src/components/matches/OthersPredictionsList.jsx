@@ -173,7 +173,8 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
                   <span>{p.predictedHomeScore} - {p.predictedAwayScore}</span>
                   {isKnockout && p.predictedQualifier && (
                     <span style={{ display: 'flex', alignItems: 'center', marginLeft: '2px' }} title={p.predictedQualifier}>
-                      (<Flag teamName={p.predictedQualifier} width={18} height={12} />)
+                      (<Flag teamName={p.predictedQualifier} width={18} height={12} />
+                      {p.predictedQualificationMethod === 'EXTRA_TIME' ? ' - Παρ.' : p.predictedQualificationMethod === 'PENALTIES' ? ' - Πεν.' : ''})
                     </span>
                   )}
                 </span>

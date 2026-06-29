@@ -50,6 +50,7 @@ export default function Admin() {
   const [overrideHome, setOverrideHome] = useState('');
   const [overrideAway, setOverrideAway] = useState('');
   const [overrideQualifier, setOverrideQualifier] = useState('');
+  const [overrideQualificationMethod, setOverrideQualificationMethod] = useState('');
   const [overrideSubmitting, setOverrideSubmitting] = useState(false);
   const [overrideSuccess, setOverrideSuccess] = useState(false);
   const [overrideError, setOverrideError] = useState('');
@@ -328,6 +329,7 @@ export default function Admin() {
             home: m.homeScore90 !== null ? m.homeScore90 : '',
             away: m.awayScore90 !== null ? m.awayScore90 : '',
             qualifier: m.qualifiedTeam || '',
+            qualificationMethod: m.qualificationMethod || '',
             status: m.status,
             tvChannel: m.tvChannel || ''
           };
@@ -467,6 +469,7 @@ export default function Admin() {
     const cleanHome = score.home === '' ? null : parseInt(score.home);
     const cleanAway = score.away === '' ? null : parseInt(score.away);
     const cleanQual = score.qualifier || null;
+    const cleanQualMethod = score.qualificationMethod || null;
 
     try {
       const token = localStorage.getItem('token');
@@ -480,6 +483,7 @@ export default function Admin() {
           homeScore: cleanHome,
           awayScore: cleanAway,
           qualifiedTeam: cleanQual,
+          qualificationMethod: cleanQualMethod,
           status: score.status
         })
       });
@@ -549,7 +553,8 @@ export default function Admin() {
           matchId: selectedMatchId,
           homeScore: parseInt(overrideHome) || 0,
           awayScore: parseInt(overrideAway) || 0,
-          qualifier: overrideQualifier || null
+          qualifier: overrideQualifier || null,
+          predictedQualificationMethod: overrideQualificationMethod || null
         })
       });
 
@@ -559,6 +564,7 @@ export default function Admin() {
         setOverrideHome('');
         setOverrideAway('');
         setOverrideQualifier('');
+        setOverrideQualificationMethod('');
         queryClient.invalidateQueries();
         setTimeout(() => setOverrideSuccess(false), 3000);
       } else {
@@ -737,7 +743,7 @@ export default function Admin() {
                     }
 
                     return filteredMatches.map(match => {
-                      const score = matchScores[match.id] || { home: '', away: '', qualifier: '', status: 'SCHEDULED', tvChannel: '' };
+                      const score = matchScores[match.id] || { home: '', away: '', qualifier: '', qualificationMethod: '', status: 'SCHEDULED', tvChannel: '' };
                       const isKnockout = match.matchStage !== 'GROUP';
 
                       return (
@@ -798,6 +804,26 @@ export default function Admin() {
                                   <option value="">Πρόκριση...</option>
                                   <option value={match.homeTeam}>{match.homeTeam}</option>
                                   <option value={match.awayTeam}>{match.awayTeam}</option>
+                                </select>
+                              )}
+
+                              {/* Qualification Method dropdown for knockouts */}
+                              {isKnockout && (
+                                <select
+                                  value={score.qualificationMethod}
+                                  onChange={(e) => handleScoreChange(match.id, 'qualificationMethod', e.target.value)}
+                                  style={{
+                                    background: 'var(--input-bg, rgba(10, 11, 16, 0.7))',
+                                    border: '1px solid var(--border-color)',
+                                    color: 'var(--text-main)',
+                                    padding: '10px',
+                                    borderRadius: 'var(--radius-sm)'
+                                  }}
+                                >
+                                  <option value="">Τρόπος Πρόκρισης...</option>
+                                  <option value="REGULAR_TIME">Κανονική Διάρκεια</option>
+                                  <option value="EXTRA_TIME">Παράταση</option>
+                                  <option value="PENALTIES">Πέναλτι</option>
                                 </select>
                               )}
 
@@ -1347,6 +1373,21 @@ export default function Admin() {
                         value={overrideQualifier}
                         onChange={(e) => setOverrideQualifier(e.target.value)}
                       />
+                    </div>
+
+                    {/* Qualification Method override */}
+                    <div className="form-group" style={{ flex: '1', minWidth: '180px' }}>
+                      <label className="form-label">Τρόπος Πρόκρισης</label>
+                      <select
+                        className="form-input"
+                        value={overrideQualificationMethod}
+                        onChange={(e) => setOverrideQualificationMethod(e.target.value)}
+                      >
+                        <option value="">Επιλέξτε...</option>
+                        <option value="REGULAR_TIME">Κανονική Διάρκεια</option>
+                        <option value="EXTRA_TIME">Παράταση</option>
+                        <option value="PENALTIES">Πέναλτι</option>
+                      </select>
                     </div>
 
                     <button

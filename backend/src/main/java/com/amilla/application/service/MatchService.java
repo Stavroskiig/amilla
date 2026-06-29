@@ -69,7 +69,7 @@ public class MatchService implements ManageMatchUseCase {
     }
 
     @Override
-    public Match manuallyUpdateMatchScore(String id, Integer homeScore, Integer awayScore, String qualifiedTeam, String status) {
+    public Match manuallyUpdateMatchScore(String id, Integer homeScore, Integer awayScore, String qualifiedTeam, String qualificationMethod, String status) {
         Match match = matchRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Match not found: " + id));
 
@@ -79,6 +79,7 @@ public class MatchService implements ManageMatchUseCase {
         match.setHomeScore90(homeScore);
         match.setAwayScore90(awayScore);
         match.setQualifiedTeam(qualifiedTeam);
+        match.setQualificationMethod(qualificationMethod);
         match.setStatus(status);
 
         Match savedMatch = matchRepository.save(match);
@@ -108,7 +109,7 @@ public class MatchService implements ManageMatchUseCase {
     }
 
     @Override
-    public Match updateMatchOdds(String id, Double homeOdds, Double drawOdds, Double awayOdds, Double homeAdvanceOdds, Double awayAdvanceOdds, String exactScoreOddsJson) {
+    public Match updateMatchOdds(String id, Double homeOdds, Double drawOdds, Double awayOdds, Double homeAdvanceOdds, Double awayAdvanceOdds, String exactScoreOddsJson, String qualifierOddsJson) {
         Match match = matchRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Match not found: " + id));
         match.setHomeOdds(homeOdds);
@@ -117,6 +118,7 @@ public class MatchService implements ManageMatchUseCase {
         match.setHomeAdvanceOdds(homeAdvanceOdds);
         match.setAwayAdvanceOdds(awayAdvanceOdds);
         match.setExactScoreOddsJson(exactScoreOddsJson);
+        match.setQualifierOddsJson(qualifierOddsJson);
         match.setOddsLastUpdatedAt(Instant.now());
         return matchRepository.save(match);
     }
@@ -363,21 +365,28 @@ public class MatchService implements ManageMatchUseCase {
     }
 
     @Override
-    public Prediction adminOverridePrediction(UUID userId, String matchId, int homeScore, int awayScore, String qualifier) {
+    public Prediction adminOverridePrediction(UUID userId, String matchId, int homeScore, int awayScore, String qualifier, String predictedQualificationMethod) {
         log.info("Admin override prediction for user {} match {}", userId, matchId);
         Match match = matchRepository.findById(matchId).orElseThrow(() -> new IllegalArgumentException("Match not found"));
         boolean isKnockout = !"GROUP".equalsIgnoreCase(match.getMatchStage());
         if (isKnockout) {
-            if (homeScore == awayScore && (qualifier == null || qualifier.trim().isEmpty())) {
-                throw new IllegalArgumentException("Πρέπει να επιλέξετε ομάδα που θα προκριθεί σε αγώνα νοκ-άουτ (ισοπαλία)!");
+            if (homeScore == awayScore && (qualifier == null || qualifier.trim().isEmpty() || predictedQualificationMethod == null || predictedQualificationMethod.trim().isEmpty())) {
+                throw new IllegalArgumentException("Πρέπει να επιλέξετε ομάδα και τρόπο πρόκρισης (Παράταση/Πέναλτι) σε αγώνα νοκ-άουτ (ισοπαλία)!");
             }
             if (homeScore > awayScore) {
                 qualifier = match.getHomeTeam();
+                predictedQualificationMethod = "REGULAR_TIME";
             } else if (awayScore > homeScore) {
                 qualifier = match.getAwayTeam();
+                predictedQualificationMethod = "REGULAR_TIME";
+            } else {
+                if (!"EXTRA_TIME".equals(predictedQualificationMethod) && !"PENALTIES".equals(predictedQualificationMethod)) {
+                    throw new IllegalArgumentException("Μη έγκυρος τρόπος πρόκρισης.");
+                }
             }
         } else {
             qualifier = null;
+            predictedQualificationMethod = null;
         }
 
         Prediction prediction = predictionRepository.findByUserIdAndMatchId(userId, matchId)
@@ -391,6 +400,7 @@ public class MatchService implements ManageMatchUseCase {
         prediction.setPredictedHomeScore(homeScore);
         prediction.setPredictedAwayScore(awayScore);
         prediction.setPredictedQualifier(qualifier);
+        prediction.setPredictedQualificationMethod(predictedQualificationMethod);
         prediction.setUpdatedAt(Instant.now());
 
         Prediction saved = predictionRepository.save(prediction);

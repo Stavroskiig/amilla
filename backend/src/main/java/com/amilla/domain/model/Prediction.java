@@ -23,6 +23,7 @@ public class Prediction {
     private int predictedHomeScore;
     private int predictedAwayScore;
     private String predictedQualifier; // Only for Knockout stages
+    private String predictedQualificationMethod; // "REGULAR_TIME", "EXTRA_TIME", "PENALTIES"
     private int pointsEarned;
     private Instant createdAt;
     private Instant updatedAt;

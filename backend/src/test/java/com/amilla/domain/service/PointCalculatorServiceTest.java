@@ -99,8 +99,8 @@ public class PointCalculatorServiceTest {
                 .build();
 
         int points2 = calculator.calculateMatchPoints(match, prediction2);
-        // Sign fallback (1.0 * 10 = 10) + wrong qualifier (0) = 10
-        assertEquals(10, points2, "Sign match (10) + wrong qualifier (0) should yield 10 points");
+        // Sign fallback (2.0 * 10 = 20) + wrong qualifier (0) = 20
+        assertEquals(20, points2, "Sign match (20) + wrong qualifier (0) should yield 20 points");
     }
 
     @Test
@@ -110,6 +110,7 @@ public class PointCalculatorServiceTest {
 
         LongTermPrediction prediction = LongTermPrediction.builder()
                 .predictedChampionTeam("Brazil")
+                .championOdds(2.5) // 2.5 * 20 = 50
                 .submittedAt(Instant.now()) // Submitted before opening match
                 .build();
 
@@ -124,10 +125,96 @@ public class PointCalculatorServiceTest {
 
         LongTermPrediction prediction = LongTermPrediction.builder()
                 .predictedChampionTeam("Brazil")
+                .championOdds(2.5) // 2.5 * 10 = 25
                 .submittedAt(Instant.now()) // Submitted after kickoff but before group stage end
                 .build();
 
         int points = calculator.calculateLongTermPoints("Brazil", prediction, openingMatch, groupStageEnd);
         assertEquals(25, points, "Group stage late long term prediction should yield 25 points");
+    }
+
+    @Test
+    public void testKnockoutWithQualificationMethodCorrect() {
+        Match match = Match.builder()
+                .homeScore90(1)
+                .awayScore90(1)
+                .homeTeam("Argentina")
+                .awayTeam("CapeVerde")
+                .matchStage("ROUND_OF_16")
+                .qualifiedTeam("CapeVerde")
+                .qualificationMethod("PENALTIES")
+                .exactScoreOddsJson("{\"1-1\":9.0}")
+                .qualifierOddsJson("{\"AWAY_PENALTIES\":21.0}")
+                .build();
+
+        Prediction prediction = Prediction.builder()
+                .predictedHomeScore(1)
+                .predictedAwayScore(1)
+                .predictedQualifier("CapeVerde")
+                .predictedQualificationMethod("PENALTIES")
+                .build();
+
+        int points = calculator.calculateMatchPoints(match, prediction);
+        // Score points: 9.0 * 10 = 90
+        // Advance points: 21.0 * 10 = 210
+        // Total: 300
+        assertEquals(300, points, "Should get score points plus advance method points");
+    }
+
+    @Test
+    public void testKnockoutWithQualificationMethodWrongMethod() {
+        Match match = Match.builder()
+                .homeScore90(1)
+                .awayScore90(1)
+                .homeTeam("Argentina")
+                .awayTeam("CapeVerde")
+                .matchStage("ROUND_OF_16")
+                .qualifiedTeam("CapeVerde")
+                .qualificationMethod("EXTRA_TIME")
+                .exactScoreOddsJson("{\"1-1\":9.0}")
+                .qualifierOddsJson("{\"AWAY_EXTRA_TIME\":12.0}")
+                .build();
+
+        Prediction prediction = Prediction.builder()
+                .predictedHomeScore(1)
+                .predictedAwayScore(1)
+                .predictedQualifier("CapeVerde")
+                .predictedQualificationMethod("PENALTIES") // Wrong method
+                .build();
+
+        int points = calculator.calculateMatchPoints(match, prediction);
+        // Score points: 9.0 * 10 = 90
+        // Advance points: 0
+        // Total: 90
+        assertEquals(90, points, "Should get score points but 0 advance points because method was wrong");
+    }
+
+    @Test
+    public void testKnockoutOldSystemCompatibility() {
+        // Match from the old system (qualificationMethod is null)
+        Match match = Match.builder()
+                .homeScore90(1)
+                .awayScore90(1)
+                .homeTeam("Argentina")
+                .awayTeam("CapeVerde")
+                .matchStage("ROUND_OF_16")
+                .qualifiedTeam("CapeVerde")
+                .qualificationMethod(null) // old system
+                .exactScoreOddsJson("{\"1-1\":9.0}")
+                .qualifierOddsJson("{\"AWAY_null\":12.0}") // In old system, fallback is used, let's test fallback = 1.0 -> 10 pts
+                .build();
+
+        Prediction prediction = Prediction.builder()
+                .predictedHomeScore(1)
+                .predictedAwayScore(1)
+                .predictedQualifier("CapeVerde")
+                .predictedQualificationMethod(null)
+                .build();
+
+        int points = calculator.calculateMatchPoints(match, prediction);
+        // Score points: 9.0 * 10 = 90
+        // Advance points: 12.0 * 10 = 120
+        // Total: 210
+        assertEquals(210, points, "Old system compatibility should apply fallback advance points from json");
     }
 }

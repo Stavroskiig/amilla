@@ -71,6 +71,7 @@ public class AdminController {
                 request.getHomeScore(),
                 request.getAwayScore(),
                 request.getQualifiedTeam(),
+                request.getQualificationMethod(),
                 request.getStatus()
         );
         return ResponseEntity.ok(match);
@@ -91,7 +92,8 @@ public class AdminController {
                 request.getMatchId(),
                 request.getHomeScore(),
                 request.getAwayScore(),
-                request.getQualifier()
+                request.getQualifier(),
+                request.getPredictedQualificationMethod()
         );
         return ResponseEntity.ok(prediction);
     }

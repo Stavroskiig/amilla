@@ -36,7 +36,8 @@ public class PointCalculatorService {
         boolean gotSign = Integer.signum(actualHome - actualAway) == Integer.signum(predHome - predAway);
         
         boolean predictedDraw = predHome == predAway;
-        boolean correctlyPredictedQualifier = isKnockout && match.getQualifiedTeam() != null && match.getQualifiedTeam().equalsIgnoreCase(prediction.getPredictedQualifier());
+        boolean correctlyPredictedQualifierTeam = isKnockout && match.getQualifiedTeam() != null && match.getQualifiedTeam().equalsIgnoreCase(prediction.getPredictedQualifier());
+        boolean correctlyPredictedMethod = isKnockout && match.getQualificationMethod() != null && match.getQualificationMethod().equalsIgnoreCase(prediction.getPredictedQualificationMethod());
 
         int scorePoints = 0;
         int advancePoints = 0;
@@ -49,20 +50,38 @@ public class PointCalculatorService {
             scorePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * odds);
         }
 
-        if (isKnockout && correctlyPredictedQualifier) {
-            if (predictedDraw) {
-                // If they predicted a draw, they get both score points (if any) and advance points
-                double advanceOdds = getAdvanceOdds(match, prediction.getPredictedQualifier());
-                advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
-            } else {
-                // They predicted a 90-min win. Advance team was auto-selected.
-                if (scorePoints > 0) {
-                    // Their predicted team won in 90 mins. No double dipping.
-                    advancePoints = 0;
-                } else {
-                    // Consolation: They missed 90-min score/sign, but their auto-selected team advanced anyway.
-                    double advanceOdds = getAdvanceOdds(match, prediction.getPredictedQualifier());
+        if (isKnockout && correctlyPredictedQualifierTeam) {
+            boolean isOldSystem = match.getQualificationMethod() == null;
+
+            if (isOldSystem) {
+                if (predictedDraw) {
+                    double advanceOdds = getAdvanceOddsWithMethod(match, prediction.getPredictedQualifier(), null);
                     advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
+                } else {
+                    if (scorePoints == 0) {
+                        double advanceOdds = getAdvanceOddsWithMethod(match, prediction.getPredictedQualifier(), null);
+                        advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
+                    }
+                }
+            } else {
+                if (predictedDraw) {
+                    // If they predicted a draw, they MUST get both the advancing team and the method right.
+                    if (correctlyPredictedMethod) {
+                        double advanceOdds = getAdvanceOddsWithMethod(match, prediction.getPredictedQualifier(), prediction.getPredictedQualificationMethod());
+                        advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
+                    }
+                } else {
+                    // They predicted a 90-min win (implies REGULAR_TIME). They only get advance points if it actually ended in REGULAR_TIME.
+                    if (correctlyPredictedMethod) {
+                        if (scorePoints > 0) {
+                            // Their predicted team won in 90 mins, and they got score points for it. No double dipping.
+                            advancePoints = 0;
+                        } else {
+                            // Consolation fallback (though mathematically rare in regular time wins)
+                            double advanceOdds = getAdvanceOddsWithMethod(match, prediction.getPredictedQualifier(), prediction.getPredictedQualificationMethod());
+                            advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
+                        }
+                    }
                 }
             }
         }
@@ -102,7 +121,24 @@ public class PointCalculatorService {
         return 2.0; // Fallback
     }
 
-    private double getAdvanceOdds(Match match, String predictedQualifier) {
+    private double getAdvanceOddsWithMethod(Match match, String predictedQualifier, String method) {
+        if (match.getQualifierOddsJson() != null && !match.getQualifierOddsJson().trim().isEmpty()) {
+            try {
+                java.util.Map<String, Double> oddsMap = MAPPER.readValue(
+                        match.getQualifierOddsJson(),
+                        new com.fasterxml.jackson.core.type.TypeReference<java.util.Map<String, Double>>() {}
+                );
+                String prefix = predictedQualifier.equalsIgnoreCase(match.getHomeTeam()) ? "HOME_" : "AWAY_";
+                String key = prefix + method; // e.g. "HOME_EXTRA_TIME"
+                if (oddsMap.containsKey(key)) {
+                    return oddsMap.get(key);
+                }
+            } catch (Exception e) {
+                // Fallback
+            }
+        }
+
+        // Legacy fallback
         if (predictedQualifier != null && predictedQualifier.equalsIgnoreCase(match.getHomeTeam()) && match.getHomeAdvanceOdds() != null) {
             return match.getHomeAdvanceOdds();
         } else if (predictedQualifier != null && predictedQualifier.equalsIgnoreCase(match.getAwayTeam()) && match.getAwayAdvanceOdds() != null) {

@@ -16,4 +16,5 @@ public class PredictionRequest {
     private int predictedAwayScore;
 
     private String predictedQualifier; // Nullable, only for knockouts
+    private String predictedQualificationMethod; // "REGULAR_TIME", "EXTRA_TIME", "PENALTIES"
 }

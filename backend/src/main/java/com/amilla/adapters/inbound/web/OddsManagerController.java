@@ -29,7 +29,8 @@ public class OddsManagerController {
                 request.getAwayOdds(),
                 request.getHomeAdvanceOdds(),
                 request.getAwayAdvanceOdds(),
-                request.getExactScoreOddsJson()
+                request.getExactScoreOddsJson(),
+                request.getQualifierOddsJson()
         );
         return ResponseEntity.ok(match);
     }
@@ -52,7 +53,8 @@ public class OddsManagerController {
                     match.getAwayOdds(),
                     match.getHomeAdvanceOdds(),
                     match.getAwayAdvanceOdds(),
-                    match.getExactScoreOddsJson()
+                    match.getExactScoreOddsJson(),
+                    match.getQualifierOddsJson()
             );
             return ResponseEntity.ok(savedMatch);
         } catch (Exception e) {

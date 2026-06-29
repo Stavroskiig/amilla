@@ -10,4 +10,5 @@ public class OddsUpdateRequest {
     private Double homeAdvanceOdds;
     private Double awayAdvanceOdds;
     private String exactScoreOddsJson;
+    private String qualifierOddsJson;
 }
