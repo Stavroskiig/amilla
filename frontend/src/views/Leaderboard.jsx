@@ -261,81 +261,77 @@ export default function Leaderboard({ currentUser }) {
                             <Avatar id={user.avatar} size={28} />
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', justifyContent: 'center' }}>
                               
-                              {/* Top Row: Username & Flame */}
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <span style={{ fontSize: '1rem', color: isSelf ? 'var(--self-text-color, #ffffff)' : 'var(--text-main)' }} className="leaderboard-username">
-                                  {user.username}
-                                </span>
-                                {user.currentStreak >= 3 && (
-                                  <span
-                                    title={`Καυτός! ${user.currentStreak} συνεχόμενες σωστές προβλέψεις`}
-                                    style={{
-                                      display: 'inline-flex',
-                                      alignItems: 'center',
-                                      gap: '3px',
-                                      background: 'rgba(249, 115, 22, 0.15)',
-                                      color: '#f97316',
-                                      border: '1px solid rgba(249, 115, 22, 0.3)',
-                                      padding: '2px 6px',
-                                      borderRadius: '12px',
-                                      fontSize: '0.7rem',
-                                      fontWeight: 800,
-                                      boxShadow: '0 0 10px rgba(249, 115, 22, 0.25)',
-                                      animation: 'pulse 1.5s infinite',
-                                      fontFamily: 'var(--font-heading)'
-                                    }}
-                                    className="streak-badge"
-                                  >
-                                    <Flame size={10} fill="#f97316" />
-                                    <span>{user.currentStreak}</span>
+                              <div style={{ display: 'flex', gap: '12px' }}>
+                                {/* Column 1: Text */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', justifyContent: 'center' }}>
+                                  <span style={{ fontSize: '1rem', color: isSelf ? 'var(--self-text-color, #ffffff)' : 'var(--text-main)' }} className="leaderboard-username">
+                                    {user.username}
                                   </span>
-                                )}
-                                {user.currentExactStreak >= 2 && (
-                                  <span
-                                    title={`Απίστευτος! ${user.currentExactStreak} συνεχόμενα ακριβή σκορ`}
-                                    style={{
-                                      display: 'inline-flex',
-                                      alignItems: 'center',
-                                      gap: '3px',
-                                      background: 'rgba(59, 130, 246, 0.15)',
-                                      color: '#3b82f6',
-                                      border: '1px solid rgba(59, 130, 246, 0.3)',
-                                      padding: '2px 6px',
-                                      borderRadius: '12px',
-                                      fontSize: '0.7rem',
-                                      fontWeight: 800,
-                                      boxShadow: '0 0 10px rgba(59, 130, 246, 0.25)',
-                                      animation: 'pulse 1.5s infinite',
-                                      fontFamily: 'var(--font-heading)'
-                                    }}
-                                    className="exact-streak-badge"
-                                  >
-                                    <Flame size={10} fill="#3b82f6" />
-                                    <span>{user.currentExactStreak}</span>
-                                  </span>
-                                )}
-                              </div>
-
-                              {/* Bottom Row: Exact Hits (mobile) & YOU Badge */}
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <div className="show-on-mobile" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                                    <Target size={12} color="#06b6d4" />
-                                    Ακριβή: <span style={{ color: 'var(--text-main)', fontWeight: '700' }}>{user.exactHits || 0}</span>
-                                  </span>
+                                  <div className="show-on-mobile" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                      <Target size={12} color="#06b6d4" />
+                                      Ακριβή: <span style={{ color: 'var(--text-main)', fontWeight: '700' }}>{user.exactHits || 0}</span>
+                                    </span>
+                                  </div>
                                 </div>
-                                {isSelf && (
-                                  <span className="badge self-badge" style={{
-                                    background: 'rgba(99,102,241,0.2)',
-                                    color: 'var(--self-badge-color, #a5b4fc)',
-                                    fontSize: '0.65rem',
-                                    padding: '2px 6px',
-                                    borderRadius: '10px',
-                                    lineHeight: 1
-                                  }}>
-                                    ΕΣΥ
-                                  </span>
-                                )}
+
+                                {/* Column 2: Badges */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', justifyContent: 'center' }}>
+                                  {user.currentStreak >= 3 && (
+                                    <span
+                                      title={`Καυτός! ${user.currentStreak} συνεχόμενες σωστές προβλέψεις`}
+                                      style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        width: '32px',
+                                        gap: '3px',
+                                        background: 'rgba(249, 115, 22, 0.15)',
+                                        color: '#f97316',
+                                        border: '1px solid rgba(249, 115, 22, 0.3)',
+                                        padding: '1px 0',
+                                        borderRadius: '12px',
+                                        fontSize: '0.65rem',
+                                        fontWeight: 800,
+                                        boxShadow: '0 0 10px rgba(249, 115, 22, 0.25)',
+                                        animation: 'pulse 1.5s infinite',
+                                        fontFamily: 'var(--font-heading)',
+                                        boxSizing: 'border-box'
+                                      }}
+                                      className="streak-badge"
+                                    >
+                                      <Flame size={10} fill="#f97316" />
+                                      <span>{user.currentStreak}</span>
+                                    </span>
+                                  )}
+                                  {user.currentExactStreak >= 2 && (
+                                    <span
+                                      title={`Απίστευτος! ${user.currentExactStreak} συνεχόμενα ακριβή σκορ`}
+                                      style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        width: '32px',
+                                        gap: '3px',
+                                        background: 'rgba(59, 130, 246, 0.15)',
+                                        color: '#3b82f6',
+                                        border: '1px solid rgba(59, 130, 246, 0.3)',
+                                        padding: '1px 0',
+                                        borderRadius: '12px',
+                                        fontSize: '0.65rem',
+                                        fontWeight: 800,
+                                        boxShadow: '0 0 10px rgba(59, 130, 246, 0.25)',
+                                        animation: 'pulse 1.5s infinite',
+                                        fontFamily: 'var(--font-heading)',
+                                        boxSizing: 'border-box'
+                                      }}
+                                      className="exact-streak-badge"
+                                    >
+                                      <Flame size={10} fill="#3b82f6" />
+                                      <span>{user.currentExactStreak}</span>
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                               
                             </div>
