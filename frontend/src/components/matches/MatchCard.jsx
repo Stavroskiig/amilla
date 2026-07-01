@@ -406,15 +406,16 @@ export default function MatchCard({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            gap: '12px',
             borderBottomLeftRadius: 'calc(var(--radius-lg) - 1px)',
             borderBottomRightRadius: 'calc(var(--radius-lg) - 1px)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              <span>Η πρόβλεψή σας: </span>
-              <strong style={{ color: 'var(--text-main, #ffffff)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <span>{matchPred.savedHome} - {matchPred.savedAway}</span>
+              <span style={{ flexShrink: 1 }}>Προβλέψατε: </span>
+              <strong style={{ color: 'var(--text-main, #ffffff)', display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
+                <span style={{ whiteSpace: 'nowrap' }}>{matchPred.savedHome} - {matchPred.savedAway}</span>
                 {isKnockout && matchPred.savedQualifier && (
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: '2px' }} title={matchPred.savedQualifier}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: '2px', whiteSpace: 'nowrap' }} title={matchPred.savedQualifier}>
                     (<Flag teamName={matchPred.savedQualifier} width={18} height={12} style={{ marginLeft: '4px', marginRight: '4px' }} />
                     {matchPred.savedPredictedQualificationMethod === 'EXTRA_TIME' ? 'ΠΑΡ' : matchPred.savedPredictedQualificationMethod === 'PENALTIES' ? 'ΠΕΝ' : ''})
                   </span>
@@ -425,12 +426,14 @@ export default function MatchCard({
             <div
               className="badge"
               style={{
+                flexShrink: 0,
                 fontSize: '0.8rem',
                 padding: '4px 10px',
                 gap: '6px',
                 background: matchPred.pointsEarned > 0 ? 'var(--success-glow)' : 'rgba(239, 68, 68, 0.08)',
                 color: matchPred.pointsEarned > 0 ? 'var(--success)' : 'var(--danger)',
-                border: matchPred.pointsEarned > 0 ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(239, 68, 68, 0.2)'
+                border: matchPred.pointsEarned > 0 ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(239, 68, 68, 0.2)',
+                whiteSpace: 'nowrap'
               }}
             >
               <Award size={14} />

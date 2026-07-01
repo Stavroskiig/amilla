@@ -1134,3 +1134,17 @@ input[type=number] {
     margin-bottom: 20px !important;
   }
 }
+
+/* --- Leaderboard Responsive Table Columns --- */
+.col-rank, .col-exact, .col-points {
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .col-rank, .col-exact, .col-points {
+    width: 1%;
+  }
+  .col-player {
+    width: 99%;
+  }
+}

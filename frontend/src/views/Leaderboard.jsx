@@ -172,12 +172,12 @@ export default function Leaderboard({ currentUser }) {
                   borderBottom: '1px solid var(--border-color)',
                   background: 'var(--table-header-bg, rgba(255, 255, 255, 0.01))'
                 }}>
-                  <th style={{ width: '5%', whiteSpace: 'nowrap', padding: '16px 8px 16px 16px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
-                  <th style={{ width: '95%', padding: '16px 16px 16px 8px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
-                  <th className="hide-on-mobile" style={{ width: '5%', whiteSpace: 'nowrap', padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
+                  <th className="col-rank" style={{ padding: '16px 8px 16px 16px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
+                  <th className="col-player" style={{ padding: '16px 16px 16px 8px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
+                  <th className="hide-on-mobile col-exact" style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
                     ΑΚΡΙΒΗ ΣΚΟΡ
                   </th>
-                  <th style={{ width: '5%', whiteSpace: 'nowrap', padding: '16px 16px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
+                  <th className="col-points" style={{ padding: '16px 16px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
                     <span className="hide-on-mobile">ΣΥΝΟΛΙΚΟΙ ΠΟΝΤΟΙ</span>
                     <span className="show-on-mobile">ΠΟΝΤΟΙ</span>
                   </th>
