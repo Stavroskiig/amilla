@@ -172,12 +172,12 @@ export default function Leaderboard({ currentUser }) {
                   borderBottom: '1px solid var(--border-color)',
                   background: 'var(--table-header-bg, rgba(255, 255, 255, 0.01))'
                 }}>
-                  <th style={{ padding: '16px 16px 16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
-                  <th style={{ padding: '16px 24px 16px 12px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
-                  <th className="hide-on-mobile" style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
+                  <th style={{ width: '5%', whiteSpace: 'nowrap', padding: '16px 8px 16px 16px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
+                  <th style={{ width: '95%', padding: '16px 16px 16px 8px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
+                  <th className="hide-on-mobile" style={{ width: '5%', whiteSpace: 'nowrap', padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
                     ΑΚΡΙΒΗ ΣΚΟΡ
                   </th>
-                  <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
+                  <th style={{ width: '5%', whiteSpace: 'nowrap', padding: '16px 16px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
                     <span className="hide-on-mobile">ΣΥΝΟΛΙΚΟΙ ΠΟΝΤΟΙ</span>
                     <span className="show-on-mobile">ΠΟΝΤΟΙ</span>
                   </th>
@@ -206,7 +206,7 @@ export default function Leaderboard({ currentUser }) {
                         className="leaderboard-row"
                       >
                         {/* Rank Position */}
-                        <td style={{ padding: '18px 16px 18px 24px' }}>
+                        <td style={{ padding: '18px 8px 18px 16px' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="leaderboard-rank-cell">
                             <span style={{
                               display: 'inline-flex',
@@ -256,11 +256,11 @@ export default function Leaderboard({ currentUser }) {
                         </td>
 
                         {/* Username */}
-                        <td style={{ padding: '18px 24px 18px 12px' }}>
+                        <td style={{ padding: '18px 16px 18px 8px' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }} className="leaderboard-player-cell">
                             <Avatar id={user.avatar} size={28} />
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', justifyContent: 'center' }}>
-                              
+
                               <div style={{ display: 'flex', gap: '12px' }}>
                                 {/* Column 1: Text */}
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', justifyContent: 'center' }}>
@@ -333,7 +333,7 @@ export default function Leaderboard({ currentUser }) {
                                   )}
                                 </div>
                               </div>
-                              
+
                             </div>
                           </div>
                         </td>
@@ -364,7 +364,7 @@ export default function Leaderboard({ currentUser }) {
                                 const isExact = user.recentWasExact || false;
                                 const textColor = isExact ? '#10b981' : '#3b82f6';
                                 const bgColor = isExact ? 'rgba(16, 185, 129, 0.15)' : 'rgba(59, 130, 246, 0.15)';
-                                
+
                                 return (
                                   <span
                                     title={`Κέρδισε ${user.recentPoints} πόντους στον τελευταίο αγώνα`}
