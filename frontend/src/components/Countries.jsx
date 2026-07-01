@@ -188,10 +188,11 @@ export function Flag({ teamName, width = 24, height = 16, style = {}, className 
 
   return (
     <img
-      src={`https://flagcdn.com/w40/${code}.png`}
-      srcSet={`https://flagcdn.com/w80/${code}.png 2x`}
+      src={`https://flagcdn.com/w40/${code}.png?v=1`}
+      srcSet={`https://flagcdn.com/w80/${code}.png?v=1 2x`}
       alt={teamName}
       loading="lazy"
+      crossOrigin="anonymous"
       className={className}
       style={{
         width: `${width}px`,

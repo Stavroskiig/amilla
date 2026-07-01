@@ -37,6 +37,7 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
       console.error('Error sharing image', err);
     }
   };
+
   if (!othersPredictions || othersPredictions.length === 0) {
     return (
       <div style={{
@@ -54,13 +55,28 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
     );
   }
 
+  // Calculate qualifier stats if knockout
+  let homeQualifyPercent = 0;
+  let awayQualifyPercent = 0;
+  
+  if (isKnockout) {
+    const validPredictions = othersPredictions.filter(p => p.predictedQualifier);
+    const totalQualifiers = validPredictions.length;
+    
+    if (totalQualifiers > 0) {
+      const homeQualifyCount = validPredictions.filter(p => p.predictedQualifier === match.homeTeam).length;
+      homeQualifyPercent = Math.round((homeQualifyCount / totalQualifiers) * 100);
+      awayQualifyPercent = 100 - homeQualifyPercent;
+    }
+  }
+
   return (
     <div ref={containerRef} style={{
       background: 'var(--others-bg, rgba(10,11,16,0.4))',
       borderTop: '1px solid var(--border-color)',
       padding: '20px 24px'
     }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <h4 style={{ fontSize: '0.9rem', margin: 0, color: 'var(--text-muted)', fontWeight: 600 }}>
           ΠΡΟΒΛΕΨΕΙΣ
         </h4>
@@ -87,6 +103,35 @@ export default function OthersPredictionsList({ match, othersPredictions, curren
           <Share2 size={14} />
         </button>
       </div>
+
+      {isKnockout && (homeQualifyPercent > 0 || awayQualifyPercent > 0) && (
+        <div style={{ 
+          marginBottom: '20px', 
+          padding: '12px 16px', 
+          background: 'var(--bg-surface, rgba(255,255,255,0.02))', 
+          borderRadius: '8px', 
+          border: '1px solid var(--border-color)' 
+        }}>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', textAlign: 'center', fontWeight: 500 }}>
+            Ποιος θα προκριθεί;
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: 'var(--text-main)', marginBottom: '8px', fontWeight: 600 }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Flag teamName={match.homeTeam} width={18} height={12} />
+              {homeQualifyPercent}%
+            </span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              {awayQualifyPercent}%
+              <Flag teamName={match.awayTeam} width={18} height={12} />
+            </span>
+          </div>
+          <div style={{ display: 'flex', height: '8px', borderRadius: '4px', overflow: 'hidden', background: 'rgba(255,255,255,0.1)' }}>
+            <div style={{ width: `${homeQualifyPercent}%`, background: 'var(--primary, #6366f1)', transition: 'width 0.5s ease' }} />
+            <div style={{ width: `${awayQualifyPercent}%`, background: 'var(--secondary, #06b6d4)', transition: 'width 0.5s ease' }} />
+          </div>
+        </div>
+      )}
+
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
