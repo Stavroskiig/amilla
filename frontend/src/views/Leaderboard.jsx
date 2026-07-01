@@ -172,8 +172,8 @@ export default function Leaderboard({ currentUser }) {
                   borderBottom: '1px solid var(--border-color)',
                   background: 'var(--table-header-bg, rgba(255, 255, 255, 0.01))'
                 }}>
-                  <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
-                  <th style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
+                  <th style={{ padding: '16px 16px 16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
+                  <th style={{ padding: '16px 24px 16px 12px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
                   <th className="hide-on-mobile" style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
                     ΑΚΡΙΒΗ ΣΚΟΡ
                   </th>
@@ -206,7 +206,7 @@ export default function Leaderboard({ currentUser }) {
                         className="leaderboard-row"
                       >
                         {/* Rank Position */}
-                        <td style={{ padding: '18px 24px' }}>
+                        <td style={{ padding: '18px 16px 18px 24px' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="leaderboard-rank-cell">
                             <span style={{
                               display: 'inline-flex',
@@ -256,7 +256,7 @@ export default function Leaderboard({ currentUser }) {
                         </td>
 
                         {/* Username */}
-                        <td style={{ padding: '18px 24px' }}>
+                        <td style={{ padding: '18px 24px 18px 12px' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }} className="leaderboard-player-cell">
                             <Avatar id={user.avatar} size={28} />
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', justifyContent: 'center' }}>
