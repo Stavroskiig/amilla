@@ -257,6 +257,36 @@ export default function OddsManager() {
   const [filterStage, setFilterStage] = useState('ALL');
   const [editingExactScoreMatch, setEditingExactScoreMatch] = useState(null);
   const [editingQualifierMatch, setEditingQualifierMatch] = useState(null);
+  const [loadingOddsMatchId, setLoadingOddsMatchId] = useState(null);
+
+  const openOddsModal = async (match, type) => {
+    if (!matchOdds[match.id]?.exactScoreOddsJson && !matchOdds[match.id]?.qualifierOddsJson) {
+      setLoadingOddsMatchId(match.id);
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${API_URL}/api/matches/${match.id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setMatchOdds(prev => ({
+            ...prev,
+            [match.id]: {
+              ...prev[match.id],
+              exactScoreOddsJson: data.exactScoreOddsJson || '',
+              qualifierOddsJson: data.qualifierOddsJson || ''
+            }
+          }));
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoadingOddsMatchId(null);
+      }
+    }
+    if (type === 'exactScore') setEditingExactScoreMatch(match);
+    else setEditingQualifierMatch(match);
+  };
 
   useEffect(() => {
     fetchMatches();
@@ -430,15 +460,15 @@ export default function OddsManager() {
                       {isKnockout && (
                         <>
                           <div style={{ width: '1px', height: '30px', background: 'var(--border-color)', margin: '0 8px', marginBottom: '2px' }} />
-                          <button className="btn btn-secondary" onClick={() => setEditingQualifierMatch(match)} style={{ padding: '0', width: '132px', justifyContent: 'center', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px', height: '36px' }}>
-                            <List size={16} />
+                          <button className="btn btn-secondary" disabled={loadingOddsMatchId === match.id} onClick={() => openOddsModal(match, 'qualifier')} style={{ padding: '0', width: '132px', justifyContent: 'center', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px', height: '36px' }}>
+                            {loadingOddsMatchId === match.id ? <RefreshCw size={16} className="animate-spin" /> : <List size={16} />}
                             Πρόκριση
                           </button>
                         </>
                       )}
 
-                      <button className="btn btn-secondary" onClick={() => setEditingExactScoreMatch(match)} style={{ padding: '0', width: '132px', justifyContent: 'center', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px', height: '36px' }}>
-                        <List size={16} />
+                      <button className="btn btn-secondary" disabled={loadingOddsMatchId === match.id} onClick={() => openOddsModal(match, 'exactScore')} style={{ padding: '0', width: '132px', justifyContent: 'center', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px', height: '36px' }}>
+                        {loadingOddsMatchId === match.id ? <RefreshCw size={16} className="animate-spin" /> : <List size={16} />}
                         Ακριβές Σκορ
                       </button>
 

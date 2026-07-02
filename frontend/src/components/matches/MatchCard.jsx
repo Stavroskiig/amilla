@@ -20,6 +20,8 @@ export default function MatchCard({
 }) {
   const [expanded, setExpanded] = useState(false);
   const [expandedPoints, setExpandedPoints] = useState(false);
+  const [exactScoreOddsJson, setExactScoreOddsJson] = useState(match.exactScoreOddsJson || null);
+  const [loadingOdds, setLoadingOdds] = useState(false);
   const [othersPredictions, setOthersPredictions] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
   const [success, setSuccess] = useState(false);
@@ -151,12 +153,32 @@ export default function MatchCard({
     });
   };
 
-  const toggleExpandPoints = () => {
+  const toggleExpandPoints = async () => {
     if (expandedPoints) {
       setExpandedPoints(false);
     } else {
       setExpanded(false);
       setExpandedPoints(true);
+      
+      if (!exactScoreOddsJson) {
+        setLoadingOdds(true);
+        try {
+          const token = localStorage.getItem('token');
+          const res = await fetch(`${API_URL}/api/matches/${match.id}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.exactScoreOddsJson) {
+              setExactScoreOddsJson(data.exactScoreOddsJson);
+            }
+          }
+        } catch (e) {
+          console.error(e);
+        } finally {
+          setLoadingOdds(false);
+        }
+      }
     }
   };
 
@@ -486,21 +508,27 @@ export default function MatchCard({
         opacity: expandedPoints ? 1 : 0
       }}>
         <div style={{ overflow: 'hidden' }}>
-          <ScorePointsList match={match} />
+          {loadingOdds ? (
+            <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-muted)' }}>
+              Φόρτωση πόντων...
+            </div>
+          ) : (
+            <ScorePointsList match={match} exactScoreOddsJson={exactScoreOddsJson} />
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-function ScorePointsList({ match }) {
+function ScorePointsList({ match, exactScoreOddsJson }) {
   let homeWins = [];
   let draws = [];
   let awayWins = [];
 
   try {
-    if (match.exactScoreOddsJson) {
-      const parsed = JSON.parse(match.exactScoreOddsJson);
+    if (exactScoreOddsJson) {
+      const parsed = JSON.parse(exactScoreOddsJson);
       Object.entries(parsed).forEach(([score, odds]) => {
         const points = Math.round(10 * parseFloat(odds));
         if (!isNaN(points)) {
