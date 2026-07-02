@@ -4,6 +4,7 @@ import com.amilla.adapters.inbound.web.dto.AuthResponse;
 import com.amilla.adapters.inbound.web.dto.LoginRequest;
 import com.amilla.adapters.inbound.web.dto.RegisterRequest;
 import com.amilla.adapters.inbound.web.dto.AvatarUpdateRequest;
+import com.amilla.adapters.inbound.web.dto.UserMeResponse;
 import com.amilla.domain.model.User;
 import com.amilla.ports.inbound.AuthenticationUseCase;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@Validated @RequestBody RegisterRequest request) {
+    public ResponseEntity<UserMeResponse> register(@Validated @RequestBody RegisterRequest request) {
         User user = authenticationUseCase.register(request.getUsername(), request.getEmail(), request.getPassword(), request.getGroupCode());
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(UserMeResponse.fromUser(user));
     }
 
     @PostMapping("/login")
@@ -45,16 +46,16 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<User> getMe() {
+    public ResponseEntity<UserMeResponse> getMe() {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = authenticationUseCase.getUserByEmail(email);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(UserMeResponse.fromUser(user));
     }
 
     @PutMapping("/avatar")
-    public ResponseEntity<User> updateAvatar(@Validated @RequestBody AvatarUpdateRequest request) {
+    public ResponseEntity<UserMeResponse> updateAvatar(@Validated @RequestBody AvatarUpdateRequest request) {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User updatedUser = authenticationUseCase.updateAvatar(email, request.getAvatar());
-        return ResponseEntity.ok(updatedUser);
+        return ResponseEntity.ok(UserMeResponse.fromUser(updatedUser));
     }
 }
