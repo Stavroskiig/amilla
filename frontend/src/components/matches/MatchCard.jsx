@@ -21,6 +21,7 @@ export default function MatchCard({
   const [expanded, setExpanded] = useState(false);
   const [expandedPoints, setExpandedPoints] = useState(false);
   const [exactScoreOddsJson, setExactScoreOddsJson] = useState(match.exactScoreOddsJson || null);
+  const [qualifierOddsJson, setQualifierOddsJson] = useState(match.qualifierOddsJson || null);
   const [loadingOdds, setLoadingOdds] = useState(false);
   const [othersPredictions, setOthersPredictions] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
@@ -171,6 +172,9 @@ export default function MatchCard({
             const data = await res.json();
             if (data.exactScoreOddsJson) {
               setExactScoreOddsJson(data.exactScoreOddsJson);
+            }
+            if (data.qualifierOddsJson) {
+              setQualifierOddsJson(data.qualifierOddsJson);
             }
           }
         } catch (e) {
@@ -513,7 +517,7 @@ export default function MatchCard({
               Φόρτωση πόντων...
             </div>
           ) : (
-            <ScorePointsList match={match} exactScoreOddsJson={exactScoreOddsJson} />
+            <ScorePointsList match={match} exactScoreOddsJson={exactScoreOddsJson} qualifierOddsJson={qualifierOddsJson} />
           )}
         </div>
       </div>
@@ -521,7 +525,7 @@ export default function MatchCard({
   );
 }
 
-function ScorePointsList({ match, exactScoreOddsJson }) {
+function ScorePointsList({ match, exactScoreOddsJson, qualifierOddsJson }) {
   let homeWins = [];
   let draws = [];
   let awayWins = [];
@@ -655,7 +659,7 @@ function ScorePointsList({ match, exactScoreOddsJson }) {
         <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Δεν υπάρχουν διαθέσιμα σκορ για αυτόν τον αγώνα.</div>
       )}
 
-      {match.matchStage !== 'GROUP' && match.qualifierOddsJson && (
+      {match.matchStage !== 'GROUP' && qualifierOddsJson && (
         <div style={{ marginTop: '28px' }}>
           <h4 style={{ fontSize: '0.9rem', marginBottom: '16px', color: 'var(--text-muted)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Award size={16} />
@@ -664,7 +668,7 @@ function ScorePointsList({ match, exactScoreOddsJson }) {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
             {(() => {
               try {
-                const parsed = JSON.parse(match.qualifierOddsJson);
+                const parsed = JSON.parse(qualifierOddsJson);
                 const items = [];
                 for (const [key, value] of Object.entries(parsed)) {
                   const pts = Math.round(10 * parseFloat(value));
