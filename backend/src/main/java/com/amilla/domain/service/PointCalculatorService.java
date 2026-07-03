@@ -64,18 +64,12 @@ public class PointCalculatorService {
                     }
                 }
             } else {
-                if (predictedDraw) {
-                    // If they predicted a draw, they MUST get both the advancing team and the method right.
-                    if (correctlyPredictedMethod) {
-                        double advanceOdds = getAdvanceOddsWithMethod(match, prediction.getPredictedQualifier(), prediction.getPredictedQualificationMethod());
-                        advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
-                    }
+                if (correctlyPredictedMethod) {
+                    double advanceOdds = getAdvanceOddsWithMethod(match, prediction.getPredictedQualifier(), prediction.getPredictedQualificationMethod());
+                    advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
                 } else {
-                    // They predicted a 90-min win (implies REGULAR_TIME). They also get regular time advance points!
-                    if (correctlyPredictedMethod) {
-                        double advanceOdds = getAdvanceOddsWithMethod(match, prediction.getPredictedQualifier(), prediction.getPredictedQualificationMethod());
-                        advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
-                    }
+                    double advanceOdds = getAdvanceOddsWithMethod(match, prediction.getPredictedQualifier(), null);
+                    advancePoints = (int) Math.round(ODDS_TO_POINTS_MULTIPLIER * advanceOdds);
                 }
             }
         }

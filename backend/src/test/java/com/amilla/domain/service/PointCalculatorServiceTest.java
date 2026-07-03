@@ -184,9 +184,9 @@ public class PointCalculatorServiceTest {
 
         int points = calculator.calculateMatchPoints(match, prediction);
         // Score points: 9.0 * 10 = 90
-        // Advance points: 0
-        // Total: 90
-        assertEquals(90, points, "Should get score points but 0 advance points because method was wrong");
+        // Advance points: 1.0 (fallback) * 10 = 10
+        // Total: 100
+        assertEquals(100, points, "Should get score points and fallback advance points even if method was wrong");
     }
 
     @Test

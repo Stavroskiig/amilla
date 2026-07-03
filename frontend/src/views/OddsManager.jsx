@@ -487,6 +487,14 @@ export default function OddsManager() {
                       {isKnockout && (
                         <>
                           <div style={{ width: '1px', height: '30px', background: 'var(--border-color)', margin: '0 8px', marginBottom: '2px' }} />
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
+                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Πρόκ. 1</span>
+                            <input type="text" inputMode="decimal" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.1))', border: '1px solid var(--border-color)', color: 'var(--text-main)', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.homeAdvanceOdds} onChange={(e) => handleOddsChange(match.id, 'homeAdvanceOdds', e.target.value.replace(/,/g, '.'))} />
+                          </div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
+                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Πρόκ. 2</span>
+                            <input type="text" inputMode="decimal" disabled={!isEditable} style={{ width: '60px', padding: '6px', borderRadius: '4px', background: 'var(--input-bg, rgba(255,255,255,0.1))', border: '1px solid var(--border-color)', color: 'var(--text-main)', textAlign: 'center', cursor: isEditable ? 'text' : 'not-allowed' }} value={odds.awayAdvanceOdds} onChange={(e) => handleOddsChange(match.id, 'awayAdvanceOdds', e.target.value.replace(/,/g, '.'))} />
+                          </div>
                           <button className="btn btn-secondary" disabled={loadingOddsMatchId === match.id} onClick={() => openOddsModal(match, 'qualifier')} style={{ padding: '0', width: '132px', justifyContent: 'center', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px', height: '36px' }}>
                             {loadingOddsMatchId === match.id ? <RefreshCw size={16} className="animate-spin" /> : <List size={16} />}
                             Πρόκριση

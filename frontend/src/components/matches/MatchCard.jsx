@@ -160,7 +160,7 @@ export default function MatchCard({
     } else {
       setExpanded(false);
       setExpandedPoints(true);
-      
+
       if (!exactScoreOddsJson) {
         setLoadingOdds(true);
         try {
@@ -659,46 +659,40 @@ function ScorePointsList({ match, exactScoreOddsJson, qualifierOddsJson }) {
         <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Δεν υπάρχουν διαθέσιμα σκορ για αυτόν τον αγώνα.</div>
       )}
 
-      {match.matchStage !== 'GROUP' && qualifierOddsJson && (
+      {(match.matchStage !== 'GROUP') && (qualifierOddsJson || match.homeAdvanceOdds || match.awayAdvanceOdds) && (
         <div style={{ marginTop: '28px' }}>
           <h4 style={{ fontSize: '0.9rem', marginBottom: '16px', color: 'var(--text-muted)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Award size={16} />
             ΠΟΝΤΟΙ ΠΡΟΚΡΙΣΗΣ
           </h4>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
-            {(() => {
-              try {
-                const parsed = JSON.parse(qualifierOddsJson);
-                const items = [];
-                for (const [key, value] of Object.entries(parsed)) {
-                  const pts = Math.round(10 * parseFloat(value));
-                  if (!isNaN(pts)) {
-                    // key format: "HOME_REGULAR_TIME"
-                    const parts = key.split('_');
-                    const method = parts.slice(1).join('_');
-                    const teamKey = parts[0];
-                    const teamName = teamKey === 'HOME' ? match.homeTeam : (teamKey === 'AWAY' ? match.awayTeam : teamKey);
 
-                    let methodLabel = '';
-                    if (method === 'REGULAR_TIME') methodLabel = 'Καν. Διάρκεια';
-                    else if (method === 'EXTRA_TIME') methodLabel = 'Παράταση';
-                    else if (method === 'PENALTIES') methodLabel = 'Πέναλτι';
-                    else methodLabel = method;
-
-                    items.push({
-                      titleStr: `${teamName}  ${methodLabel}`,
-                      label: (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <Flag teamName={teamName} width={20} height={14} />
-                          <span>{methodLabel}</span>
-                        </div>
-                      ),
-                      points: pts
-                    });
+          {(match.homeAdvanceOdds || match.awayAdvanceOdds) && (
+            <div style={{ marginBottom: '16px' }}>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '8px', fontWeight: 600 }}>Απλή Πρόκριση (αν δε βρεθεί ο ακριβής τρόπος):</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
+                {[
+                  {
+                    titleStr: `Πρόκριση: ${match.homeTeam}`,
+                    label: (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Flag teamName={match.homeTeam} width={20} height={14} />
+                        <span>Πρόκριση</span>
+                      </div>
+                    ),
+                    points: match.homeAdvanceOdds ? Math.round(10 * parseFloat(match.homeAdvanceOdds)) : null
+                  },
+                  {
+                    titleStr: `Πρόκριση: ${match.awayTeam}`,
+                    label: (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Flag teamName={match.awayTeam} width={20} height={14} />
+                        <span>Πρόκριση</span>
+                      </div>
+                    ),
+                    points: match.awayAdvanceOdds ? Math.round(10 * parseFloat(match.awayAdvanceOdds)) : null
                   }
-                }
-                return items.map((item, i) => (
-                  <div key={i} style={{
+                ].filter(item => item.points !== null).map((item, i) => (
+                  <div key={`adv-${i}`} style={{
                     padding: '8px 12px',
                     borderRadius: 'var(--radius-sm)',
                     border: '1px solid var(--others-border, rgba(255,255,255,0.03))',
@@ -726,12 +720,83 @@ function ScorePointsList({ match, exactScoreOddsJson, qualifierOddsJson }) {
                       {item.points} pts
                     </span>
                   </div>
-                ));
-              } catch (e) {
-                return null;
-              }
-            })()}
-          </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {qualifierOddsJson && (
+            <div>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '8px', fontWeight: 600 }}>Με ακριβή τρόπο πρόκρισης (αντί για την απλή πρόκριση):</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
+                {(() => {
+                  try {
+                    const parsed = JSON.parse(qualifierOddsJson);
+                    const items = [];
+                    for (const [key, value] of Object.entries(parsed)) {
+                      const pts = Math.round(10 * parseFloat(value));
+                      if (!isNaN(pts)) {
+                        // key format: "HOME_REGULAR_TIME"
+                        const parts = key.split('_');
+                        const method = parts.slice(1).join('_');
+                        const teamKey = parts[0];
+                        const teamName = teamKey === 'HOME' ? match.homeTeam : (teamKey === 'AWAY' ? match.awayTeam : teamKey);
+
+                        let methodLabel = '';
+                        if (method === 'REGULAR_TIME') methodLabel = 'Καν. Διάρκεια';
+                        else if (method === 'EXTRA_TIME') methodLabel = 'Παράταση';
+                        else if (method === 'PENALTIES') methodLabel = 'Πέναλτι';
+                        else methodLabel = method;
+
+                        items.push({
+                          titleStr: `${teamName}  ${methodLabel}`,
+                          label: (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <Flag teamName={teamName} width={20} height={14} />
+                              <span>{methodLabel}</span>
+                            </div>
+                          ),
+                          points: pts
+                        });
+                      }
+                    }
+                    return items.map((item, i) => (
+                      <div key={i} style={{
+                        padding: '8px 12px',
+                        borderRadius: 'var(--radius-sm)',
+                        border: '1px solid var(--others-border, rgba(255,255,255,0.03))',
+                        background: 'var(--others-card-bg, rgba(255, 255, 255, 0.05))',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        boxShadow: 'var(--others-shadow, none)'
+                      }}>
+                        <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={item.titleStr}>
+                          {item.label}
+                        </div>
+                        <span style={{
+                          color: 'var(--success)',
+                          background: 'rgba(16, 185, 129, 0.15)',
+                          border: '1px solid rgba(16, 185, 129, 0.3)',
+                          padding: '2px 6px',
+                          borderRadius: '4px',
+                          fontSize: '0.8rem',
+                          fontWeight: 700,
+                          whiteSpace: 'nowrap',
+                          flexShrink: 0,
+                          marginLeft: '8px'
+                        }}>
+                          {item.points} pts
+                        </span>
+                      </div>
+                    ));
+                  } catch (e) {
+                    return null;
+                  }
+                })()}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
