@@ -332,7 +332,34 @@ export default function OddsManager() {
 
   const saveOdds = async (matchId, overrideExactScoreOddsJson = undefined, overrideQualifierOddsJson = undefined) => {
     setSavingMatchId(matchId);
-    const odds = matchOdds[matchId];
+    let odds = { ...matchOdds[matchId] };
+
+    if (overrideExactScoreOddsJson === undefined && overrideQualifierOddsJson === undefined) {
+      if (odds.exactScoreOddsJson === '' && odds.qualifierOddsJson === '') {
+        try {
+          const token = localStorage.getItem('token');
+          const res = await fetch(`${API_URL}/api/matches/${matchId}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            odds.exactScoreOddsJson = data.exactScoreOddsJson || '';
+            odds.qualifierOddsJson = data.qualifierOddsJson || '';
+            setMatchOdds(prev => ({
+              ...prev,
+              [matchId]: {
+                ...prev[matchId],
+                exactScoreOddsJson: data.exactScoreOddsJson || '',
+                qualifierOddsJson: data.qualifierOddsJson || ''
+              }
+            }));
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+
     const exactScoresJsonToSave = overrideExactScoreOddsJson !== undefined ? overrideExactScoreOddsJson : odds.exactScoreOddsJson;
     const qualifierOddsJsonToSave = overrideQualifierOddsJson !== undefined ? overrideQualifierOddsJson : odds.qualifierOddsJson;
 
