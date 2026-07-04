@@ -174,6 +174,9 @@ export default function Leaderboard({ currentUser }) {
                 }}>
                   <th className="col-rank" style={{ padding: '16px 8px 16px 16px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
                   <th className="col-player" style={{ padding: '16px 16px 16px 8px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
+                  <th className="hide-on-mobile col-signs" style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
+                    ΣΗΜΕΙΑ
+                  </th>
                   <th className="hide-on-mobile col-exact" style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
                     ΑΚΡΙΒΗ ΣΚΟΡ
                   </th>
@@ -335,6 +338,24 @@ export default function Leaderboard({ currentUser }) {
                               </div>
 
                             </div>
+                          </div>
+                        </td>
+
+                        {/* Signs Hits */}
+                        <td className="hide-on-mobile" style={{ padding: '18px 24px', textAlign: 'center' }}>
+                          <div style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            background: 'var(--signs-hits-bg, rgba(255, 255, 255, 0.05))',
+                            color: 'var(--text-main)',
+                            fontWeight: '600',
+                            fontSize: '0.9rem'
+                          }} title="Σωστά Σημεία">
+                            {user.correctOutcomes || 0}
                           </div>
                         </td>
 
