@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Trophy, Award, Search, TrendingUp, TrendingDown, Flame, Target, Share2 } from 'lucide-react';
+import { Trophy, Award, Search, TrendingUp, TrendingDown, Flame, Target, Share2, ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Avatar } from '../components/Avatars';
 import Podium from '../components/Podium';
@@ -11,6 +11,8 @@ export default function Leaderboard({ currentUser }) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortField, setSortField] = useState('points');
+  const [sortOrder, setSortOrder] = useState('desc');
   const leaderboardRef = useRef(null);
 
   const handleShare = async () => {
@@ -84,9 +86,55 @@ export default function Leaderboard({ currentUser }) {
     return { color: 'var(--text-muted)', icon: <Award size={18} /> };
   };
 
-  const filteredUsers = users.filter(user =>
+  const sortedUsers = [...users].sort((a, b) => {
+    let aValue = 0;
+    let bValue = 0;
+
+    if (sortField === 'points') {
+      aValue = a.totalPoints || 0;
+      bValue = b.totalPoints || 0;
+    } else if (sortField === 'signs') {
+      aValue = Math.max(0, (a.correctOutcomes || 0) - (a.exactHits || 0));
+      bValue = Math.max(0, (b.correctOutcomes || 0) - (b.exactHits || 0));
+    } else if (sortField === 'exact') {
+      aValue = a.exactHits || 0;
+      bValue = b.exactHits || 0;
+    }
+
+    if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
+    if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1;
+    
+    // Secondary sort by points if sorting by signs/exact, or just to be deterministic
+    if (sortField !== 'points') {
+      const aPoints = a.totalPoints || 0;
+      const bPoints = b.totalPoints || 0;
+      if (aPoints < bPoints) return 1; // Always desc for secondary
+      if (aPoints > bPoints) return -1;
+    }
+    return 0;
+  });
+
+  const filteredUsers = sortedUsers.filter(user =>
     user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc');
+    } else {
+      setSortField(field);
+      setSortOrder('desc');
+    }
+  };
+
+  const renderSortIcon = (field) => {
+    if (sortField !== field) {
+      return <ChevronsUpDown size={14} style={{ marginLeft: '4px', opacity: 0.4, verticalAlign: 'middle' }} />;
+    }
+    return sortOrder === 'asc' 
+      ? <ChevronUp size={14} style={{ marginLeft: '4px', color: 'var(--primary)', verticalAlign: 'middle' }} /> 
+      : <ChevronDown size={14} style={{ marginLeft: '4px', color: 'var(--primary)', verticalAlign: 'middle' }} />;
+  };
 
   return (
     <motion.div
@@ -174,25 +222,41 @@ export default function Leaderboard({ currentUser }) {
                 }}>
                   <th className="col-rank" style={{ padding: '16px 8px 16px 16px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΘΕΣΗ</th>
                   <th className="col-player" style={{ padding: '16px 16px 16px 8px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem' }}>ΠΑΙΚΤΗΣ</th>
-                  <th className="hide-on-mobile col-signs" style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
+                  <th 
+                    className="hide-on-mobile col-signs" 
+                    style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center', cursor: 'pointer', userSelect: 'none' }}
+                    onClick={() => handleSort('signs')}
+                  >
                     ΣΗΜΕΙΑ
+                    {renderSortIcon('signs')}
                   </th>
-                  <th className="hide-on-mobile col-exact" style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
+                  <th 
+                    className="hide-on-mobile col-exact" 
+                    style={{ padding: '16px 24px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center', cursor: 'pointer', userSelect: 'none' }}
+                    onClick={() => handleSort('exact')}
+                  >
                     ΑΚΡΙΒΗ ΣΚΟΡ
+                    {renderSortIcon('exact')}
                   </th>
-                  <th className="col-points" style={{ padding: '16px 16px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center' }}>
+                  <th 
+                    className="col-points" 
+                    style={{ padding: '16px 16px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.85rem', textAlign: 'center', cursor: 'pointer', userSelect: 'none' }}
+                    onClick={() => handleSort('points')}
+                  >
                     <span className="hide-on-mobile">ΣΥΝΟΛΙΚΟΙ ΠΟΝΤΟΙ</span>
                     <span className="show-on-mobile">ΠΟΝΤΟΙ</span>
+                    {renderSortIcon('points')}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {filteredUsers.length > 0 ? (
                   filteredUsers.map((user, idx) => {
-                    const rank = getRankStyle(idx);
+                    const originalIndex = users.findIndex(u => u.id === user.id);
+                    const rank = getRankStyle(originalIndex);
                     const isSelf = currentUser && user.id === currentUser.id;
 
-                    const currentRank = idx + 1;
+                    const currentRank = originalIndex + 1;
                     const prevRank = user.previousRank;
                     const change = prevRank > 0 ? prevRank - currentRank : 0;
 
@@ -218,12 +282,12 @@ export default function Leaderboard({ currentUser }) {
                               width: '28px',
                               height: '28px',
                               borderRadius: '50%',
-                              background: idx < 3 ? 'var(--rank-bg, rgba(255,255,255,0.03))' : 'transparent',
+                              background: originalIndex < 3 ? 'var(--rank-bg, rgba(255,255,255,0.03))' : 'transparent',
                               color: rank.color,
                               fontWeight: 700,
                               flexShrink: 0
                             }}>
-                              {idx + 1}
+                              {currentRank}
                             </span>
                             <span className="hide-on-mobile" style={{ color: rank.color, display: 'flex', alignItems: 'center', flexShrink: 0 }}>
                               {rank.icon}
