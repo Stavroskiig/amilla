@@ -213,7 +213,7 @@ export default function MatchCard({
     <div className={`glass-card ${success ? 'submit-success-glow' : ''}`} style={{ padding: '0px', overflow: 'visible' }}>
       {/* Match Card Header Banner */}
       <div className="match-card-header" style={{ borderTopLeftRadius: 'calc(var(--radius-lg) - 1px)', borderTopRightRadius: 'calc(var(--radius-lg) - 1px)' }}>
-        <div className="match-stage-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="match-stage-wrapper">
           <span className="badge badge-scheduled match-stage-badge" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {getStageLabel(match.matchStage)}
           </span>

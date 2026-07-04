@@ -801,6 +801,12 @@ input[type=number] {
   flex: 1;
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+}
+
+.match-stage-badge {
+  white-space: nowrap;
 }
 
 .match-datetime-wrapper {
@@ -980,6 +986,12 @@ input[type=number] {
   .match-card-body {
     padding: 16px 12px !important;
     gap: 16px !important;
+  }
+
+  .match-stage-wrapper {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
   }
 
   .team-details-container {
