@@ -354,8 +354,8 @@ export default function Leaderboard({ currentUser }) {
                             color: 'var(--text-main)',
                             fontWeight: '600',
                             fontSize: '0.9rem'
-                          }} title="Σωστά Σημεία">
-                            {user.correctOutcomes || 0}
+                          }} title="Σωστά Σημεία (χωρίς τα ακριβή σκορ)">
+                            {Math.max(0, (user.correctOutcomes || 0) - (user.exactHits || 0))}
                           </div>
                         </td>
 
